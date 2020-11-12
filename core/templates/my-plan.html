@@ -1,0 +1,278 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} My Plans {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"> -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/4.7.0/css/font-awesome.min.css"> -->
+<link rel="stylesheet" href="/static/assets/css/app.css">
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <form class="form-inline md-form form-sm mt-0">
+                                <span class="search-btn1"><i class="feather icon-search pt-1"></i>
+                                <input class="form-control form-control-sm w-75" type="text" placeholder="Search" aria-label="Search"></span>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-0">
+                                <ul>
+                                    <li class=" dropdown d-none d-xl-inline-block user-dropdown">
+                                        <a class="nav-link1 top-drop" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                            <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <span class="ml-2 mr-2 intr">
+                                                <span class="intro">Hi Jhon Doe</span><br>
+                                                <span class="intro1">{{ request.user.email }}</span>
+                                            </span>
+                                            <span class="chevron-i"><i class="feather icon-chevron-down"></i></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                        <div class="dropdown-header text-center">
+                                            <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <p class="mb-1 mt-3 font-weight-semibold">
+                                            {{ request.user.user }}
+                                            </p>
+                                            <p class="font-weight-light text-muted mb-0">
+                                            {{ request.user.email }}
+                                            </p>
+                                        </div>
+                                        <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                        <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                        <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    <div class="row" id="app-page">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="title1">My Plan</h4>
+                                    <p class="breadcrumb-b"><span style="color: #888888;">Post-Paid/Pre-Paid -</span> <a class="p-a" href="#">How to change to post-paid?</a></p>
+                                </div>
+                                <div class="col-md-6 mt-1">
+                                    <input class="btn-c-a"  type="submit" value="Private"/>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+                            <div id="myplan">
+                                <div id="part1" class="parts">
+                                    <div class="part11">
+                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
+                                        <h5>Private</h5>
+                                        <h1>$1</h1>
+                                        <p>Per Month</p>
+                                        <p class="p-p">1000 notifications</p>
+                                        <p class="p-p">1 app allowed</p>
+                                        <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                        <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                    </div>
+                                </div>
+                                <div id="part2" class="parts">
+                                    <div class="p-1 p2-p">Choose your plan</div>
+                                    <span class="part-span">Recommended</span>
+                                    <div class="part22 pt-3">
+                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
+                                        <h5>Business</h5>
+                                        <h1>$4</h1>
+                                        <p>Per Month</p>
+                                        <p class="p-p">5000 notifications</p>
+                                        <p class="p-p">3 app allowed</p>
+                                        <p class="p-p">$8 one-time every 5000 notifications additional app $10 per month</p>
+                                        <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                    </div>
+                                </div>
+                                <div id="part3" class="parts">
+                                    <div class="part33">
+                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
+                                        <h5>Unlimited</h5>
+                                        <h1>$7</h1>
+                                        <p>Per Month</p>
+                                        <p class="p-p">1000 notifications</p>
+                                        <p class="p-p">1 app allowed</p>
+                                        <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                        <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row pt-5">
+                                    <div class="col-md-12 ad">
+                                        <div class="row">
+                                            <div class="col-2 p-4">
+                                                <h5>Addons</h5>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="row">
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">5,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
+                                                            <button onclick="increment()">+</button>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">10,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput1" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
+                                                            <button onclick="increment()">+</button>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">Extra 1 App</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput2" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
+                                                            <button onclick="increment()">+</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="center">
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                                                                <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[2]" class="form-control input-number" value="10" min="1" max="100">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="chart" style="height:200px"></div>
+                                    <p class="card-p">You have used 62% of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="#">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">415</h3>
+                                    <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#my-table').DataTable();
+    } );
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script>
+    Morris.Donut({
+        element: 'chart',
+        data: [
+            {label: "Notifao", value: 75},
+            {label: "Unused", value: 25}
+        ]
+    });
+</script>
+<script>
+    window.onload = function() {
+       document.querySelector('#part2').className += " page-load-hover";
+ 
+    //    document.querySelector('#part1').onmouseover=function(){
+    //        var el = this.querySelector('.page-load-hover');
+    //        el.className = el.className.replace(" page-load-hover", "");
+    //    };
+    }
+</script>
+<script>
+    $("#part1").hover(
+        function () {
+            $("#part2").removeClass("page-load-hover");
+            $("#part2").css('z-index', -1);
+            $(this).css('z-index', 99);
+        },
+    );
+    $("#part3").hover(
+        function () {
+            $("#part2").removeClass("page-load-hover");
+            $("#part2").css('z-index', -1);
+            $(this).css('z-index', 99);
+        },
+    );
+    $("#part2").hover(
+        function () {
+            $(this).addClass("page-load-hover");
+            $("#part1").css('z-index', -1);
+            $("#part3").css('z-index', -1);
+            $(this).css('z-index', 99);
+        },
+    );
+</script>
+<script>
+    function increment() {
+       document.getElementById('demoInput').stepUp();
+       document.getElementById('demoInput1').stepUp();
+       document.getElementById('demoInput2').stepUp();
+    }
+    function decrement() {
+       document.getElementById('demoInput').stepDown();
+       document.getElementById('demoInput1').stepDown();
+       document.getElementById('demoInput2').stepDown();
+    }
+ </script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{% endblock javascripts %}

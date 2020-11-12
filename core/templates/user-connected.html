@@ -1,0 +1,170 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Connected User {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <form class="form-inline md-form form-sm mt-0">
+                                <span class="search-btn1"><i class="feather icon-search pt-1"></i>
+                                <input class="form-control form-control-sm w-75" type="text" placeholder="Search" aria-label="Search"></span>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-0">
+                                <ul>
+                                    <li class=" dropdown d-none d-xl-inline-block user-dropdown">
+                                        <a class="nav-link1 top-drop" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                            <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <span class="ml-2 mr-2 intr">
+                                                <span class="intro">Hi Jhon Doe</span><br>
+                                                <span class="intro1">{{ request.user.email }}</span>
+                                            </span>
+                                            <span class="chevron-i"><i class="feather icon-chevron-down"></i></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                        <div class="dropdown-header text-center">
+                                            <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <p class="mb-1 mt-3 font-weight-semibold">
+                                            {{ request.user.user }}
+                                            </p>
+                                            <p class="font-weight-light text-muted mb-0">
+                                            {{ request.user.email }}
+                                            </p>
+                                        </div>
+                                        <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                        <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                        <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h4 class="title1">Add Application</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
+                            <div class="row pt-1 pl-1">
+                                <div class="col-md-6">
+                                   <form action="">
+                                        <div class="row">
+                                            <div class="col-6">
+                                               <div class="app-add-image">
+                                                    <div class="all-t">
+                                                        <i class="feather icon-plus-circle"></i>
+                                                        <p class="pt-1">Upload Logo</p>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="app-add-image">
+                                                     <div class="all-t">
+                                                        <i class="feather icon-plus-circle"></i>
+                                                        <p class="pt-1">Add Background Image</p>
+                                                     </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        <div class="row app-n">
+                                            <div class="col-12">
+                                                <div class="form-group pt-2">
+                                                    <label for="">APPLICATION NAME</label>
+                                                    <input type="email" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter App Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">URL</label>
+                                                    <input type="url" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter URL get/post">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">DESCRIPTION</label>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Enter App Description" rows="7"></textarea>
+                                                </div>
+                                                <input type="submit" class="form-control sbmt mt-4" id="application_name" aria-describedby="emailHelp" value="Add Application">
+                                            </div>
+                                        </div>
+                                   </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-a-p">
+                                        <div class="img-app-l-6 pt-3">
+                                            <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
+                                            <h5 class="pt-3">About Notifao Applications</h5>
+                                            <p class="pt-3">
+                                                lipsum as it is sometimes. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum a type specimen book.
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="chart" style="height:200px"></div>
+                                    <p class="card-p">You have used 62% of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="#">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">415</h3>
+                                    <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script>
+        $("input").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                .format( this.getAttribute("data-date-format") )
+            )
+        }).trigger("change")
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script>
+        Morris.Donut({
+            element: 'chart',
+            data: [
+                {label: "Notifao", value: 75},
+                {label: "Unused", value: 25}
+            ]
+        });
+    </script>
+    
+{% endblock javascripts %}

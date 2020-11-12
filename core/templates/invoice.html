@@ -1,0 +1,248 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Invoices {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <form class="form-inline md-form form-sm mt-0">
+                                <span class="search-btn1"><i class="feather icon-search pt-1"></i>
+                                <input class="form-control form-control-sm w-75" type="text" placeholder="Search" aria-label="Search"></span>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-0">
+                                <ul>
+                                    <li class=" dropdown d-none d-xl-inline-block user-dropdown">
+                                        <a class="nav-link1 top-drop" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                            <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <span class="ml-2 mr-2 intr">
+                                                <span class="intro">Hi Jhon Doe</span><br>
+                                                <span class="intro1-a">{{ request.user.email }}</span>
+                                            </span>
+                                            <span class="chevron-i"><i class="feather icon-chevron-down"></i></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                        <div class="dropdown-header text-center">
+                                            <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                            <p class="mb-1 mt-3 font-weight-semibold">
+                                            {{ request.user.user }}
+                                            </p>
+                                            <p class="font-weight-light text-muted mb-0">
+                                            {{ request.user.email }}
+                                            </p>
+                                        </div>
+                                        <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                        <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                        <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    <div class="row" id="app-page">
+                        <div class="col-md-6">
+                            <h4 class="title1">Invoices</h4>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <input class="btn-c-a"  type="submit" value="Add New"/>
+                        </div> -->
+                        <div class="col-md-9 mt-3">
+                            <div class="card card-l-a">
+                                <table id="my-table" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>INVOICE ID</th>
+                                            <th class="text-left">DATE</th>
+                                            <th>AMOUNT</th>
+                                            <th class="text-center">STATUS</th>
+                                            <th>DOWNLOAD</th>
+                                            <th class="text-center">PAY</th>
+                                            <th class="text-left">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                                                    <label class="custom-control-label" for="defaultUnchecked"></label>
+                                                </div>
+                                            </td>
+                                            <td class="pb-t">33242</td>
+                                            <td class="text-left pb-t">24 May,2020</td>
+                                            <td class="pb-t-c">$58</td>
+                                            <td class="pb-t-c text-center">
+                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                            </td>
+                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                            <td class="text-left pb-t">
+                                                <span class="ml-2 action-i">
+                                                    <i class="feather icon-eye"></i>
+                                                    <i class="feather icon-trash-2 ml-1"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
+                                                    <label class="custom-control-label" for="defaultUnchecked1"></label>
+                                                </div>
+                                            </td>
+                                            <td class="pb-t">33242</td>
+                                            <td class="text-left pb-t">24 May,2020</td>
+                                            <td class="pb-t-c">$58</td>
+                                            <td class="pb-t-c text-center">
+                                                <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
+                                            </td>
+                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                            <td class="text-left pb-t">
+                                                <span class="ml-2 action-i">
+                                                    <i class="feather icon-eye"></i>
+                                                    <i class="feather icon-trash-2 ml-1"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked2">
+                                                    <label class="custom-control-label" for="defaultUnchecked2"></label>
+                                                </div>
+                                            </td>
+                                            <td class="pb-t">33242</td>
+                                            <td class="text-left pb-t">24 May,2020</td>
+                                            <td class="pb-t-c">$58</td>
+                                            <td class="pb-t-c text-center">
+                                                <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
+                                            </td>
+                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                            <td class="text-left pb-t">
+                                                <span class="ml-2 action-i">
+                                                    <i class="feather icon-eye"></i>
+                                                    <i class="feather icon-trash-2 ml-1"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked3">
+                                                    <label class="custom-control-label" for="defaultUnchecked3"></label>
+                                                </div>
+                                            </td>
+                                            <td class="pb-t">33242</td>
+                                            <td class="text-left pb-t">24 May,2020</td>
+                                            <td class="pb-t-c">$58</td>
+                                            <td class="pb-t-c text-center">
+                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                            </td>
+                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                            <td class="text-left pb-t">
+                                                <span class="ml-2 action-i">
+                                                    <i class="feather icon-eye"></i>
+                                                    <i class="feather icon-trash-2 ml-1"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked4">
+                                                    <label class="custom-control-label" for="defaultUnchecked4"></label>
+                                                </div>
+                                            </td>
+                                            <td class="pb-t">33242</td>
+                                            <td class="text-left pb-t">24 May,2020</td>
+                                            <td class="pb-t-c">$58</td>
+                                            <td class="pb-t-c text-center">
+                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                            </td>
+                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                            <td class="text-left pb-t">
+                                                <span class="ml-2 action-i">
+                                                    <i class="feather icon-eye"></i>
+                                                    <i class="feather icon-trash-2 ml-1"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="chart" style="height:200px"></div>
+                                    <p class="card-p">You have used 62% of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="#">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">415</h3>
+                                    <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#my-table').DataTable();
+    } );
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script>
+    Morris.Donut({
+        element: 'chart',
+        data: [
+            {label: "Notifao", value: 75},
+            {label: "Unused", value: 25}
+        ]
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+{% endblock javascripts %}
