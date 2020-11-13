@@ -9211,6 +9211,7 @@ table.footable-paging-center>tfoot>tr.footable-paging>td {
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
+    background-color: #1f4557;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -13136,6 +13137,7 @@ button.add-app {
 }
 .top-right{
     float: right;
+    margin-right: 7px;
 }
 .top-r-img{
     width: 40px;

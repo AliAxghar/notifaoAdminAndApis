@@ -4,7 +4,7 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
 {% endblock stylesheets %}
@@ -36,7 +36,7 @@
                                             <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
                                             <span class="ml-2 mr-2 intr">
                                                 <span class="intro">Hi Jhon Doe</span><br>
-                                                <span class="intro1">{{ request.user.email }}</span>
+                                                <span class="intro1-a">{{ request.user.email }}</span>
                                             </span>
                                             <span class="chevron-i"><i class="feather icon-chevron-down"></i></span>
                                         </a>

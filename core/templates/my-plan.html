@@ -5,10 +5,12 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
 <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"> -->
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/4.7.0/css/font-awesome.min.css"> -->
 <link rel="stylesheet" href="/static/assets/css/app.css">
+<style>
+    .m-p-b:focus{
+        color: green;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -129,21 +131,21 @@
                                                         <h6 class="text-center">5,000 Notifications</h6>
                                                         <span class="add-1">
                                                             <input id="demoInput" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
-                                                            <button onclick="increment()">+</button>
+                                                            <button class="m-p-b" onclick="increment()">+</button>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">10,000 Notifications</h6>
                                                         <span class="add-1">
                                                             <input id="demoInput1" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
-                                                            <button onclick="increment()">+</button>
+                                                            <button class="m-p-b" onclick="increment()">+</button>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">Extra 1 App</h6>
                                                         <span class="add-1">
                                                             <input id="demoInput2" class="imput-add" type="number" value="1"  min="2" max="100" placeholder="$1">
-                                                            <button onclick="increment()">+</button>
+                                                            <button class="m-p-b" onclick="increment()">+</button>
                                                         </span>
                                                     </div>
                                                 </div>
