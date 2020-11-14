@@ -13125,7 +13125,11 @@ div.code-toolbar>.toolbar span:hover {
         box-shadow: 0 0 0 0 rgba(4, 169, 245, 0)
     }
 }
-
+.top-right li{
+    list-style: none!important;
+    display:inline!important;
+    float: left!important;
+}
 button.add-app {
     padding: 5px 35px;
     margin-top: 10px;
@@ -13135,6 +13139,9 @@ button.add-app {
     color: #fff;
     background: linear-gradient(0deg, rgba(54,123,125,0.9612219887955182) 12%, rgba(102,176,113,0.9332107843137255) 50%);
 }
+.intr11 {
+    font-size: 9px;
+}
 .top-right{
     float: right;
     margin-right: 7px;
@@ -13143,9 +13150,11 @@ button.add-app {
     width: 40px;
     height: 40px;
     margin-top: -5px;
-    margin-left: 11px;
     border-radius: 8px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+.form-h-1{
+    float: right!important;
 }
 .top-r-img1{
     width: 50px;
@@ -13164,13 +13173,13 @@ button.add-app {
 }
 
 .notif {
-    position: absolute;
+    position: relative;
     font-size: 8px;
     background-color: #274a5d;
-    height: 11px;
-    width: 10px;
-    top: 2px;
-    right: 145px;
+    font-size: 9px;
+    right: 8px;
+    padding: 0px 3px;
+    bottom: 10px;
     text-align: center;
     border-radius: 10px;
     color: #fff;
@@ -13227,10 +13236,10 @@ a#UserDropdown:hover {
     bottom: 10px;
     color: silver;
 }
-.intr{
+/* .intr{
     position: relative;
     bottom: 11px;
-}
+} */
 .chevron-i {
     font-size: 18px;
     position: relative;
@@ -13240,10 +13249,12 @@ a#UserDropdown:hover {
 }
 .nav-link1 {
     display: block;
-    padding: 0px 24px;
+    padding: 0px 0px;
+    font-size: 22px;
+    color: #274a5d;
 }
 .hr-top{
-    margin-top: 0rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
     position: relative;
     border: 0;

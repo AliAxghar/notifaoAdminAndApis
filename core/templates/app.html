@@ -28,32 +28,45 @@
                             </form>
                         </div>
                         <div class="col-md-6">
-                            <div class="top-right mt-0">
+                            <div class="top-right mt-1">
                                 <ul>
-                                    <li class=" dropdown d-none d-xl-inline-block user-dropdown">
-                                        <a class="nav-link1 top-drop" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
-                                            <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
-                                            <span class="ml-2 mr-2 intr">
-                                                <span class="intro">Hi Jhon Doe</span><br>
-                                                <span class="intro1-a">{{ request.user.email }}</span>
-                                            </span>
-                                            <span class="chevron-i"><i class="feather icon-chevron-down"></i></span>
-                                        </a>
+                                    <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
+                                    </li>
+                                        <!-- <ul> -->
+                                            
+                                            <!-- <li>
+                                                <a class="nav-link top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="feather icon-chevron-down"></i>
+                                                </a>
+                                            </li> -->
+                                        <!-- </ul> -->
                                         <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-                                        <div class="dropdown-header text-center">
-                                            <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
-                                            <p class="mb-1 mt-3 font-weight-semibold">
-                                            {{ request.user.user }}
-                                            </p>
-                                            <p class="font-weight-light text-muted mb-0">
-                                            {{ request.user.email }}
-                                            </p>
+                                            <div class="dropdown-header text-center">
+                                                <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                                <p class="mb-1 mt-3 font-weight-semibold">
+                                                {{ request.user.user }}
+                                                </p>
+                                                <p class="font-weight-light text-muted mb-0">
+                                                {{ request.user.email }}
+                                                </p>
+                                            </div>
+                                            <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                            <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                            <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
                                         </div>
-                                        <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                        <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
-                                        <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
-                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <span class="intr" >
+                                            <div class="intr11">Hi Jhon Doe</div>
+                                            <div class="intr11">{{ request.user.email }}</div>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather icon-chevron-down"></i>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
