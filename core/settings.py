@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'notifaodb',
+        'NAME': 'notifao_admin',
         'USER': 'postgres',
         'PASSWORD': 'admin123',
         'HOST': 'localhost'
