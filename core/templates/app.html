@@ -7,6 +7,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
+<style>
+    .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
+        position: absolute!important;
+        top: 8px!important;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -34,29 +40,7 @@
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
                                     </li>
-                                        <!-- <ul> -->
-                                            
-                                            <!-- <li>
-                                                <a class="nav-link top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="feather icon-chevron-down"></i>
-                                                </a>
-                                            </li> -->
-                                        <!-- </ul> -->
-                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-                                            <div class="dropdown-header text-center">
-                                                <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
-                                                <p class="mb-1 mt-3 font-weight-semibold">
-                                                {{ request.user.user }}
-                                                </p>
-                                                <p class="font-weight-light text-muted mb-0">
-                                                {{ request.user.email }}
-                                                </p>
-                                            </div>
-                                            <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                            <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
-                                            <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
-                                        </div>
-                                    </li>
+                                    
                                     <li class="">
                                         <span class="intr" >
                                             <div class="intr11">Hi Jhon Doe</div>
@@ -66,6 +50,20 @@
                                     <li>
                                         <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-chevron-down"></i>
+                                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                                <div class="dropdown-header text-center">
+                                                    <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                                    <p class="mb-1 mt-3 font-weight-semibold">
+                                                    {{ request.user.user }}
+                                                    </p>
+                                                    <p class="font-weight-light text-muted mb-0">
+                                                    {{ request.user.email }}
+                                                    </p>
+                                                </div>
+                                                <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                                <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                            </div>
                                         </a>
                                     </li>
                                 </ul>
@@ -78,7 +76,7 @@
                             <h4 class="title1">Applications</h4>
                         </div>
                         <div class="col-md-6">
-                            <input class="btn-c-a"  type="submit" value="Add New"/>
+                            <a href="user-connected.html"><input class="btn-c-a"  type="submit" value="Add New"/></a>
                         </div>
                         <div class="col-md-12 mt-3">
                             <div class="card card-l-a">

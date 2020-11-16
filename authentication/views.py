@@ -38,6 +38,7 @@ def login_view(request):
 def register_user(request):
 
     msg     = None
+    msg1     = None
     success = False
 
     if request.method == "POST":
@@ -48,14 +49,14 @@ def register_user(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
 
-            msg     = 'User created.'
+            msg     = 'User is created successfully'
             success = True
             
             #return redirect("/login/")
 
         else:
-            msg = 'Form is not valid'    
+            msg1 = 'Form is not valid'    
     else:
         form = SignUpForm()
 
-    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "success" : success })
+    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "msg1" : msg1, "success" : success })

@@ -96,6 +96,10 @@
 #login-btn{
     background: linear-gradient(0deg, rgba(51,127,113,3.961222) 18%, rgb(84 158 80 / 117%) 57%)!important;
 }
+#login-btn:hover {
+    background: linear-gradient(0deg, rgba(51,127,113,3.961222) 18%, rgb(84 158 80 / 117%) 57%)!important;
+    cursor: pointer;
+}
 .lo-p{
     color: #93b3c3!important;
     font-size: 13px!important;
@@ -104,4 +108,12 @@
     color: #61b46a!important;
     font-size: 14px!important;
     font-weight: 400!important;
+}
+ul.errorlist {
+    padding: 0px!important;
+    margin-bottom: 0px!important;
+}
+.errorlist li{
+    color: #e65d5d!important;
+    list-style: none!important;
 }

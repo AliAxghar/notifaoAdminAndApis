@@ -34,29 +34,7 @@
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
                                     </li>
-                                        <!-- <ul> -->
-                                            
-                                            <!-- <li>
-                                                <a class="nav-link top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="feather icon-chevron-down"></i>
-                                                </a>
-                                            </li> -->
-                                        <!-- </ul> -->
-                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-                                            <div class="dropdown-header text-center">
-                                                <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
-                                                <p class="mb-1 mt-3 font-weight-semibold">
-                                                {{ request.user.user }}
-                                                </p>
-                                                <p class="font-weight-light text-muted mb-0">
-                                                {{ request.user.email }}
-                                                </p>
-                                            </div>
-                                            <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                            <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
-                                            <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
-                                        </div>
-                                    </li>
+                                    
                                     <li class="">
                                         <span class="intr" >
                                             <div class="intr11">Hi Jhon Doe</div>
@@ -66,6 +44,20 @@
                                     <li>
                                         <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-chevron-down"></i>
+                                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                                <div class="dropdown-header text-center">
+                                                    <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                                    <p class="mb-1 mt-3 font-weight-semibold">
+                                                    {{ request.user.user }}
+                                                    </p>
+                                                    <p class="font-weight-light text-muted mb-0">
+                                                    {{ request.user.email }}
+                                                    </p>
+                                                </div>
+                                                <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                                <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                            </div>
                                         </a>
                                     </li>
                                 </ul>
@@ -300,7 +292,7 @@
                             <div class="card right-c">
                                 <div class="card card-i">
                                     <h4 class="pt-1">Plan Usage</h4>
-                                    <div id="chart" style="height:200px"></div>
+                                    <div id="donut_chart" style="height:200px"></div>
                                     <p class="card-p">You have used 62% of your actual plan</p>
                                 </div>
                                 <div class="right-c-d">
@@ -895,15 +887,15 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-    <script>
+    <!-- <script>
         Morris.Donut({
             element: 'chart',
             data: [
-                {label: "Notifao", value: 75},
-                {label: "Unused", value: 25}
+                {label: "Notifao", value: 75, labelColor:"green",},
+                {label: "Unused", value: 25 , labelColor:"green",}
             ]
         });
-    </script>
+    </script> -->
     <script>
         var data = [
                 { y: '2014', a: 50, b: 90},
@@ -939,5 +931,82 @@
             };
             config.element = 'area-chart';
             Morris.Area(config);
+    </script>
+    <script>
+        (function () {
+            var $, MyMorris;
+
+            MyMorris = window.MyMorris = {};
+            $ = jQuery;
+
+            MyMorris = Object.create(Morris);
+
+            MyMorris.Donut.prototype.select = function (idx) {
+                var row, s, segment, _i, _len, _ref, _fill_color; // ADDED _fill_color
+                _ref = this.segments;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    s = _ref[_i];
+                    s.deselect();
+                }
+                segment = this.segments[idx];
+                segment.select();
+                row = this.data[idx];
+                _fill_color = row.labelColor || this.options.labelColor || '#000000'; // ADDED
+                return this.setLabels(row.label, this.options.formatter(row.value, row), _fill_color); // ADDED parameter _fill_color
+            };
+
+
+            MyMorris.Donut.prototype.setLabels = function (label1, label2, fill_color) {
+                var inner, maxHeightBottom, maxHeightTop, maxWidth, text1bbox, text1scale, text2bbox, text2scale;
+                _default_fill = fill_color || '#000000'; // ADDED
+                inner = (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) * 2 / 3;
+                maxWidth = 1.8 * inner;
+                maxHeightTop = inner / 2;
+                maxHeightBottom = inner / 3;
+                this.text1.attr({
+                    text: label1,
+                    transform: '',
+                    fill: fill_color // ADDED
+                });
+                text1bbox = this.text1.getBBox();
+                text1scale = Math.min(maxWidth / text1bbox.width, maxHeightTop / text1bbox.height);
+                this.text1.attr({
+                    transform: "S" + text1scale + "," + text1scale + "," + (text1bbox.x + text1bbox.width / 2) + "," + (text1bbox.y + text1bbox.height)
+                });
+                this.text2.attr({
+                    text: label2,
+                    transform: '',
+                    fill: fill_color // ADDED
+                });
+                text2bbox = this.text2.getBBox();
+                text2scale = Math.min(maxWidth / text2bbox.width, maxHeightBottom / text2bbox.height);
+                return this.text2.attr({
+                    transform: "S" + text2scale + "," + text2scale + "," + (text2bbox.x + text2bbox.width / 2) + "," + text2bbox.y
+                });
+            };
+        }).call(this);
+
+        getMorris('donut', 'donut_chart');
+
+        function getMorris(type, element) {
+            if (type === 'donut') {
+                var morris = Morris.Donut({
+                    element: element,
+                    data: [
+                        {
+                            label: 'Notifao',
+                            value: 75,
+                            labelColor: '#4c9f75'
+                        }, {
+                        label: 'Unused',
+                            value: 25,
+                            labelColor: '#4c9f75'
+                        }, 
+                    ],
+                    labelColor: "#4c9f75",
+                    colors: ['#4c9f75', '#cfd3d4']
+                });
+            }
+        }
     </script>
 {% endblock javascripts %}

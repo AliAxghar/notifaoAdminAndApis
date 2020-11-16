@@ -2621,8 +2621,8 @@ p.text-muted {
 }
 
 .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
-    position: absolute;
-    top: 11px;
+    position: absolute!important;
+    top: 11px!important;
 }
 
 .pcoded-navbar .pcoded-inner-navbar li.pcoded-hasmenu>a:after {
@@ -2957,7 +2957,7 @@ p.text-muted {
     background: #3e5f72;
     color: #fff;
     margin: 0 15px;
-    padding: 3px 15px;
+    padding: 3px 15px!important;
     border-radius: 4px;
 }
 .nav .feather{
@@ -13147,6 +13147,51 @@ button.add-app {
     float: right;
     margin-right: 7px;
 }
+.top-right a:hover{
+    text-decoration: none!important;
+}
+.text-muted2 {
+    color: #e65d5d!important;
+}
+.text-muted1 {
+    color: #549e50!important;
+}
+.app-add-image input{
+    display: none;
+}
+.app-add-image1 input{
+    display: none;
+}
+#up-img{
+    display: none;
+}
+#up-img1{
+    display: none;
+}
+#up-img{
+    height: 100%;
+    width: 100%;
+}
+#up-img1{
+    height: 100%;
+    width: 100%;
+}
+.app-add-image label {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    line-height: 16px;
+    padding: .2em .4em;
+    margin: .2em;
+}
+.app-add-image1 label {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    line-height: 16px;
+    padding: .2em .4em;
+    margin: .2em;
+}
 .top-r-img{
     width: 40px;
     height: 40px;
@@ -13323,7 +13368,7 @@ input::-webkit-calendar-picker-indicator {
     background-color: #489b71;
     color: #fff;
     border-radius: 6px;
-    font-size: 11px;
+    font-size: 12px;
     padding: 5px 20px;
     border: 1px solid #489b71;
 }
@@ -13357,7 +13402,7 @@ input::-webkit-calendar-picker-indicator {
 .right-c h4{
     text-align: center!important;
     font-size: 17px!important;
-    font-weight: 550!important;
+    font-weight: 650!important;
 }
 .card-p{
     font-size: 10px!important;
@@ -13375,7 +13420,7 @@ input::-webkit-calendar-picker-indicator {
 .right-c-d h6{
     text-align: left!important;
     font-size: 14px!important;
-    font-weight: 600!important;
+    font-weight: 650!important;
     color: #274a5d!important;
 }
 .right-c-d h3{
@@ -13491,16 +13536,36 @@ table th {
 .all-t{
     text-align: center;
 }
+.all-t1{
+    text-align: center;
+}
+.app-add-image1 .icon-plus-circle {
+    font-size: 50px;
+}
 .app-add-image{
     background-color: #f4f8f9;
     padding:10px 15px;
     border-radius: 12px;
 }
-.app-add-image img{
-    height: 60px;
-    width: 60px;
+.app-add-image1{
+    background-color: #f4f8f9;
+    padding:10px 15px;
+    border-radius: 12px;
 }
+/* .app-add-image img{
+    height: 100%!important;
+    width: auto!important;
+}
+.app-add-image1 img{
+    height: 100%!important;
+    width: auto!important;
+} */
 .app-add-image p{
+    margin-bottom: 0rem;
+    font-size: 11px;
+    font-weight: 500;
+}
+.app-add-image1 p{
     margin-bottom: 0rem;
     font-size: 11px;
     font-weight: 500;

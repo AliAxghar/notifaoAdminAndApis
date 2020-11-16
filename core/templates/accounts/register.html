@@ -6,70 +6,63 @@
 
     <div class="auth-wrapper">
         <div class="auth-content">
-            <div class="auth-bg">
+            <!-- <div class="auth-bg">
                 <span class="r"></span>
                 <span class="r s"></span>
                 <span class="r s"></span>
                 <span class="r"></span>
-            </div>
+            </div> -->
             <div class="card">
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="feather icon-user-plus auth-icon"></i>
+                <div class="card-body text-center login-main-card">
+                    <div class="pt-1 pb-1">
+                        <img class="loginlogo" src="/static/assets/images/loginlogo.png" alt="logo">
                     </div>
-                    <h3 class="mb-4">Sign up</h3>
+                    <h5 class="pt-3 pb-1">Register to get Notified!</h5>
 
-                    <span class="mb-0 text-muted">
+                    <span class="mb-0 text-muted1">
                         {% if msg %}
                             {{ msg | safe }}
-                        {% else %}
-                            Add your credentials
                         {% endif %} 
                     </span>
-
-                    <br />
-                    <br />
-
-                    <form role="form" method="post" action="">
+                    <!-- <span class="mb-0 text-muted">
+                        {% if msg1 %}
+                            {{ msg1 | safe }}
+                        {% endif %} 
+                    </span> -->
+                    <span class="text-error">{{ form.username.errors }}</span>
+                    <span class="text-error">{{ form.email.errors }}</span>
+                    <span class="text-error">{{ form.password1.errors }}</span>
+                    <span class="text-error">{{ form.password2.errors }}</span>
+                    <form role="form" class="pt-3" method="post" action="">
 
                         {% csrf_token %}                    
 
                         <div class="input-group mb-3">
                             {{ form.username }}
                         </div>
-                        <span class="text-error">{{ form.username.errors }}</span>
-
                         <div class="input-group mb-3">
                             {{ form.email }}
                         </div>
-                        <span class="text-error">{{ form.email.errors }}</span>
-
-                        <div class="input-group mb-4">
+                        <div class="input-group mb-3">
                             {{ form.password1 }}
                         </div>
-                        <span class="text-error">{{ form.password1.errors }}</span>
-
-                        <div class="input-group mb-4">
+                        <div class="input-group mb-2">
                             {{ form.password2 }}
-                        </div>
-                        <span class="text-error">{{ form.password2.errors }}</span>
-                        
-                        <div class="form-group text-left">
-                            <div class="checkbox checkbox-fill d-inline">
-                                <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
-                                <label for="checkbox-fill-a1" class="cr"> Agree with <a href="#">terms</a></label>
+                        </div>                        
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group text-left pl-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                                        <label class="custom-control-label" for="checkbox-fill-a1">Agree with terms</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" name="register" class="btn btn-primary shadow-2 mb-4">Register</button>
+                        <input type="submit"  name="login" id="login-btn" class="form-control mb-4" value="Register">
 
                     </form>
-
-                    <p class="mb-0 text-muted">Already have an account? <a href="{% url 'login' %}" >Login</a></p>
-                    <br />
-                    <p class="mb-2 text-muted">
-                        &copy; <a target="_blank" href="https://codedthemes.com/">CodedThemes</a> 
-                        - <a target="_blank" href="https://appseed.us/admin-dashboards/django-dashboard-dattaable">Django Dashboard DattaAble</a>
-                    </p>
+                    <p class="mb-0 lo-p">Already have an account? <a href="{% url 'login' %}" >Login</a></p>
                 </div>
             </div>
         </div>
