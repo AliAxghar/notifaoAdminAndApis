@@ -116,7 +116,7 @@
                                                 </span>
                                             </div>
                                             <div class="col-5">
-                                                <div id="area-chart1" style="height: 55px; width: 100%;" ></div>
+                                                <div id="area-chart1" style="height: 50px; width: 100%;" ></div>
                                             </div>
                                         </div>
                                         
@@ -898,36 +898,32 @@
     </script> -->
     <script>
         var data = [
-                { y: '2014', a: 50, b: 90},
-                { y: '2015', a: 65,  b: 75},
-                { y: '2021', a: 115, b: 75},
-                { y: '2022', a: 120, b: 85},
-                { y: '2023', a: 145, b: 85},
-                { y: '2024', a: 160, b: 95}
+                { y: '2014', a: 50},
+                { y: '2015', a: 65},
+                { y: '2015', a: 70},
+                { y: '2016', a: 74}
             ],
             config = {
                 data: data,
                 xkey: 'y',
-                ykeys: ['a', 'b'],
-                labels: ['Total Income', 'Total Outcome'],
+                ykeys: ['a'],
+                // labels: ['Total Income', 'Total Outcome'],
             };
             config.element = 'area-chart1';
             Morris.Area(config);
     </script>
     <script>
         var data = [
-                { y: '2014', a: 50, b: 90},
-                { y: '2015', a: 65,  b: 75},
-                { y: '2021', a: 115, b: 75},
-                { y: '2022', a: 120, b: 85},
-                { y: '2023', a: 145, b: 85},
-                { y: '2024', a: 160, b: 95}
+                { y: '2014', a: 50},
+                { y: '2015', a: 65},
+                { y: '2015', a: 70},
+                { y: '2024', a: 74}
             ],
             config = {
                 data: data,
                 xkey: 'y',
-                ykeys: ['a', 'b'],
-                labels: ['Total Income', 'Total Outcome'],
+                ykeys: ['a'],
+                // labels: ['Total Income', 'Total Outcome'],
             };
             config.element = 'area-chart';
             Morris.Area(config);

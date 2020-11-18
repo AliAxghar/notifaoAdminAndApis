@@ -326,6 +326,10 @@ span.m-p-b {
     background-color: #fff;
     z-index: 99;
 }
+.btn-c-m-p-1 {
+    background-color: #489b71!important;
+    color: #fff!important;
+}
 /* #part3:hover, #part1 {
     z-index: -1;
 }
@@ -421,12 +425,12 @@ span.m-p-b {
     margin-bottom: 0.36rem;
 }
 .btn-c-m-p{
-    background-color: #489b71;
-    color: #fff;
+    background-color: #c9ffc5;
+    color: #274a5d;
     border-radius: 6px;
     font-size: 11px;
     padding: 5px 20px;
-    border: 1px solid #489b71;
+    border: 1px solid #c9ffc5;
 }
 #part2:hover, .page-load-hover {
     transform: scale(1.2, 1.2);
