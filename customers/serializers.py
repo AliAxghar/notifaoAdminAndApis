@@ -33,7 +33,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['id', 'name', 'email', 'phone', 'password','business_name','subDate', 'push_notifications', 'email_notifications','subscription_id','apps_allowed']
+        fields = ['id', 'name', 'email', 'phone', 'password','business_name','subDate', 'push_notifications', 'email_notifications','subscription_id','apps_allowed','profile_pic']
 
 
 class MyRegisterSerializer(RegisterSerializer):
@@ -46,6 +46,7 @@ class MyRegisterSerializer(RegisterSerializer):
     push_notifications = serializers.IntegerField(required=False)
     email_notifications = serializers.IntegerField(required=False)
     subscription_id = serializers.CharField(required=False)
+    profile_pic = serializers.ImageField(required=False)
     # phone = serializers.CharField(required=True)
     phone = serializers.CharField(
         max_length=100,

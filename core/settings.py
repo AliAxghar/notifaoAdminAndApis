@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'allauth',
+    # Third party apps
     'rest_framework',
     'rest_auth',
     'allauth.account',
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     # LOCAL APPS
     'customers',
     'plans',
+    'apps',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +156,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'core/static'),
 )
+MEDIA_URL =  '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #############################################################
 #############################################################
 
