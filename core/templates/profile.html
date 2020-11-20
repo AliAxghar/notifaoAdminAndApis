@@ -74,79 +74,46 @@
                     <hr class="hr-top">
                     <div class="row">
                         <div class="col-md-9">
-                            <h4 class="title1">Add Application</h4>
-                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
-                            <div class="row pt-1 pl-1">
-                                <div class="col-md-6">
-                                   <form action="">
-                                        <div class="row">
-                                            <div class="col-6">
-                                               <div class="app-add-image">
-                                                    <img id="up-img" >
-                                                    <div class="all-t">
-                                                        <label for="fusk">
-                                                            <i class="feather icon-plus-circle">
-                                                                <input id="fusk" type="file" name="photo">
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Upload Logo</p>
-                                                    </div>
-                                               </div>
+                            <h4 class="title1">My Profile</h4>
+                            <div class="row pl-1">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    {% if msg %}
+                                    <div class="alert alert-danger text-center success-msg">
+                                        {{msg}}
+                                    </div>
+                                    {% endif %}
+                                    <div id="alert"></div>
+                                    {% if request.user.profile_pic %}
+                                    <div class="text-center">
+                                        <img class="prof-p" src="{{request.user.profile_pic.url}}" alt="">
+                                    </div>
+                                    {% else %}
+                                    <div class="text-center">
+                                        <img class="prof-p" src="/static/assets/images/black1.png" alt="">
+                                    </div>
+                                    {% endif %}
+                                   <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                        <div class="app-n">
+                                            {{form}}
+                                            <!-- <div class="form-group pt-3">
+                                                <label for="">NAME</label>
+                                                <input type="text" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter App Name">
                                             </div>
-                                            <div class="col-6">
-                                                <!-- <div class="app-add-image">
-                                                     <div class="all-t">
-                                                        <i class="feather icon-plus-circle"></i>
-                                                        <p class="pt-1">Add Background Image</p>
-                                                     </div>
-                                                </div> -->
-                                                <div class="app-add-image1">
-                                                    <img id="up-img1" >
-                                                    <div class="all-t1">
-                                                        <label for="fusk1">
-                                                            <i class="feather icon-plus-circle">
-                                                                <input id="fusk1" type="file" name="photo">
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Add Background Image</p>
-                                                    </div>
-                                               </div>
-                                             </div>
-                                        </div>
-                                        <div class="row app-n">
-                                            <div class="col-12">
-                                                <div class="form-group pt-2">
-                                                    <label for="">APPLICATION NAME</label>
-                                                    <input type="email" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter App Name">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">URL</label>
-                                                    <input type="url" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter URL get/post">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlTextarea1">DESCRIPTION</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Enter App Description" rows="7"></textarea>
-                                                </div>
-                                                <input type="submit" class="form-control sbmt mt-4" id="application_name" aria-describedby="emailHelp" value="Add Application">
+                                            <div class="form-group">
+                                                <label for="">URL</label>
+                                                <input type="url" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter URL get/post">
                                             </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">DESCRIPTION</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Enter App Description" rows="7"></textarea>
+                                            </div> -->
+                                            <input type="submit" class="form-control sbmt mt-4" id="updatebtn" value="Update">
                                         </div>
                                    </form>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card-a-p">
-                                        <div class="img-app-l-6 pt-3">
-                                            <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
-                                            <h5 class="pt-3">About Notifao Applications</h5>
-                                            <p class="pt-3">
-                                                lipsum as it is sometimes. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum a type specimen book.
-                                            </p>
-                                            <hr>
-                                            <p>
-                                                lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="col-md-2"></div>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -174,15 +141,6 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-    <script>
-        $("input").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                .format( this.getAttribute("data-date-format") )
-            )
-        }).trigger("change")
-    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -262,33 +220,5 @@
                 });
             }
         }
-    </script>
-    <script>
-        $('.app-add-image input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t").css("display", "none");
-                    $("#up-img").css("display", "block");
-                    $('#up-img').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    </script>
-    <script>
-        $('.app-add-image1 input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t1").css("display", "none");
-                    $("#up-img1").css("display", "block");
-                    $('#up-img1').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
     </script>
 {% endblock javascripts %}

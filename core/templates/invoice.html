@@ -71,12 +71,16 @@
                                 <ul>
                                     <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
-                                        <img class="top-r-img" src="/static/assets/images/1.jpg" alt="Profile image">
+                                        {% if request.user.profile_pic %}
+                                        <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
+                                        {% endif %}
                                     </li>
                                     
                                     <li class="">
                                         <span class="intr" >
-                                            <div class="intr11">Hi Jhon Doe</div>
+                                            <div class="intr11">Hi {{ request.user.name }}</div>
                                             <div class="intr11">{{ request.user.email }}</div>
                                         </span>
                                     </li>
@@ -85,16 +89,20 @@
                                             <i class="feather icon-chevron-down"></i>
                                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
                                                 <div class="dropdown-header text-center">
-                                                    <img class="top-r-img1" src="/static/assets/images/1.jpg" alt="Profile image">
+                                                    {% if request.user.profile_pic %}
+                                                    <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                                    {% else %}
+                                                    <img class="top-r-img1" src="/static/assets/images/black1.png" alt="Profile image">
+                                                    {% endif %}
                                                     <p class="mb-1 mt-3 font-weight-semibold">
                                                     {{ request.user.user }}
                                                     </p>
-                                                    <p class="font-weight-light text-muted mb-0">
+                                                    <p class="font-weight-light text-muted mb-0 p-b-e">
                                                     {{ request.user.email }}
                                                     </p>
                                                 </div>
-                                                <a href="#" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                                <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a>
+                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
                                                 <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
                                             </div>
                                         </a>

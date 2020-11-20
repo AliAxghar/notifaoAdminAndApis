@@ -22,14 +22,14 @@ def login_view(request):
     if request.method == "POST":
 
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("/")
             else:    
-                msg = 'Username or password is incorrect'    
+                msg = 'Email or password is incorrect'    
         else:
             msg = 'Error validating the form'    
 
@@ -45,14 +45,14 @@ def register_user(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=raw_password)
+            user = authenticate(email=email, password=raw_password)
 
             msg     = 'User is created successfully'
             success = True
             
-            #return redirect("/login/")
+            # return redirect("/login/")
 
         else:
             msg1 = 'Form is not valid'    

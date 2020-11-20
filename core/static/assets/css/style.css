@@ -13062,6 +13062,7 @@ div.code-toolbar>.toolbar span:hover {
     bottom: -50px;
     right: 30px;
     opacity: 0;
+    display: none;
     z-index: 9;
     -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
@@ -13640,4 +13641,19 @@ a.p-a{
     font-size: 12px;
     font-weight: 500;
     text-decoration: underline;
+}
+.prof-p {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+.success-msg{
+    background-color: #f4f8f9!important;
+    border-color: #f4f8f9!important;
+    color: #274a5d!important;
+}
+.p-b-e{
+    color: #274a5d!important;
+    font-weight: 500!important;
 }

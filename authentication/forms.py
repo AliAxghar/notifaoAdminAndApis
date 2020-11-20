@@ -7,12 +7,20 @@ Copyright (c) 2019 - present AppSeed.us
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from customers.models import Customer
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(
+    # username = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "placeholder" : "Username",                
+    #             "class": "form-control"
+    #         }
+    #     ))
+    email = forms.EmailField(
+        widget=forms.EmailInput(
             attrs={
-                "placeholder" : "Username",                
+                "placeholder" : "Email",                
                 "class": "form-control"
             }
         ))
@@ -55,5 +63,5 @@ class SignUpForm(UserCreationForm):
         ))
 
     class Meta:
-        model = User
+        model = Customer
         fields = ('username', 'email', 'password1', 'password2')
