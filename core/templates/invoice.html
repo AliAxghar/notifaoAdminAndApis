@@ -30,9 +30,11 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form class="form-inline md-form form-sm mt-0">
-                                <span class="search-btn1"><i class="feather icon-search pt-1"></i>
-                                <input class="form-control form-control-sm w-75" type="text" placeholder="Search" aria-label="Search"></span>
+                            <form>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
                             </form>
                         </div>
                         <!-- <div class="col-md-6">
@@ -121,133 +123,135 @@
                         </div> -->
                         <div class="col-md-9 mt-3">
                             <div class="card card-l-a">
-                                <table id="my-table" class="table table-striped table-bordered" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>INVOICE ID</th>
-                                            <th class="text-left">DATE</th>
-                                            <th>AMOUNT</th>
-                                            <th class="text-center">STATUS</th>
-                                            <th>DOWNLOAD</th>
-                                            <th class="text-center">PAY</th>
-                                            <th class="text-left">ACTIONS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
-                                                    <label class="custom-control-label" for="defaultUnchecked"></label>
-                                                </div>
-                                            </td>
-                                            <td class="pb-t">33242</td>
-                                            <td class="text-left pb-t">24 May,2020</td>
-                                            <td class="pb-t-c">$58</td>
-                                            <td class="pb-t-c text-center">
-                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
-                                            </td>
-                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                            <td class="text-left pb-t">
-                                                <span class="ml-2 action-i">
-                                                    <i class="feather icon-eye"></i>
-                                                    <i class="feather icon-trash-2 ml-1"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
-                                                    <label class="custom-control-label" for="defaultUnchecked1"></label>
-                                                </div>
-                                            </td>
-                                            <td class="pb-t">33242</td>
-                                            <td class="text-left pb-t">24 May,2020</td>
-                                            <td class="pb-t-c">$58</td>
-                                            <td class="pb-t-c text-center">
-                                                <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
-                                            </td>
-                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                            <td class="text-left pb-t">
-                                                <span class="ml-2 action-i">
-                                                    <i class="feather icon-eye"></i>
-                                                    <i class="feather icon-trash-2 ml-1"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked2">
-                                                    <label class="custom-control-label" for="defaultUnchecked2"></label>
-                                                </div>
-                                            </td>
-                                            <td class="pb-t">33242</td>
-                                            <td class="text-left pb-t">24 May,2020</td>
-                                            <td class="pb-t-c">$58</td>
-                                            <td class="pb-t-c text-center">
-                                                <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
-                                            </td>
-                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                            <td class="text-left pb-t">
-                                                <span class="ml-2 action-i">
-                                                    <i class="feather icon-eye"></i>
-                                                    <i class="feather icon-trash-2 ml-1"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked3">
-                                                    <label class="custom-control-label" for="defaultUnchecked3"></label>
-                                                </div>
-                                            </td>
-                                            <td class="pb-t">33242</td>
-                                            <td class="text-left pb-t">24 May,2020</td>
-                                            <td class="pb-t-c">$58</td>
-                                            <td class="pb-t-c text-center">
-                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
-                                            </td>
-                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                            <td class="text-left pb-t">
-                                                <span class="ml-2 action-i">
-                                                    <i class="feather icon-eye"></i>
-                                                    <i class="feather icon-trash-2 ml-1"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked4">
-                                                    <label class="custom-control-label" for="defaultUnchecked4"></label>
-                                                </div>
-                                            </td>
-                                            <td class="pb-t">33242</td>
-                                            <td class="text-left pb-t">24 May,2020</td>
-                                            <td class="pb-t-c">$58</td>
-                                            <td class="pb-t-c text-center">
-                                                <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
-                                            </td>
-                                            <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                            <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                            <td class="text-left pb-t">
-                                                <span class="ml-2 action-i">
-                                                    <i class="feather icon-eye"></i>
-                                                    <i class="feather icon-trash-2 ml-1"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table id="my-table" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>INVOICE ID</th>
+                                                <th class="text-left">DATE</th>
+                                                <th>AMOUNT</th>
+                                                <th class="text-center">STATUS</th>
+                                                <th>DOWNLOAD</th>
+                                                <th class="text-center">PAY</th>
+                                                <th class="text-left">ACTIONS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                                                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="pb-t">33242</td>
+                                                <td class="text-left pb-t">24 May,2020</td>
+                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                                </td>
+                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                                <td class="text-left pb-t">
+                                                    <span class="ml-2 action-i">
+                                                        <i class="feather icon-eye"></i>
+                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
+                                                        <label class="custom-control-label" for="defaultUnchecked1"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="pb-t">33242</td>
+                                                <td class="text-left pb-t">24 May,2020</td>
+                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
+                                                </td>
+                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                                <td class="text-left pb-t">
+                                                    <span class="ml-2 action-i">
+                                                        <i class="feather icon-eye"></i>
+                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked2">
+                                                        <label class="custom-control-label" for="defaultUnchecked2"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="pb-t">33242</td>
+                                                <td class="text-left pb-t">24 May,2020</td>
+                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
+                                                </td>
+                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                                <td class="text-left pb-t">
+                                                    <span class="ml-2 action-i">
+                                                        <i class="feather icon-eye"></i>
+                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked3">
+                                                        <label class="custom-control-label" for="defaultUnchecked3"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="pb-t">33242</td>
+                                                <td class="text-left pb-t">24 May,2020</td>
+                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                                </td>
+                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                                <td class="text-left pb-t">
+                                                    <span class="ml-2 action-i">
+                                                        <i class="feather icon-eye"></i>
+                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked4">
+                                                        <label class="custom-control-label" for="defaultUnchecked4"></label>
+                                                    </div>
+                                                </td>
+                                                <td class="pb-t">33242</td>
+                                                <td class="text-left pb-t">24 May,2020</td>
+                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
+                                                </td>
+                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
+                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
+                                                <td class="text-left pb-t">
+                                                    <span class="ml-2 action-i">
+                                                        <i class="feather icon-eye"></i>
+                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-3">

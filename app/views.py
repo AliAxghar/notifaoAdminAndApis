@@ -10,6 +10,7 @@ from django import template
 from customers.models import Customer
 from app.forms import *
 import time
+from apps.models import *
 
 @login_required(login_url="/login/")
 def index(request):
@@ -22,7 +23,8 @@ def index(request):
 
 @login_required(login_url="/login/")
 def pages(request):
-    context = {}
+    all_app = App.objects.all()
+    context = {"all_app":all_app}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -67,3 +69,18 @@ def updateProfile(request, pk):
     
     context = {'form': form, "msg":msg}
     return render(request, 'profile.html', context)
+
+@login_required(login_url="/login/")
+def create_apps(request):
+    user = request.user
+    if request.method == 'POST':
+        app_name  = request.POST.get('app_name')
+        app_url  = request.POST.get('app_url')
+        app_description  = request.POST.get('app_description')
+        app_logo  = request.POST.get('app_logo')
+        app_back  = request.POST.get('app_back')
+        app_obj = App.objects.create(name =app_name, description  = app_description ,app_url  = app_url, app_logo = app_logo, app_image=app_back, customer_id = user)
+        if app_obj:
+            return redirect("../../app.html")
+    context = {}
+    return render(request, 'add-app.html', context)

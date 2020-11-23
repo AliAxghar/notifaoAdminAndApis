@@ -3021,6 +3021,74 @@ input.form-control-sm-1:focus{
     width: 50%;
     border-radius: 10px;
 }
+/* @media only screen and (max-width: 768px) {
+    .has-search .form-control:focus {
+        width: 100%!important;
+    }
+} */
+@media only screen and (max-width: 768px) {
+    .addonss{
+        text-align: center!important;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .addonss h5 {
+        font-size: 18px!important;
+        font-weight: 550;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .date-label {
+        position: relative;
+        bottom: 11px;
+        font-size: 12px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .btn-c {
+        float: right;
+        background-color: #489b71;
+        color: #fff;
+        border-radius: 6px;
+        font-size: 11px;
+        padding: 5px 5px!important;
+        border: 1px solid #489b71;
+    }
+}
+.has-search .form-control {
+    padding-left: 2.375rem!important;
+    padding: 0.5rem 2.375rem!important;
+    width: 70%;
+    border: none!important;
+    background-color: #f4f7fa!important;
+    border-radius: 50px!important;
+}
+@media only screen and (max-width: 768px) {
+    .has-search .form-control {
+        width: 100%!important;
+    }
+}
+/* .has-search .form-control:focus {
+    padding-left: 2.375rem!important;
+    padding: 0.5rem 2.375rem!important;
+    width: 70%!important;
+    border: none!important;
+    background-color: #f4f7fa!important;
+    border-radius: 50px!important;
+} */
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
 .search-btn2{
     background-color: #fff;
     border: 1px solid #fff;
@@ -13301,7 +13369,7 @@ a#UserDropdown:hover {
     color: #274a5d;
 }
 .hr-top{
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     position: relative;
     border: 0;
@@ -13547,11 +13615,13 @@ table th {
     background-color: #f4f8f9;
     padding:10px 15px;
     border-radius: 12px;
+    height: 100px;
 }
 .app-add-image1{
     background-color: #f4f8f9;
     padding:10px 15px;
     border-radius: 12px;
+    height: 100px;
 }
 /* .app-add-image img{
     height: 100%!important;
@@ -13561,6 +13631,12 @@ table th {
     height: 100%!important;
     width: auto!important;
 } */
+/* #app-error{
+    display: none!important;
+} */
+#donut_chart{
+    text-align: center;
+}
 .app-add-image p{
     margin-bottom: 0rem;
     font-size: 11px;

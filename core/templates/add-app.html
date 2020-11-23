@@ -21,9 +21,11 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form class="form-inline md-form form-sm mt-0">
-                                <span class="search-btn1"><i class="feather icon-search pt-1"></i>
-                                <input class="form-control form-control-sm w-75" type="text" placeholder="Search" aria-label="Search"></span>
+                            <form>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
                             </form>
                         </div>
                         <div class="col-md-6">
@@ -78,7 +80,8 @@
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
                             <div class="row pt-1 pl-1">
                                 <div class="col-md-6">
-                                   <form action="">
+                                   <form id="app-form" action="{% url 'create_apps' %}" method="POST">
+                                    {% csrf_token %}
                                         <div class="row">
                                             <div class="col-6">
                                                <div class="app-add-image">
@@ -86,7 +89,7 @@
                                                     <div class="all-t">
                                                         <label for="fusk">
                                                             <i class="feather icon-plus-circle">
-                                                                <input id="fusk" type="file" name="photo">
+                                                                <input id="fusk" type="file" name="app_logo">
                                                             </i>
                                                         </label>
                                                         <p class="">Upload Logo</p>
@@ -105,29 +108,32 @@
                                                     <div class="all-t1">
                                                         <label for="fusk1">
                                                             <i class="feather icon-plus-circle">
-                                                                <input id="fusk1" type="file" name="photo">
+                                                                <input id="fusk1" type="file" name="app_back">
                                                             </i>
                                                         </label>
                                                         <p class="">Add Background Image</p>
                                                     </div>
                                                </div>
                                              </div>
+                                            <div class="col-12 text-center pt-1">
+                                                <span id="app-error" style="color: red;"></span>
+                                            </div>
                                         </div>
                                         <div class="row app-n">
-                                            <div class="col-12">
-                                                <div class="form-group pt-2">
+                                            <div class="col-12 pt-1">
+                                                <div class="form-group">
                                                     <label for="">APPLICATION NAME</label>
-                                                    <input type="email" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter App Name">
+                                                    <input type="text" class="form-control" id="app_name" name="app_name" aria-describedby="name" placeholder="Enter App Name" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">URL</label>
-                                                    <input type="url" class="form-control" id="application_name" aria-describedby="emailHelp" placeholder="Enter URL get/post">
+                                                    <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlTextarea1">DESCRIPTION</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Enter App Description" rows="7"></textarea>
+                                                    <textarea class="form-control" type="text" name="app_description" id="app_description" placeholder="Enter App Description" rows="7" required></textarea>
                                                 </div>
-                                                <input type="submit" class="form-control sbmt mt-4" id="application_name" aria-describedby="emailHelp" value="Add Application">
+                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Add Application">
                                             </div>
                                         </div>
                                    </form>
@@ -291,4 +297,18 @@
             }
         });
     </script>
+    <script>
+        $('#app-form').submit(function() {
+            var $inputlogo = $('input#fusk').val();
+            var $inputback = $('input#fusk1').val();
+            if($inputlogo==""){
+                $("#app-error").text("Please select logo image");
+                return false
+            }else if($inputback==""){
+                $("#app-error").text("Please select Background image");
+                return false
+            }
+        });
+    </script>
+    
 {% endblock javascripts %}

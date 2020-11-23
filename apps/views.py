@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from customers.models import Customer
 from rest_framework import status
+from django.contrib.auth.decorators import login_required
 
 
 
