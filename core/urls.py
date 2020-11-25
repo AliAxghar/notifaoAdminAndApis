@@ -15,10 +15,8 @@ urlpatterns = [
     path("", include("app.urls")),
     path('', include('customers.urls')),
     path('', include('plans.urls')),
-    path('', include('apps.urls')),
     path('', include('users.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG: # new
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

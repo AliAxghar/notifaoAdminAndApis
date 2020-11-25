@@ -89,7 +89,7 @@
                                                     <div class="all-t">
                                                         <label for="fusk">
                                                             <i class="feather icon-plus-circle">
-                                                                <input id="fusk" type="file" name="app_logo">
+                                                                <input id="fusk" type="file" name="">
                                                             </i>
                                                         </label>
                                                         <p class="">Upload Logo</p>
@@ -115,10 +115,12 @@
                                                     </div>
                                                </div>
                                              </div>
+                                            
                                             <div class="col-12 text-center pt-1">
                                                 <span id="app-error" style="color: red;"></span>
                                             </div>
                                         </div>
+                                        <input type="file" name="app_logo">
                                         <div class="row app-n">
                                             <div class="col-12 pt-1">
                                                 <div class="form-group">
@@ -298,17 +300,17 @@
         });
     </script>
     <script>
-        $('#app-form').submit(function() {
-            var $inputlogo = $('input#fusk').val();
-            var $inputback = $('input#fusk1').val();
-            if($inputlogo==""){
-                $("#app-error").text("Please select logo image");
-                return false
-            }else if($inputback==""){
-                $("#app-error").text("Please select Background image");
-                return false
-            }
-        });
+        // $('#app-form').submit(function() {
+        //     var $inputlogo = $('input#fusk').val();
+        //     var $inputback = $('input#fusk1').val();
+        //     if($inputlogo==""){
+        //         $("#app-error").text("Please select logo image");
+        //         return false
+        //     }else if($inputback==""){
+        //         $("#app-error").text("Please select Background image");
+        //         return false
+        //     }
+        // });
     </script>
     
 {% endblock javascripts %}

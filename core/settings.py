@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     # LOCAL APPS
     'customers',
     'plans',
-    'apps',
     'users',
 ]
 
@@ -87,27 +86,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'notifao_admin',
-#         'USER': 'postgres',
-#         'PASSWORD': '1234',
-#         'HOST': 'localhost'
-#     }
-# }
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'notifao_admin',
         'USER': 'postgres',
-        'PASSWORD': 'admin123',
+        'PASSWORD': '1234',
         'HOST': 'localhost'
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'notifao_admin',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin123',
+#         'HOST': 'localhost'
+#     }
+# }
 
 
 # Password validation

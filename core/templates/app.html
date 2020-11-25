@@ -106,7 +106,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- {% for app in all_app %}
+                                            {% for app in all_app %}
                                             <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
@@ -119,18 +119,18 @@
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
                                                 <td class="pb-t-c">786</td>
                                                 <td class="pb-t-c">13</td>
-                                                <td class="text-left pb-t">ksagdfjag4jkgk4g554</td>
+                                                <td class="text-left pb-t">{{app.app_url}}</td>
                                                 <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td>
                                                 <td class="text-left pb-t">
                                                     <span class="action-i">
-                                                        <i class="feather icon-eye"></i>
+                                                        <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a>
                                                         <i class="feather icon-edit"></i>
                                                         <i class="feather icon-trash-2"></i>
                                                     </span>
                                                 </td>
                                             </tr>
-                                            {% endfor %} -->
-                                            <tr>
+                                            {% endfor %}
+                                            <!-- <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="defaultUnchecked2">
@@ -217,7 +217,7 @@
                                                         <i class="feather icon-trash-2"></i>
                                                     </span>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>

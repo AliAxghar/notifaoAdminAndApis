@@ -524,3 +524,16 @@ span.part-span {
     position: absolute!important;
     top: 8px!important;
 } */
+#app-page a{
+    text-decoration: none;
+}
+.view-app label{
+    display: inline-block!important;
+    margin-bottom: 1px!important;
+    font-size: 13px!important;
+    font-weight: 500!important;
+    color: #1d1c1c!important;
+}
+.view-app .form-control{
+    padding: 6px 13px;
+}
