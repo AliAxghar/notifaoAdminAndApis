@@ -6,6 +6,16 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<style>
+    #up-img1 {
+        display: block;
+        object-fit: contain;
+    }
+    #up-img {
+        display: block;
+        object-fit: contain;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -76,46 +86,34 @@
                     <hr class="hr-top">
                     <div class="row">
                         <div class="col-md-9">
-                            <h4 class="title1">Add Application</h4>
-                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
+                            <h4 class="title1">Edit Application</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Edit Application</p>
                             <div class="row pt-1 pl-1">
                                 <div class="col-md-6">
                                    <form id="app-form" action="" method="post" role="form" enctype="multipart/form-data">
                                     {% csrf_token %}
                                         <div class="row">
                                             <div class="col-6">
-                                               <div class="app-add-image">
-                                                    <img id="up-img" >
-                                                    <div class="all-t">
-                                                        <label for="fusk">
-                                                            <i class="feather icon-plus-circle">
-                                                                <!-- <input id="fusk" type="file" name=""> -->
-                                                                {{ form.app_logo }}
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Upload Logo</p>
-                                                    </div>
-                                               </div>
+                                                {% if app.app_logo.url %}
+                                                <div class="app-add-image">
+                                                        <img id="up-img" src="{{app.app_logo.url}}">
+                                                </div>
+                                                {% else %}
+                                                <div class="app-add-image">
+                                                    <img id="up-img" src="" alt="">
+                                                </div>
+                                                {% endif %}
                                             </div>
                                             <div class="col-6">
-                                                <!-- <div class="app-add-image">
-                                                     <div class="all-t">
-                                                        <i class="feather icon-plus-circle"></i>
-                                                        <p class="pt-1">Add Background Image</p>
-                                                     </div>
-                                                </div> -->
-                                                <div class="app-add-image1">
-                                                    <img id="up-img1" >
-                                                    <div class="all-t1">
-                                                        <label for="fusk1">
-                                                            <i class="feather icon-plus-circle">
-                                                                <!-- <input id="fusk1" type="file" name="app_image"> -->
-                                                                {{ form.app_image }}
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Add Background Image</p>
-                                                    </div>
-                                               </div>
+                                                {% if app.app_image.url %}
+                                                <div class="app-add-image">
+                                                        <img id="up-img" src="{{app.app_image.url}}">
+                                                </div>
+                                                {% else %}
+                                                <div class="app-add-image">
+                                                    <img id="up-img" src="" alt="">
+                                                </div>
+                                                {% endif %}
                                              </div>
                                             
                                             <div class="col-12 text-center pt-1">
@@ -124,23 +122,8 @@
                                         </div>
                                         <div class="row app-n">
                                             <div class="col-12 pt-1">
-                                                <div class="form-group">
-                                                    <label for="">APPLICATION NAME</label>
-                                                    {{ form.name }}
-                                                    <!-- <input type="text" class="form-control" id="app_name" name="app_name" aria-describedby="name" placeholder="Enter App Name" required> -->
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">URL</label>
-                                                    <!-- <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required> -->
-                                                    {{ form.app_url }}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlTextarea1">DESCRIPTION</label>
-                                                    <!-- <textarea class="form-control" type="text" name="app_description" id="app_description" placeholder="Enter App Description" rows="7" required></textarea> -->
-                                                    {{ form.description }}
-                                                </div>
-                                                {{ form.customer_id_id }}
-                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Add Application">
+                                                {{form}}
+                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Update Application">
                                             </div>
                                         </div>
                                    </form>
@@ -187,15 +170,6 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-    <script>
-        $("input").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                .format( this.getAttribute("data-date-format") )
-            )
-        }).trigger("change")
-    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -275,52 +249,6 @@
                 });
             }
         }
-    </script>
-    <script>
-        $('.app-add-image input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t").css("display", "none");
-                    $("#up-img").css("display", "block");
-                    $('#up-img').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    </script>
-    <script>
-        $('.app-add-image1 input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t1").css("display", "none");
-                    $("#up-img1").css("display", "block");
-                    $('#up-img1').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    </script>
-    <script>
-        $('#app-form').submit(function() {
-            var $inputlogo = $('input#fusk').val();
-            var $inputback = $('input#fusk1').val();
-            if($inputlogo==""){
-                $("#app-error").text("Please select logo image");
-                return false
-            }else if($inputback==""){
-                $("#app-error").text("Please select Background image");
-                return false
-            }
-        });
-        $( document ).ready(function() {
-            console.log(customer_id);
-            var customer_id = {{customer_id}};
-            $("#id_customer_id_id").val(customer_id)
-        });
     </script>
     
 {% endblock javascripts %}

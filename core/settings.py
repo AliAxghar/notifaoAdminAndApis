@@ -86,29 +86,30 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'notifaodb',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#         'HOST': 'localhost'
+#     }
+# }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'notifao_admin',
+        'NAME': 'notifaodb',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost'
     }
 }
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'notifao_admin',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin123',
-#         'HOST': 'localhost'
-#     }
-# }
-
-
+api_base_url = "http://127.0.0.1:8000"
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

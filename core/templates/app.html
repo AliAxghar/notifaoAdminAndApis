@@ -124,8 +124,8 @@
                                                 <td class="text-left pb-t">
                                                     <span class="action-i">
                                                         <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a>
-                                                        <i class="feather icon-edit"></i>
-                                                        <i class="feather icon-trash-2"></i>
+                                                        <a href="{% url 'updateApp' app.id %}"><i class="feather icon-edit"></i></a>
+                                                        <a href="{% url 'deleteApp' app.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>

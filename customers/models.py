@@ -14,7 +14,5 @@ class Customer(AbstractUser):
     used_notifications = models.IntegerField(default=0)
     profile_pic = models.ImageField(upload_to='customer_image/',blank= True)
 
-    
-
     def __str__(self):
-        return self.name
+        return self.email

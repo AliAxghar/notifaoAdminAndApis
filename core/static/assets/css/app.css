@@ -537,3 +537,7 @@ span.part-span {
 .view-app .form-control{
     padding: 6px 13px;
 }
+#app-v-c img{
+    object-fit: contain;
+    height: 100px;
+}

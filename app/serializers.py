@@ -5,7 +5,7 @@ from .models import App ,UserApp
 class AppSerializer(serializers.ModelSerializer):
     class Meta:
         model = App
-        fields = ['id', 'name', 'description', 'notifications_used', 'customer_id', 'app_qr','created_at', 'app_image']
+        fields = ['id', 'name', 'description', 'notifications_used', 'customer_id', 'app_qr','created_at', 'app_image','app_logo']
 
 
 class UserAppSerializer (serializers.ModelSerializer):

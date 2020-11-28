@@ -26,6 +26,8 @@ from django.contrib.auth import authenticate
 from customers.models import Customer
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
+from core.settings import api_base_url
+import requests
 
 @login_required(login_url="/login/")
 def index(request):
@@ -99,6 +101,8 @@ def createApp(request):
         app_name = request.data['app_name']
         app_description = request.data['app_discription']
         image_app = request.data['app_image']
+        app_logo  = request.POST.get('app_logo')
+        
         try:
             get_custmer = Customer.objects.get(email = user_email)
         except Customer.DoesNotExist:
@@ -109,7 +113,7 @@ def createApp(request):
             pass_res = get_custmer.check_password(user_password)
             if pass_res:
                 if get_custmer.apps_allowed >= 1:
-                    app_obj = App.objects.create(name =app_name, description  = app_description ,app_image  = image_app , customer_id = get_custmer)
+                    app_obj = App.objects.create(name =app_name, description  = app_description ,app_image  = image_app , customer_id = get_custmer, app_logo=app_logo)
                     allowed_app = get_custmer.apps_allowed
                     get_custmer.apps_allowed = allowed_app - 1
                     get_custmer.save() 
@@ -154,19 +158,13 @@ def updateProfile(request, pk):
     form = UpdateProfileForm(request.POST or None, request.FILES or None,instance=user)
     if request.method == 'POST':
         form = UpdateProfileForm(request.POST or None, request.FILES or None, instance=user)
-        # print(request.FILES)
         if form.is_valid():
             user = form.save()
             password = form.cleaned_data.get('New_password')
             if password:
                 user.set_password(password)
             user.save()
-            msg = "Profile updated successfully"
-            time.sleep(2)
-            # return redirect("update_profile/<str:pk>/") 	
-            context = {'form': form, "msg":msg}
-            return render(request, 'profile.html', context)
-            # return redirect("/") 		    										
+            msg = "Profile updated successfully" 										
     
     context = {'form': form, "msg":msg}
     return render(request, 'profile.html', context)
@@ -174,17 +172,53 @@ def updateProfile(request, pk):
 @login_required(login_url="/login/")
 def create_apps(request):
     user = request.user
+    customer_id = user.id
+    instance = Customer.objects.get(email=user.email)
+    success = False
     if request.method == 'POST':
-        app_name  = request.POST.get('app_name')
-        app_url  = request.POST.get('app_url')
-        app_description  = request.POST.get('app_description')
-        app_logo  = request.POST.get('app_logo')
-        app_back  = request.POST.get('app_back')
-        app_obj = App.objects.create(name =app_name, description  = app_description ,app_url  = app_url, app_logo = app_logo, app_image=app_back, customer_id = user)
-        if app_obj:
-            return redirect("../../app.html")
-    context = {}
+        form = AddAppForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            app_name = form.cleaned_data.get('name')
+            app_url = form.cleaned_data.get('app_url')
+            description = form.cleaned_data.get('description')
+            app_logo = form.cleaned_data.get('app_logo')
+            app_image = form.cleaned_data.get('app_image')
+            app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image,app_url  = app_url , customer_id_id = customer_id, app_logo=app_logo)
+            if app_obj:
+                success = True
+                if success:
+                    return redirect("../../app.html")
+    else:
+        form = AddAppForm(request.POST or None, request.FILES or None)
+    context = {"form":form,"customer_id":customer_id}
     return render(request, 'add-app.html', context)
+
+@login_required(login_url="/login/")
+def updateApp(request, pk):
+    msg = ""
+    app = App.objects.get(id=pk)
+    form = UpdateAppForm(request.POST or None, request.FILES or None,instance=app)
+    if request.method == 'POST':
+        form = UpdateAppForm(request.POST or None, request.FILES or None, instance=app)
+        if form.is_valid():
+            user = form.save()
+            user.save()
+            msg = "App updated successfully"
+            return redirect("../../app.html")								
+    
+    context = {'form': form, "msg":msg,"app":app}
+    return render(request, 'edit-app.html', context)
+
+@login_required(login_url="/login/")
+def deleteApp(request, pk):
+    app = App.objects.get(id=pk)
+    if request.method == "POST":
+        app = App.objects.filter(id=pk)
+        app.delete()
+        return redirect("../../app.html")
+    context = {'app': app}
+    return render(request, 'delete-app.html', context)
+
 
 
 @login_required(login_url="/login/")

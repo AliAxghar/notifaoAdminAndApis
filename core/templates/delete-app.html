@@ -76,89 +76,28 @@
                     <hr class="hr-top">
                     <div class="row">
                         <div class="col-md-9">
-                            <h4 class="title1">Add Application</h4>
-                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
+                            <h4 class="title1">Delete Application</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Delete Application</p>
                             <div class="row pt-1 pl-1">
-                                <div class="col-md-6">
-                                   <form id="app-form" action="" method="post" role="form" enctype="multipart/form-data">
-                                    {% csrf_token %}
+                                <div class="col-md-12">
                                         <div class="row">
-                                            <div class="col-6">
-                                               <div class="app-add-image">
-                                                    <img id="up-img" >
-                                                    <div class="all-t">
-                                                        <label for="fusk">
-                                                            <i class="feather icon-plus-circle">
-                                                                <!-- <input id="fusk" type="file" name=""> -->
-                                                                {{ form.app_logo }}
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Upload Logo</p>
-                                                    </div>
-                                               </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <!-- <div class="app-add-image">
-                                                     <div class="all-t">
-                                                        <i class="feather icon-plus-circle"></i>
-                                                        <p class="pt-1">Add Background Image</p>
-                                                     </div>
-                                                </div> -->
-                                                <div class="app-add-image1">
-                                                    <img id="up-img1" >
-                                                    <div class="all-t1">
-                                                        <label for="fusk1">
-                                                            <i class="feather icon-plus-circle">
-                                                                <!-- <input id="fusk1" type="file" name="app_image"> -->
-                                                                {{ form.app_image }}
-                                                            </i>
-                                                        </label>
-                                                        <p class="">Add Background Image</p>
-                                                    </div>
-                                               </div>
-                                             </div>
-                                            
-                                            <div class="col-12 text-center pt-1">
-                                                <span id="app-error" style="color: red;"></span>
-                                            </div>
-                                        </div>
-                                        <div class="row app-n">
-                                            <div class="col-12 pt-1">
-                                                <div class="form-group">
-                                                    <label for="">APPLICATION NAME</label>
-                                                    {{ form.name }}
-                                                    <!-- <input type="text" class="form-control" id="app_name" name="app_name" aria-describedby="name" placeholder="Enter App Name" required> -->
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6 pb-5">
+                                                <div class="card card-body text-center del-card">
+                                                    <p style="font-size: medium;">Are you sure you want to delete this app?</p>
+                                                    <br>
+                                                    <form action="" method="POST">
+                                    
+                                                        {% csrf_token %}
+                                                        <a class="btn btn-warning d-btn" style="float: left;" href="../../app.html">Cancel</a>
+                                    
+                                                        <input class="btn btn-danger d-btn" style="float: right;" type="submit" name="Confirm" value="Confirm">
+                                                    </form>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="">URL</label>
-                                                    <!-- <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required> -->
-                                                    {{ form.app_url }}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleFormControlTextarea1">DESCRIPTION</label>
-                                                    <!-- <textarea class="form-control" type="text" name="app_description" id="app_description" placeholder="Enter App Description" rows="7" required></textarea> -->
-                                                    {{ form.description }}
-                                                </div>
-                                                {{ form.customer_id_id }}
-                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Add Application">
                                             </div>
+                                            <div class="col-md-3"></div>
                                         </div>
                                    </form>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card-a-p">
-                                        <div class="img-app-l-6 pt-3">
-                                            <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
-                                            <h5 class="pt-3">About Notifao Applications</h5>
-                                            <p class="pt-3">
-                                                lipsum as it is sometimes. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum a type specimen book.
-                                            </p>
-                                            <hr>
-                                            <p>
-                                                lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
-                                            </p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -187,15 +126,6 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-    <script>
-        $("input").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                .format( this.getAttribute("data-date-format") )
-            )
-        }).trigger("change")
-    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -275,52 +205,6 @@
                 });
             }
         }
-    </script>
-    <script>
-        $('.app-add-image input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t").css("display", "none");
-                    $("#up-img").css("display", "block");
-                    $('#up-img').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    </script>
-    <script>
-        $('.app-add-image1 input').change(function(){
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    selectedImage = e.target.result;
-                    $(".all-t1").css("display", "none");
-                    $("#up-img1").css("display", "block");
-                    $('#up-img1').attr('src', selectedImage);
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    </script>
-    <script>
-        $('#app-form').submit(function() {
-            var $inputlogo = $('input#fusk').val();
-            var $inputback = $('input#fusk1').val();
-            if($inputlogo==""){
-                $("#app-error").text("Please select logo image");
-                return false
-            }else if($inputback==""){
-                $("#app-error").text("Please select Background image");
-                return false
-            }
-        });
-        $( document ).ready(function() {
-            console.log(customer_id);
-            var customer_id = {{customer_id}};
-            $("#id_customer_id_id").val(customer_id)
-        });
     </script>
     
 {% endblock javascripts %}

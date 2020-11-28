@@ -13240,10 +13240,18 @@ button.add-app {
 #up-img{
     height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 #up-img1{
     height: 100%;
     width: 100%;
+    object-fit: cover;
+}
+.d-btn{
+    padding: 6px 20px!important;
+}
+.del-card{
+    border: 1px solid #d1f5d1!important;
 }
 .app-add-image label {
     -webkit-appearance: button;
@@ -13252,6 +13260,9 @@ button.add-app {
     line-height: 16px;
     padding: .2em .4em;
     margin: .2em;
+}
+.des{
+    height: 50px;
 }
 .app-add-image1 label {
     -webkit-appearance: button;
