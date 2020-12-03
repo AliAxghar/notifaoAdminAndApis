@@ -27,6 +27,6 @@ class UserApp(models.Model):
     app_id = models.ForeignKey(App, related_name="app", on_delete=models.CASCADE)
     user_id  = models.ForeignKey(User,related_name="user", on_delete = models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
-
+    # customer_id  = models.ForeignKey(Customer,related_name="cust_id", on_delete = models.CASCADE)
     def __str__(self):
         return self.id

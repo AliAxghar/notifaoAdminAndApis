@@ -8,7 +8,7 @@ class Customer(AbstractUser):
     subDate = models.DateField(auto_now_add = True)
     push_notifications = models.IntegerField(default=0)
     business_name = models.CharField(max_length=100,default= 'None')
-    email_notifications = models.IntegerField(default=0)
+    total_notifications_sent = models.IntegerField(default=0)
     subscription_id = models.CharField(max_length=50,null=True)
     apps_allowed = models.IntegerField(default=0)
     used_notifications = models.IntegerField(default=0)

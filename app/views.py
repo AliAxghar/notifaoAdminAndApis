@@ -43,7 +43,7 @@ def index(request):
         total_used_notification = "100"
         remaining_notification = "0"
 
-    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification}
+    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
