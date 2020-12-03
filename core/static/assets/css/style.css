@@ -13261,9 +13261,36 @@ button.add-app {
     padding: .2em .4em;
     margin: .2em;
 }
+.b-clr{
+    color: black;
+    font-size: 12px;
+    font-weight: 500;
+}
 .des{
     height: 50px;
 }
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #cfd3d4;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot1 {
+    height: 8px;
+    width: 8px;
+    background-color: #4c9f75;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot2 {
+    height: 8px;
+    width: 8px;
+    background-color: #257c86;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 .app-add-image1 label {
     -webkit-appearance: button;
     -moz-appearance: button;

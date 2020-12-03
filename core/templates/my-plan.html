@@ -208,7 +208,11 @@
                                 <div class="card card-i">
                                     <h4 class="pt-1">Plan Usage</h4>
                                     <div id="donut_chart" style="height:200px"></div>
-                                    <p class="card-p">You have used 62% of your actual plan</p>
+                                    <div class="row text-center">
+                                        <div class="col-6 b-clr"><span class="Unused mr-1 dot1"></span>Unused</div>
+                                        <div class="col-6 b-clr"><span class="planused mr-1 dot2"></span>Plan Used</div>
+                                    </div>
+                                    <p class="card-p pt-3">You have used <span style="color: black;">{{total_used_notification}}%</span> of your actual plan</p>
                                 </div>
                                 <div class="right-c-d">
                                     <h6>Limits</h6>
@@ -298,12 +302,12 @@
                 element: element,
                 data: [
                     {
-                        label: 'Notifao',
-                        value: 75,
+                        label: 'Used %',
+                        value: {{total_used_notification}},
                         labelColor: '#257c86'
                     }, {
-                    label: 'Unused',
-                        value: 25,
+                    label: 'Unused %',
+                        value: {{remaining_notification}},
                         labelColor: '#4c9f75'
                     }, 
                 ],

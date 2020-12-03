@@ -106,6 +106,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% if request.user.is_superuser %}
                                             {% for app in all_app %}
                                             <tr>
                                                 <td>
@@ -130,94 +131,32 @@
                                                 </td>
                                             </tr>
                                             {% endfor %}
-                                            <!-- <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked2">
-                                                        <label class="custom-control-label" for="defaultUnchecked2"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="pb-t">33242</td>
-                                                <td class="text-left pb-t">Pokeman go origins</td>
-                                                <td class="pb-t-c">456</td>
-                                                <td class="pb-t-c">786</td>
-                                                <td class="pb-t-c">13</td>
-                                                <td class="text-left pb-t">ksagdfjag4jkgk4g554</td>
-                                                <td class="pb-t-l"><span class="a-t-b">0</span></td>
-                                                <td class="text-left pb-t">
-                                                    <span class="action-i">
-                                                        <i class="feather icon-eye"></i>
-                                                        <i class="feather icon-edit"></i>
-                                                        <i class="feather icon-trash-2"></i>
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                            {% else %}
+                                            {% for app in userApps %}
                                             <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked3">
-                                                        <label class="custom-control-label" for="defaultUnchecked3"></label>
+                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
+                                                        <label class="custom-control-label" for="defaultUnchecked1"></label>
                                                     </div>
                                                 </td>
-                                                <td class="pb-t">33242</td>
-                                                <td class="text-left pb-t">Pokeman go origins</td>
-                                                <td class="pb-t-c">456</td>
+                                                <td class="pb-t">{{app.id}}</td>
+                                                <td class="text-left pb-t">{{app.name}}</td>
+                                                <td class="pb-t-c">{{app.notifications_used}}</td>
                                                 <td class="pb-t-c">786</td>
                                                 <td class="pb-t-c">13</td>
-                                                <td class="text-left pb-t">ksagdfjag4jkgk4g554</td>
-                                                <td class="pb-t-l"><span class="a-t-b-l">1</span></td>
+                                                <td class="text-left pb-t">{{app.app_url}}</td>
+                                                <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td>
                                                 <td class="text-left pb-t">
                                                     <span class="action-i">
-                                                        <i class="feather icon-eye"></i>
-                                                        <i class="feather icon-edit"></i>
-                                                        <i class="feather icon-trash-2"></i>
+                                                        <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a>
+                                                        <a href="{% url 'updateApp' app.id %}"><i class="feather icon-edit"></i></a>
+                                                        <a href="{% url 'deleteApp' app.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked5">
-                                                        <label class="custom-control-label" for="defaultUnchecked5"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="pb-t">33242</td>
-                                                <td class="text-left pb-t">Pokeman go origins</td>
-                                                <td class="pb-t-c">456</td>
-                                                <td class="pb-t-c">786</td>
-                                                <td class="pb-t-c">13</td>
-                                                <td class="text-left pb-t">ksagdfjag4jkgk4g554</td>
-                                                <td class="pb-t-l"><span class="a-t-b-l">1</span></td>
-                                                <td class="text-left pb-t">
-                                                    <span class="action-i">
-                                                        <i class="feather icon-eye"></i>
-                                                        <i class="feather icon-edit"></i>
-                                                        <i class="feather icon-trash-2"></i>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="defaultUnchecked6">
-                                                        <label class="custom-control-label" for="defaultUnchecked6"></label>
-                                                    </div>
-                                                </td>
-                                                <td class="pb-t">33242</td>
-                                                <td class="text-left pb-t">Pokeman go origins</td>
-                                                <td class="pb-t-c">456</td>
-                                                <td class="pb-t-c">786</td>
-                                                <td class="pb-t-c">13</td>
-                                                <td class="text-left pb-t">ksagdfjag4jkgk4g554</td>
-                                                <td class="pb-t-l"><span class="a-t-b">0</span></td>
-                                                <td class="text-left pb-t">
-                                                    <span class="action-i">
-                                                        <i class="feather icon-eye"></i>
-                                                        <i class="feather icon-edit"></i>
-                                                        <i class="feather icon-trash-2"></i>
-                                                    </span>
-                                                </td>
-                                            </tr> -->
+                                            {% endfor %}
+                                            {% endif %}
                                         </tbody>
                                     </table>
                                 </div>

@@ -31,8 +31,19 @@ import requests
 
 @login_required(login_url="/login/")
 def index(request):
-    
-    context = {}
+    user = request.user
+    user_obj = Customer.objects.get(email=user.email)
+    total_notification = user_obj.push_notifications
+    notifications_used = user_obj.used_notifications
+    if total_notification != 0:
+        total_used_percent = notifications_used * 100/total_notification
+        total_used_notification = round(total_used_percent)
+        remaining_notification = 100 - total_used_notification
+    else:
+        total_used_notification = "100"
+        remaining_notification = "0"
+
+    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -40,8 +51,23 @@ def index(request):
 
 @login_required(login_url="/login/")
 def pages(request):
+    user = request.user
     all_app = App.objects.all()
-    context = {"all_app":all_app}
+    userApps = App.objects.filter(customer_id_id=user.id)
+    user_obj = Customer.objects.get(email=user.email)
+    total_notification = user_obj.push_notifications
+    notifications_used = user_obj.used_notifications
+    if total_notification != 0:
+        total_used_percent = notifications_used * 100/total_notification
+        total_used_notification = round(total_used_percent)
+        remaining_notification = 100 - total_used_notification
+    else:
+        total_used_notification = "100"
+        remaining_notification = "0"
+
+
+
+    context = {"all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -153,6 +179,18 @@ def createApp(request):
 
 @login_required(login_url="/login/")
 def updateProfile(request, pk):
+    notifications_used = 0
+    user = request.user
+    user_obj = Customer.objects.get(email=user.email)
+    total_notification = user_obj.push_notifications
+    notifications_used = user_obj.used_notifications
+    if total_notification != 0:
+        total_used_percent = notifications_used * 100/total_notification
+        total_used_notification = round(total_used_percent)
+        remaining_notification = 100 - total_used_notification
+    else:
+        total_used_notification = "100"
+        remaining_notification = "0"
     msg = ""
     user = Customer.objects.get(id=pk)
     form = UpdateProfileForm(request.POST or None, request.FILES or None,instance=user)
@@ -166,14 +204,23 @@ def updateProfile(request, pk):
             user.save()
             msg = "Profile updated successfully" 										
     
-    context = {'form': form, "msg":msg}
+    context = {'form': form, "msg":msg, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'profile.html', context)
 
 @login_required(login_url="/login/")
 def create_apps(request):
     user = request.user
     customer_id = user.id
-    instance = Customer.objects.get(email=user.email)
+    user_obj = Customer.objects.get(email=user.email)
+    total_notification = user_obj.push_notifications
+    notifications_used = user_obj.used_notifications
+    if total_notification != 0:
+        total_used_percent = notifications_used * 100/total_notification
+        total_used_notification = round(total_used_percent)
+        remaining_notification = 100 - total_used_notification
+    else:
+        total_used_notification = "100"
+        remaining_notification = "0"
     success = False
     if request.method == 'POST':
         form = AddAppForm(request.POST or None, request.FILES or None)
@@ -184,17 +231,44 @@ def create_apps(request):
             app_logo = form.cleaned_data.get('app_logo')
             app_image = form.cleaned_data.get('app_image')
             app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image,app_url  = app_url , customer_id_id = customer_id, app_logo=app_logo)
+            allowed_app = get_custmer.apps_allowed
+            get_custmer.apps_allowed = allowed_app - 1
+            get_custmer.save() 
+            qr_image = qrcode.make(app_obj.id)
+            canvas = Image.new('RGB',(290,290), 'white')
+            draw = ImageDraw.Draw(canvas)
+            canvas.paste(qr_image)
+            fname = f'app_qr-{app_obj.name}.png'
+            buffer = BytesIO()
+            canvas.save(buffer,'PNG')
+            obj = App.objects.get(id = app_obj.id )
+            obj.app_qr.save(fname,File(buffer),save = True)
+            app_obj2 = App.objects.get(id = app_obj.id)
+            app_obj = app_obj2
+            canvas.close()
             if app_obj:
                 success = True
                 if success:
                     return redirect("../../app.html")
     else:
         form = AddAppForm(request.POST or None, request.FILES or None)
-    context = {"form":form,"customer_id":customer_id}
+    context = {"form":form,"customer_id":customer_id, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'add-app.html', context)
 
 @login_required(login_url="/login/")
 def updateApp(request, pk):
+    user = request.user
+    customer_id = user.id
+    user_obj = Customer.objects.get(email=user.email)
+    total_notification = user_obj.push_notifications
+    notifications_used = user_obj.used_notifications
+    if total_notification != 0:
+        total_used_percent = notifications_used * 100/total_notification
+        total_used_notification = round(total_used_percent)
+        remaining_notification = 100 - total_used_notification
+    else:
+        total_used_notification = "100"
+        remaining_notification = "0"
     msg = ""
     app = App.objects.get(id=pk)
     form = UpdateAppForm(request.POST or None, request.FILES or None,instance=app)
@@ -206,7 +280,7 @@ def updateApp(request, pk):
             msg = "App updated successfully"
             return redirect("../../app.html")								
     
-    context = {'form': form, "msg":msg,"app":app}
+    context = {'form': form, "msg":msg,"app":app, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'edit-app.html', context)
 
 @login_required(login_url="/login/")
