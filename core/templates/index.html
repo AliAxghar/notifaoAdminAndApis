@@ -83,12 +83,12 @@
                                     <h5 class="title2 pb-3">Trafic Statistics</h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <form style="margin: 0; padding: 0;">
+                                    <form action="" style="margin: 0; padding: 0;" method="post" role="form">
+                                        {% csrf_token %}
                                         <span class="form-h-1">
                                             <span class="date-label">Select Date:</span>
-                                            <input type="date" class="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2020-05-20">
-                                            <!-- <button style="display: inline;" class="btn btn-success">Show All</button> -->
-                                            <input class="btn-c"  type="submit" value="Show All"/>
+                                            <input type="date" name="dates" class="date-input" id="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2020-05-20">
+                                            <input class="btn-c" id="submit"  type="submit" value="Show All"/>
                                         </span>
                                     </form>
                                 </div>
@@ -107,7 +107,7 @@
                                                 </span>
                                             </div>
                                             <div class="col-5">
-                                                <canvas id="myChart" style="height: 20px;width: 50px;"></canvas>
+                                                <canvas id="myChart" class="" style="height: 20px;width: 50px;"></canvas>
                                             </div>
                                         </div>
                                         
@@ -259,16 +259,23 @@
                                             <div class="col-12">
                                                 <div class="card-block table-border-style">
                                                     <div class="table-responsive">
-                                                        <table class="table table-striped">
+                                                        <table id="my-table" class="table table-striped">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="td-1">Name</th>
+                                                                    <th>Name</th>
                                                                     <th>Phone</th>
                                                                     <th>Email</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                {% for userapp in lasUsers %}
                                                                 <tr>
+                                                                    <td>{{userapp.user_id.name}}</td>
+                                                                    <td>{{userapp.user_id.phone}}</td>
+                                                                    <td>{{userapp.user_id.email}}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                                <!-- <tr>
                                                                     <td class="td-1">Ali</td>
                                                                     <td>+923224277699</td>
                                                                     <td>Ali@gmail.com</td>
@@ -282,12 +289,7 @@
                                                                     <td class="td-1">Ali</td>
                                                                     <td>+923224277699</td>
                                                                     <td>Ali@gmail.com</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="td-1">Ali</td>
-                                                                    <td>+923224277699</td>
-                                                                    <td>Ali@gmail.com</td>
-                                                                </tr>
+                                                                </tr> -->
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -1013,21 +1015,20 @@
     </script>
     <script>
         var ctx = document.getElementById("myChart");
-        var numDataPoints = 20;
-        var dataset = Array.apply(null, Array(numDataPoints)).map(function() {
-        return Math.floor(Math.random() * 100);
-        });
+        // var numDataPoints = 20;
+        var dataset = {{data|safe}}
 
         var data = {
-        labels: Array.apply(null, Array(numDataPoints)).map(function() {
-            return '';
-        }),
+        labels: {{labels|safe}},
         datasets: [{
             data: dataset,
             pointRadius: 0,
+            pointHitRadius:1,
+            pointHoverRadius:2,
+            pointHoverBorderWidth:2,
             borderWidth: 2,
-            borderColor: '#cfd3d4',
-            backgroundColor: '#cfd3d4',
+            borderColor: '#0897e4',
+            backgroundColor: '#f4f7fa',
         }]
         };
 
@@ -1036,7 +1037,7 @@
         data: data,
         options: {
             tooltips: {
-            enabled: false,
+            enabled: true,
             },
             legend: {
             display: false,
@@ -1055,7 +1056,7 @@
     </script>
     <script>
         var ctx = document.getElementById("myChart1");
-        var numDataPoints = 20;
+        // var numDataPoints = 100;
         var dataset = {{data|safe}}
 
         var data = {
@@ -1063,9 +1064,12 @@
         datasets: [{
             data: dataset,
             pointRadius: 0,
+            pointHitRadius:1,
+            pointHoverRadius:2,
+            pointHoverBorderWidth:2,
             borderWidth: 2,
-            borderColor: '#cfd3d4',
-            backgroundColor: '#cfd3d4',
+            borderColor: '#0897e4',
+            backgroundColor: '#f4f7fa',
         }]
         };
 
@@ -1074,7 +1078,7 @@
         data: data,
         options: {
             tooltips: {
-            enabled: false,
+            enabled: true,
             },
             legend: {
             display: false,
@@ -1089,6 +1093,29 @@
             }],
             }
         }
+        });
+    </script>
+    <script>
+        // $(document).ready(function() {
+        //     var date = $("#date-input").attr("data-date");
+        //     console.log(date);
+        // });
+        // $(function(){
+        //     $("#date-input").change(function(e){
+        //         var This_id = $(this).attr("data-date");
+        //         $(this).value(This_id);
+        //         console.log($(this).value(This_id));
+        //     });
+        // };
+        $('#submit').on('click', function(){
+            var date = new Date($('#date-input').val());
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var date = String([year, month, day].join('-'));
+            // $('#dates').val(d_date);
+            // document.getElementById('dates').val(d_date);
+            // alert(d_date);
         });
     </script>
 {% endblock javascripts %}

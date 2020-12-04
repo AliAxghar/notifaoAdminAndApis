@@ -31,17 +31,17 @@ import requests
 
 @login_required(login_url="/login/")
 def index(request):
-    total_users =  UserApp.objects.values('user_id').distinct().count()
-    # userapps = UserApp.objects.values_list('user_id',flat=True)
-    userapps = UserApp.objects.all()
+    user = request.user
+    customer = user.id
+    total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
+    lasUsers = UserApp.objects.all().order_by('-id')[:10]
+    userapps = UserApp.objects.all().order_by('-id')[:9]
     data = []
     labels = []
-    var = 0
     for obj in userapps:
         data.append(obj.user_id.id)
-        var = var + 1
-        labels.append(var)
-    user = request.user
+        userapp_dates = str(obj.created_at)
+        labels.append(userapp_dates)
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -52,8 +52,13 @@ def index(request):
     else:
         total_used_notification = "100"
         remaining_notification = "0"
-
-    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,"total_users":total_users,"data":data, "labels":labels}
+    
+    if request.method == 'POST':
+        dates  = request.POST.get('dates')
+        lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
+        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
+        
+    context = {"lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )

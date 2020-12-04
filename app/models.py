@@ -27,6 +27,15 @@ class UserApp(models.Model):
     app_id = models.ForeignKey(App, related_name="app", on_delete=models.CASCADE)
     user_id  = models.ForeignKey(User,related_name="user", on_delete = models.CASCADE)
     created_at = models.DateField(auto_now_add=True)
-    # customer_id  = models.ForeignKey(Customer,related_name="cust_id", on_delete = models.CASCADE)
+    customer_id  = models.IntegerField(null = True )
+    
     def __str__(self):
         return self.id
+    
+    
+    def save(self, *args, **kwargs):
+        if not self.customer_id:
+            if self.user_id:
+                liscname = App.objects.get(id = self.app_id.pk)
+                self.customer_id = liscname.customer_id.pk
+        return super(UserApp, self).save(*args, **kwargs)

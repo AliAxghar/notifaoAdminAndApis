@@ -9,6 +9,13 @@ class AppSerializer(serializers.ModelSerializer):
 
 
 class UserAppSerializer (serializers.ModelSerializer):
+
+    customer_id = serializers.IntegerField(required=False)
+
     class Meta:
         model = UserApp
-        fields = ['id','app_id','user_id','created_at']
+        fields = ['id','app_id','user_id','created_at','customer_id']
+
+        def create(self, validated_data):
+            return UserApp.objects.create(**validated_data)
+
