@@ -97,17 +97,17 @@
                                 <div class="col-md-6">
                                     <div class="card card-l">
                                         <div class="row">
-                                            <div class="col-2 pt-1">
+                                            <div class="col-2 pt-2">
                                                 <img src="/static/assets/images/bell.png" alt="">
                                             </div>
-                                            <div class="col-5 pt-1">
+                                            <div class="col-5 pt-2">
                                                 <span class="card-l-s">
                                                     <h5 class="pt-1">Total Notifications</h5>
                                                     <h4>{{request.user.total_notifications_sent}}</h4>
                                                 </span>
                                             </div>
                                             <div class="col-5">
-                                                <div id="area-chart" style="height: 55px; width: 100%;" ></div>
+                                                <canvas id="myChart" style="height: 20px;width: 50px;"></canvas>
                                             </div>
                                         </div>
                                         
@@ -116,17 +116,17 @@
                                 <div class="col-md-6">
                                     <div class="card card-l">
                                         <div class="row">
-                                            <div class="col-2 pt-1">
+                                            <div class="col-2 pt-2">
                                                 <img src="/static/assets/images/user1.png" alt="">
                                             </div>
-                                            <div class="col-5 pt-1">
+                                            <div class="col-5 pt-2">
                                                 <span class="card-l-s">
                                                     <h5 class="pt-1">Total Users</h5>
-                                                    <h4>456</h4>
+                                                    <h4>{{total_users}}</h4>
                                                 </span>
                                             </div>
                                             <div class="col-5">
-                                                <div id="area-chart1" style="height: 50px; width: 100%;" ></div>
+                                                <canvas id="myChart1" style="height: 20px;width: 50px;"></canvas>
                                             </div>
                                         </div>
                                         
@@ -901,15 +901,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-    <!-- <script>
-        Morris.Donut({
-            element: 'chart',
-            data: [
-                {label: "Notifao", value: 75, labelColor:"green",},
-                {label: "Unused", value: 25 , labelColor:"green",}
-            ]
-        });
-    </script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
     <script>
         var data = [
                 { y: '2014', a: 50},
@@ -1018,5 +1010,85 @@
                 });
             }
         }
+    </script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var numDataPoints = 20;
+        var dataset = Array.apply(null, Array(numDataPoints)).map(function() {
+        return Math.floor(Math.random() * 100);
+        });
+
+        var data = {
+        labels: Array.apply(null, Array(numDataPoints)).map(function() {
+            return '';
+        }),
+        datasets: [{
+            data: dataset,
+            pointRadius: 0,
+            borderWidth: 2,
+            borderColor: '#cfd3d4',
+            backgroundColor: '#cfd3d4',
+        }]
+        };
+
+        new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            tooltips: {
+            enabled: false,
+            },
+            legend: {
+            display: false,
+            },
+            pointDot: false,
+            scales: {
+            xAxes: [{
+                display: false,
+            }],
+            yAxes: [{
+                display: false,
+            }],
+            }
+        }
+        });
+    </script>
+    <script>
+        var ctx = document.getElementById("myChart1");
+        var numDataPoints = 20;
+        var dataset = {{data|safe}}
+
+        var data = {
+        labels: {{labels|safe}},
+        datasets: [{
+            data: dataset,
+            pointRadius: 0,
+            borderWidth: 2,
+            borderColor: '#cfd3d4',
+            backgroundColor: '#cfd3d4',
+        }]
+        };
+
+        new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            tooltips: {
+            enabled: false,
+            },
+            legend: {
+            display: false,
+            },
+            pointDot: false,
+            scales: {
+            xAxes: [{
+                display: false,
+            }],
+            yAxes: [{
+                display: false,
+            }],
+            }
+        }
+        });
     </script>
 {% endblock javascripts %}

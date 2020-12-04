@@ -31,6 +31,16 @@ import requests
 
 @login_required(login_url="/login/")
 def index(request):
+    total_users =  UserApp.objects.values('user_id').distinct().count()
+    # userapps = UserApp.objects.values_list('user_id',flat=True)
+    userapps = UserApp.objects.all()
+    data = []
+    labels = []
+    var = 0
+    for obj in userapps:
+        data.append(obj.user_id.id)
+        var = var + 1
+        labels.append(var)
     user = request.user
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
@@ -43,7 +53,7 @@ def index(request):
         total_used_notification = "100"
         remaining_notification = "0"
 
-    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,"total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
