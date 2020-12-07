@@ -103,11 +103,12 @@
                                             <div class="col-5 pt-2">
                                                 <span class="card-l-s">
                                                     <h5 class="pt-1">Total Notifications</h5>
-                                                    <h4>{{request.user.total_notifications_sent}}</h4>
+                                                    <h4>{{request.user.push_notifications}}</h4>
                                                 </span>
                                             </div>
                                             <div class="col-5">
-                                                <canvas id="myChart" class="" style="height: 20px;width: 50px;"></canvas>
+                                                <!-- <canvas id="myChart" class="" style="height: 20px;width: 50px;"></canvas> -->
+                                                <div id="chart_div" ></div>
                                             </div>
                                         </div>
                                         
@@ -887,10 +888,45 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        
+      var data = google.visualization.arrayToDataTable([
+        ['Date', 'Used Notification'],['2004-20-4',  0],['2005-23-3',  0],['2006-24-5',  0],['2007-3-6',  0],
+      ]);
+        
+      var options = {
+        backgroundColor: {
+            fill: '#fff0',
+            fillOpacity: 0
+        },
+        height:65,
+        vAxis:{
+         baselineColor: '#fff',
+         gridlineColor: '#fff',
+         textPosition: 'none'
+        },
+        hAxis: { textPosition: 'none',
+        display:false,
+        },
+        curveType: 'function',
+        legend: { position: 'none' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+      
+    }
+  </script>
     <script>
         $("input").on("change", function() {
             this.setAttribute(
