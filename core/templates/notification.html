@@ -1,10 +1,18 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Connected User {% endblock %} 
+{% block title %} Apps {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
+<style>
+    .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
+        position: absolute!important;
+        top: 8px!important;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -73,69 +81,19 @@
                         </div>
                     </div>
                     <hr class="hr-top">
-                    <div class="row">
-                        <div class="col-md-12 view-app">
-                            <h4 class="title1">App Details</h4>
-                            <div class="row pt-3" id="app-v-c">
-                                <!-- <div class="col-md-2"></div> -->
-                                <div class="col-md-2">
-                                    <label for="">APP LOGO</label>
-                                    <div class="" >
-                                        <img src="{{app_detail.app_logo.url}}" alt="image-logo">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label for="">APP background-image</label>
-                                    <div class="">
-                                        <img src="{{app_detail.app_image.url}}" alt="background-image">
-                                    </div>
-                                </div>
-                                <div class="col-md-7"></div>
+                    <div class="row" id="app-page">
+                        <div class="col-6">
+                            <h4 class="title1">All Notifications</h4>
+                        </div>
+                        <!-- <div class="col-6">
+                            <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                        </div> -->
+                        <div class="col-md-12 mt-3">
+                            <div class="card card-l-a">
+                                <br>
+                                <br><br> <br>
                             </div>
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <label for="">APP ID</label>
-                                    <input type="text" class="form-control" value="{{app_detail.id}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="">APP NAME</label>
-                                    <input type="text" class="form-control" value="{{app_detail.name}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="">APP DESCRIPTION</label>
-                                    <input type="text" class="form-control" value="{{app_detail.description}}" readonly>
-                                </div>
-                            </div>
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <label for="">NOTIFICATION USED</label>
-                                    <input type="text" class="form-control" value="{{app_detail.notifications_used}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="">CUSTOMER ID</label>
-                                    <input type="text" class="form-control" value="{{app_detail.customer_id}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly>
-                                </div>
-                            </div>
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <label for="">APP QR</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_image.url}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="">CREATED AT</label>
-                                    <input type="text" class="form-control" value="{{app_detail.created_at}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly> -->
-                                </div>
-                            </div>
-                        </div>                 
+                        </div>            
                     </div>
                 </div>
             </div>
@@ -145,4 +103,13 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#my-table').DataTable();
+            responsive: true
+    } );
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 {% endblock javascripts %}

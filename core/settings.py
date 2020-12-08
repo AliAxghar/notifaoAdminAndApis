@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-
+# api_base_url = "http://127.0.0.1:8000"
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -106,10 +106,9 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
+api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
 
 
-
-api_base_url = "http://127.0.0.1:8000"
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

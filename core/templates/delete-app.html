@@ -50,7 +50,7 @@
                                         <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-chevron-down"></i>
                                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-                                                <div class="dropdown-header text-center">
+                                                <!-- <div class="dropdown-header text-center">
                                                     {% if request.user.profile_pic %}
                                                     <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                                     {% else %}
@@ -62,10 +62,10 @@
                                                     <p class="font-weight-light text-muted mb-0 p-b-e">
                                                     {{ request.user.email }}
                                                     </p>
-                                                </div>
+                                                </div> -->
                                                 <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
                                                 <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
-                                                <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                                <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
                                             </div>
                                         </a>
                                     </li>

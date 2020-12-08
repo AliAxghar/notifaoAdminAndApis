@@ -10,6 +10,7 @@ from django import template
 from customers.models import Customer
 from app.forms import *
 import time
+import json
 from app.models import *
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -35,7 +36,7 @@ def index(request):
     customer = user.id
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
     lasUsers = UserApp.objects.all().order_by('-id')[:10]
-    userapps = UserApp.objects.all().order_by('id')[:9]
+    userapps = UserApp.objects.filter(customer_id=customer).order_by('id')[:9]
     data = []
     labels = []
     # users_graph_data = []
@@ -62,7 +63,7 @@ def index(request):
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
         total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
         
-    context = {"lists":lists, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+    context = {"lists":json.dumps(lists), "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -223,7 +224,8 @@ def updateProfile(request, pk):
             if password:
                 user.set_password(password)
             user.save()
-            msg = "Profile updated successfully" 										
+            # msg = "Profile updated successfully" 
+            return redirect("/update_profile/{}/".format(user.id))										
     
     context = {'form': form, "msg":msg, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'profile.html', context)
