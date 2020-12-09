@@ -1,0 +1,60 @@
+{% extends "layouts/base-fullscreen.html" %}
+{% block title %} Login {% endblock %}
+
+{% block content %}   
+
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <!-- <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div> -->
+            <div class="card">
+                <div class="card-body text-center login-main-card">
+                    <div class="pt-1 pb-1">
+                        <img class="loginlogo" src="/static/assets/images/loginlogo.png" alt="logo">
+                    </div>
+                    <h5 class="pt-3 pb-1">Login to get Notified!</h5>
+
+                    <span class="mb-0 text-muted2">
+                        {% if msg %}
+                            {{ msg | safe }}
+                        {% endif %} 
+                    </span>
+                    <form role="form" class="pt-3" method="post" action="">
+
+                        {% csrf_token %}                   
+
+                        <div class="input-group mb-3">
+                            {{ form.email }}
+                        </div>
+                        
+                        <div class="input-group mb-2">
+                            {{ form.password }}
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="form-group text-left pl-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                                        <label class="custom-control-label" for="checkbox-fill-a1">Remember me</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 frgt">
+                                <a href="auth-reset-pass.html">Forgot password?</a>
+                            </div>
+                        </div>
+                        <input type="submit"  name="login" id="login-btn" class="form-control mb-4" value="Login">
+
+                    </form>
+
+                    <p class="mb-0 lo-p">Don’t have an account? <a href={% url 'register' %} >Signup</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
