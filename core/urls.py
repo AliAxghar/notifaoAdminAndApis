@@ -16,6 +16,8 @@ urlpatterns = [
     path('', include('customers.urls')),
     path('', include('plans.urls')),
     path('', include('users.urls')),
+    path('', include('notifications.urls')),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

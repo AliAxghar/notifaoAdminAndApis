@@ -83,39 +83,11 @@
                     <hr class="hr-top">
                     <div class="row" id="app-page">
                         <div class="col-6">
-                            <h4 class="title1">All Notifications</h4>
+                            <h4 class="title1">Notifications</h4>
                         </div>
                         <!-- <div class="col-6">
                             <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
                         </div> -->
-                        {% if request.user.is_superuser %}
-                        <div class="col-md-12 mt-3">
-                            <div class="card card-l-a">
-                                {% for notification in a_notifications %}
-                                <div class="card mt-1 mb-0">
-                                    <div class="row">
-                                        <div class="col-md-3 n-b-r">
-                                            <div class="p-2 pl-3">
-                                                <span>From</span>
-                                                <h5 >{{notification.app_id.name|capfirst}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-7 n-b-r">
-                                            <div class="p-1 pt-3">
-                                                <h6 >{{notification.title|capfirst}}</h6>
-                                                <p>{{notification.description|capfirst}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <span class="p-2 pr-3 pt-3 text-right">{{notification.created_at}}</span>
-                                            <p>Subscribed: {{notification.notification_count}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% else %}
                         <div class="col-md-12 mt-3">
                             <div class="card card-l-a">
                                 {% for notification in notifications %}
@@ -141,8 +113,7 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                        </div>
-                        {% endif %}           
+                        </div>        
                     </div>
                 </div>
             </div>

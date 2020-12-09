@@ -29,11 +29,19 @@ from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from core.settings import api_base_url
 import requests
+from notifications.models import Notification
 
 @login_required(login_url="/login/")
 def index(request):
     user = request.user
     customer = user.id
+    apps = App.objects.filter(customer_id=customer)
+    notifications = []
+    a_notifications = Notification.objects.all().order_by('-id')[:7]
+    for app in apps:
+        all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:7]
+        for noti in all_notifications:
+            notifications.append(noti)
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
     lasUsers = UserApp.objects.all().order_by('-id')[:10]
     userapps = UserApp.objects.filter(customer_id=customer).order_by('id')[:9]
@@ -63,7 +71,7 @@ def index(request):
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
         total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
         
-    context = {"lists":json.dumps(lists), "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+    context = {"a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -74,6 +82,13 @@ def pages(request):
     user = request.user
     all_app = App.objects.all()
     lasUsers = UserApp.objects.all()
+    a_notifications = Notification.objects.all()
+    apps = App.objects.filter(customer_id=user.id)
+    notifications = []
+    for app in apps:
+        all_notifications = Notification.objects.filter(app_id=app.id)
+        for noti in all_notifications:
+            notifications.append(noti)
     Users = UserApp.objects.filter(customer_id=user.id)
     userApps = App.objects.filter(customer_id_id=user.id)
     user_obj = Customer.objects.get(email=user.email)
@@ -89,7 +104,7 @@ def pages(request):
 
 
 
-    context = {"lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -196,8 +211,11 @@ def createApp(request):
         return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
 
 
-
-
+@login_required(login_url="/login/")
+def singleNotification(request, pk):
+    notifications = Notification.objects.filter(id=pk)
+    context = {"notifications":notifications,}
+    return render(request, 'single-notification.html', context)
 
 @login_required(login_url="/login/")
 def updateProfile(request, pk):

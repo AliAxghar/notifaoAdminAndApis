@@ -124,7 +124,7 @@
                                             <div class="col-5 pt-2">
                                                 <span class="card-l-s">
                                                     <h5 class="pt-1">Total Notifications</h5>
-                                                    <h4>{{request.user.push_notifications}}</h4>
+                                                    <h4>{{request.user.total_notifications_sent}}</h4>
                                                 </span>
                                             </div>
                                             <div class="col-5">
@@ -165,104 +165,54 @@
                                                 <h5>Notifications</h5>
                                             </div>
                                             <div class="col-6">
-                                                <a href="#">See all notifications</a>
+                                                <a href="../../notification.html">See all notifications</a>
                                             </div>
                                         </div>
+                                        {% if request.user.is_superuser %}
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
+                                                {% for notification in a_notifications %}
+                                                <a href="{% url 'singleNotification' notification.id %}">
+                                                    <div class="card card-cl mb-1">
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <img src="/static/assets/images/logo-thumb.png" alt="">
+                                                            </div>
+                                                            <div class="col-8 pt-1">
+                                                                <p class="noti-p">{{notification.description|slice:':80'}}</p>
+                                                            </div>
+                                                            <div class="col-2 cl">
+                                                                <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card card-cl mb-1">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="/static/assets/images/logo-thumb.png" alt="">
-                                                        </div>
-                                                        <div class="col-8 pt-1">
-                                                            <p class="">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print. laying out print.</p>
-                                                        </div>
-                                                        <div class="col-2 cl">
-                                                            <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </a>
+                                                {% endfor %}
                                             </div>
                                         </div>
+                                        {% else %}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {% for notification in notifications %}
+                                                <a href="{% url 'singleNotification' notification.id %}">
+                                                    <div class="card card-cl mb-1">
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <img src="/static/assets/images/logo-thumb.png" alt="">
+                                                            </div>
+                                                            <div class="col-8 pt-1">
+                                                                <p class="noti-p">{{notification.description|slice:':80'}}</p>
+                                                            </div>
+                                                            <div class="col-2 cl">
+                                                                <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-md-6">

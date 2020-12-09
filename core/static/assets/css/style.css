@@ -13602,10 +13602,16 @@ input.form-control-sm-1 {
     border-radius: 5px;
     margin-bottom: 0px;
 }
+.n-b-r {
+    border-right: 2px solid #edf1f2;
+}
+.n-b-l {
+    border-right: 2px solid #edf1f2;
+}
 .card-cl p{
-    font-size: 9px;
+    font-size: 10px;
     margin-bottom: 0px;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 .card-cl img{
     height: 40px;
