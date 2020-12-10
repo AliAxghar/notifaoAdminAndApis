@@ -13602,6 +13602,11 @@ input.form-control-sm-1 {
     border-radius: 5px;
     margin-bottom: 0px;
 }
+.page-item.active .page-link {
+    color: #fff!important;
+    background-color: #274a5d!important;
+    border-color: #274a5d!important;
+}
 .n-b-r {
     border-right: 2px solid #edf1f2;
 }

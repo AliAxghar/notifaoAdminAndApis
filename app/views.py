@@ -36,6 +36,13 @@ def index(request):
     user = request.user
     customer = user.id
     apps = App.objects.filter(customer_id=customer)
+    # total_noti_graph_list = []
+    # for app in apps:
+    #     total_noti_graph_data = Notification.objects.filter(app_id=app.id)
+    #     for total_noti in total_noti_graph_data:
+    #         total_n = Notification.objects.filter(created_at=total_noti.created_at).count()
+    #     total_noti_graph_list.append([str(total_noti.created_at),int(total_n)])
+    # print(total_noti_graph_list)
     notifications = []
     a_notifications = Notification.objects.all().order_by('-id')[:7]
     for app in apps:

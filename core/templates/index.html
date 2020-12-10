@@ -27,6 +27,14 @@
         color: #495057;
         background-color: #fff!important;
     }
+    .page-link {
+        padding: 0.3rem .75rem!important;
+    }
+    .page-item.active .page-link {
+        color: #fff!important;
+        background-color: #274a5d!important;
+        border-color: #274a5d!important;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -888,7 +896,14 @@
             array_data[6],
             array_data[7],
             array_data[8]
-            // ['2004-20-4',  0],['2005-23-3',  1],['2006-24-5',  4],['2007-3-6',  2],['2005-23-3',  3],['2006-24-5',  5],['2007-3-6',  2],['2007-3-6',  12],
+            // ['2004-20-4',  0],
+            // ['2005-23-3',  1],
+            // ['2006-24-5',  4],
+            // ['2007-3-6',  2],
+            // ['2005-23-3',  3],
+            // ['2006-24-5',  5],
+            // ['2007-3-6',  2],
+            // ['2007-3-6',  12],
         ]);
         var options = {
             backgroundColor: {

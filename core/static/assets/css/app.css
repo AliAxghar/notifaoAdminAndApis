@@ -12,6 +12,11 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
 table#my-table {
     border-radius: 8px;
 }
+.page-item.active .page-link {
+    color: #fff!important;
+    background-color: #274a5d!important;
+    border-color: #274a5d!important;
+}
 table#my-table td {
     padding: 7px 8px;
     /* padding-bottom: 0px; */
