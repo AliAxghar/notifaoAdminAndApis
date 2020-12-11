@@ -36,32 +36,38 @@ def index(request):
     user = request.user
     customer = user.id
     apps = App.objects.filter(customer_id=customer)
-    # total_noti_graph_list = []
-    # for app in apps:
-    #     total_noti_graph_data = Notification.objects.filter(app_id=app.id)
-    #     for total_noti in total_noti_graph_data:
-    #         total_n = Notification.objects.filter(created_at=total_noti.created_at).count()
-    #     total_noti_graph_list.append([str(total_noti.created_at),int(total_n)])
-    # print(total_noti_graph_list)
+    total_noti_graph_list = []
+    if apps:
+        for app in apps:
+            total_noti_graph_data = Notification.objects.filter(app_id=app.id).order_by('-id')[:12]
+            for total_noti in total_noti_graph_data:
+                total_noti_graph_list.append([str(total_noti.created_at),int(total_noti.notification_count)])
+    if not total_noti_graph_list:        
+        total_noti_graph_list = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
     notifications = []
     a_notifications = Notification.objects.all().order_by('-id')[:7]
-    for app in apps:
-        all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:7]
-        for noti in all_notifications:
-            notifications.append(noti)
+    if apps:
+        for app in apps:
+            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:5]
+            for noti in all_notifications:
+                notifications.append(noti)
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
-    lasUsers = UserApp.objects.all().order_by('-id')[:10]
-    userapps = UserApp.objects.filter(customer_id=customer).order_by('id')[:9]
+    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')
+    userapps = UserApp.objects.filter(customer_id=customer).order_by('-id')[:12]
     data = []
     labels = []
     # users_graph_data = []
-    for obj in userapps:
-        data.append(obj.user_id.id)
-        userapp_dates = str(obj.created_at)
-        labels.append(userapp_dates)
+    if userapps:
+        for obj in userapps:
+            data.append(obj.user_id.id)
+            userapp_dates = str(obj.created_at)
+            labels.append(userapp_dates)
     lists = []
-    for p in userapps:
-        lists.append([str(p.created_at),int(p.user_id.id)])
+    if userapps:
+        for p in userapps:
+            lists.append([str(p.created_at),int(p.user_id.id)])
+    if not lists:        
+        lists = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -78,7 +84,7 @@ def index(request):
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
         total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
         
-    context = {"a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+    context = {"total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -223,6 +229,17 @@ def singleNotification(request, pk):
     notifications = Notification.objects.filter(id=pk)
     context = {"notifications":notifications,}
     return render(request, 'single-notification.html', context)
+
+@login_required(login_url="/login/")
+def deleteNotification(request, pk):
+    notification = Notification.objects.get(id=pk)
+    if request.method == "POST":
+        notification_d = Notification.objects.filter(id=pk)
+        notification_d.delete()
+        return redirect("../../notification.html")
+    context = {'notification': notification}
+    return render(request, 'delete-notification.html', context)
+
 
 @login_required(login_url="/login/")
 def updateProfile(request, pk):

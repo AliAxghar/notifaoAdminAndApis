@@ -101,7 +101,7 @@
                                                 <th >DESCRIPTION</th>
                                                 <th>DATE</th>
                                                 <th class="text-left">SENT TO</th>
-                                                <th class="text-left">ACTIONS</th>
+                                                <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -120,11 +120,11 @@
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.created_at}}</td>
                                                 <td class="pb-t-c">{{notification.notification_count}}</td>
-                                                <td class="text-left pb-t">
+                                                <td class="text-center pb-t">
                                                     <span class="action-i">
-                                                        <a href=""><i class="feather icon-eye"></i></a>
-                                                        <a href=""><i class="feather icon-edit"></i></a>
-                                                        <a href=""><i class="feather icon-trash-2"></i></a>
+                                                        <a href="{% url 'singleNotification' notification.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href=""><i class="feather icon-edit"></i></a> -->
+                                                        <a href="{% url 'deleteNotification' notification.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>
@@ -144,11 +144,11 @@
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.created_at}}</td>
                                                 <td class="pb-t-c">{{notification.notification_count}}</td>
-                                                <td class="text-left pb-t">
+                                                <td class="text-center pb-t">
                                                     <span class="action-i">
-                                                        <a href=""><i class="feather icon-eye"></i></a>
-                                                        <a href=""><i class="feather icon-edit"></i></a>
-                                                        <a href=""><i class="feather icon-trash-2"></i></a>
+                                                        <a href="{% url 'singleNotification' notification.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href=""><i class="feather icon-edit"></i></a> -->
+                                                        <a href="{% url 'deleteNotification' notification.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>

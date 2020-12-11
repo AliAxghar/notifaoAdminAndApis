@@ -869,7 +869,7 @@
             </div>
         </div>
     </div>
-    
+    <!-- {{total_noti_graph_list}} -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% endblock content %}
 
@@ -877,34 +877,20 @@
 {% block javascripts %}
 <script type="text/javascript">
     array_data = {{lists|safe}};
-    console.log(array_data);
+    array_data1 = {{total_noti_graph_list|safe}};
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
-        
-        // var data = google.visualization.arrayToDataTable(
-        //     {{ lists|safe }}
-        // );
-        var data = google.visualization.arrayToDataTable([
-            ['Date', 'Notification'],
-            array_data[0],
-            array_data[1],
-            array_data[2],
-            array_data[3],
-            array_data[4],
-            array_data[5],
-            array_data[6],
-            array_data[7],
-            array_data[8]
-            // ['2004-20-4',  0],
-            // ['2005-23-3',  1],
-            // ['2006-24-5',  4],
-            // ['2007-3-6',  2],
-            // ['2005-23-3',  3],
-            // ['2006-24-5',  5],
-            // ['2007-3-6',  2],
-            // ['2007-3-6',  12],
-        ]);
+        var noti_graph_list = [['Date', 'Notifications'],]
+        array_data1.slice().reverse().forEach(function(entry) {
+            noti_graph_list.push(entry);
+        });
+        var user_graph_list = [['Date', 'Users'],]
+        array_data.slice().reverse().forEach(function(entry) {
+            user_graph_list.push(entry);
+        });
+        var data1 = google.visualization.arrayToDataTable(noti_graph_list);
+        var data = google.visualization.arrayToDataTable(user_graph_list);
         var options = {
             backgroundColor: {
                 fill: '#fff0',
@@ -926,10 +912,57 @@
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
         chart.draw(data, options);
-        chart1.draw(data, options);
+        chart1.draw(data1, options);
         
     }
   </script>
+  <!-- <script type="text/javascript">
+    array_data1 = {{total_noti_graph_list|safe}};
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        
+        // var data = google.visualization.arrayToDataTable(
+        //     {{ lists|safe }}
+        // );
+        var data1 = google.visualization.arrayToDataTable([
+            ['Date', 'Notifications'],
+            array_data1[11],
+            array_data1[10],
+            array_data1[9],
+            array_data1[8],
+            array_data1[7],
+            array_data1[6],
+            array_data1[5],
+            array_data1[4],
+            array_data1[3],
+            array_data1[2],
+            array_data1[1],
+            array_data1[0]
+        ]);
+        var options = {
+            backgroundColor: {
+                fill: '#fff0',
+                fillOpacity: 0
+            },
+            height:65,
+            vAxis:{
+            baselineColor: '#fff',
+            gridlineColor: '#fff',
+            textPosition: 'none'
+            },
+            hAxis: { textPosition: 'none',
+            display:false,
+            },
+            curveType: 'function',
+            legend: { position: 'none' }
+        };
+
+        var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+        chart1.draw(data1, options);
+        
+    }
+  </script> -->
     <script>
         $("input").on("change", function() {
             this.setAttribute(
