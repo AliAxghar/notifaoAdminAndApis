@@ -87,28 +87,28 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-api_base_url = "http://127.0.0.1:8000"
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'notifaodb',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost'
-    }
-}
-
-
+# api_base_url = "http://127.0.0.1:8000"
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'notifaodb1',
+#         'NAME': 'notifaodb',
 #         'USER': 'postgres',
-#         'PASSWORD': 'admin123',
+#         'PASSWORD': '1234',
 #         'HOST': 'localhost'
 #     }
 # }
-# api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'notifaodb1',
+        'USER': 'postgres',
+        'PASSWORD': 'admin123',
+        'HOST': 'localhost'
+    }
+}
+api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
 
 
 # Password validation
