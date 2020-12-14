@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('plans.urls')),
     path('', include('users.urls')),
     path('', include('notifications.urls')),
+    # path('', include('invoices.urls')),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

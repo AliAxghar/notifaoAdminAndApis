@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django import template
 from customers.models import Customer
 from app.forms import *
+from invoices.models import *
 import time
 import json
 from app.models import *
@@ -30,6 +31,8 @@ from django.contrib.auth.decorators import login_required
 from core.settings import api_base_url
 import requests
 from notifications.models import Notification
+import stripe
+stripe.api_key = "sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0" 
 
 @login_required(login_url="/login/")
 def index(request):
@@ -239,6 +242,35 @@ def deleteNotification(request, pk):
         return redirect("../../notification.html")
     context = {'notification': notification}
     return render(request, 'delete-notification.html', context)
+
+@login_required(login_url="/login/")
+def createPlan(request):
+    user_email = request.user.email
+    if request.method == "POST":
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        interval = request.POST.get('interval')
+        notifications = request.POST.get('notification')
+        apps = request.POST.get('apps')
+        description = request.POST.get('description')
+        user = Invoices.objects.create(name=name, price=price, email=user_email, interval=interval, notifications=notifications, apps=apps, description=description)
+        if user:
+            return redirect("/updatePlan/")
+    context = {}
+    return render(request, 'my-plan.html', context)
+
+@login_required(login_url="/login/")
+def updatePlan(request):
+    user_email = request.user.email
+    if request.method == "POST":
+        cardnumber = request.POST.get('cardnumber')
+        exp_date = request.POST.get('exp-date')
+        stripeToken = request.POST.get('stripeToken')
+        cvc = request.POST.get('cvc')
+        print(stripeToken)
+        # return redirect("../../my-plan.html")
+    context = {}
+    return render(request, 'payment.html', context)
 
 
 @login_required(login_url="/login/")

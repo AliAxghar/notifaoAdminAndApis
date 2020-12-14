@@ -94,42 +94,71 @@
 
                             </div>
                             <div id="myplan">
+                                <!-- <form action="" method="post"> -->
                                 <div id="part1" class="parts">
                                     <div class="part11">
-                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
-                                        <h5>Private</h5>
-                                        <h1>$1</h1>
-                                        <p>Per Month</p>
-                                        <p class="p-p">1000 notifications</p>
-                                        <p class="p-p">1 app allowed</p>
-                                        <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
-                                        <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                        <form action="{% url 'createPlan' %}" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
+                                            <input type="hidden" name="name" value="private">
+                                            <input type="hidden" name="price" value="1">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month">
+                                            <h5>Private</h5>
+                                            <h1>$1</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                        </form>
                                     </div>
                                 </div>
+                                
                                 <div id="part2" class="parts">
                                     <div class="p-1 p2-p">Choose your plan</div>
                                     <span class="part-span">Recommended</span>
                                     <div class="part22 pt-3">
-                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
-                                        <h5>Business</h5>
-                                        <h1>$4</h1>
-                                        <p>Per Month</p>
-                                        <p class="p-p">5000 notifications</p>
-                                        <p class="p-p">3 app allowed</p>
-                                        <p class="p-p">$8 one-time every 5000 notifications additional app $10 per month</p>
-                                        <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                        <form action="{% url 'createPlan' %}" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
+                                            <input type="hidden" name="name" value="business">
+                                            <input type="hidden" name="price" value="4">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="5000">
+                                            <input type="hidden" name="apps" value="3">
+                                            <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month">
+                                            <h5>Business</h5>
+                                            <h1>$4</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">5000 notifications</p>
+                                            <p class="p-p">3 apps allowed</p>
+                                            <p class="p-p">$8 one-time every 5000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3"  type="submit" value="Select Plan"/>
+                                        </form>
                                     </div>
                                 </div>
                                 <div id="part3" class="parts">
                                     <div class="part33">
-                                        <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
-                                        <h5>Unlimited</h5>
-                                        <h1>$7</h1>
-                                        <p>Per Month</p>
-                                        <p class="p-p">1000 notifications</p>
-                                        <p class="p-p">1 app allowed</p>
-                                        <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
-                                        <input class="btn-c-m-p mt-3 "  type="submit" value="Select Plan"/>
+                                        <form action="{% url 'createPlan' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="name" value="unlimited">
+                                            <input type="hidden" name="price" value="7">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month">
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
+                                            <h5>Unlimited</h5>
+                                            <h1>$7</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 "  type="submit" value="Select Plan"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
