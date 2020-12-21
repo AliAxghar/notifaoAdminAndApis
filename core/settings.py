@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'notifaodb1',
+        'NAME': 'db1',
         'USER': 'postgres',
         'PASSWORD': 'admin123',
         'HOST': 'localhost'
