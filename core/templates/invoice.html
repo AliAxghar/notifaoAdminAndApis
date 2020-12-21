@@ -6,6 +6,7 @@
 {% block stylesheets %}
 <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
@@ -134,10 +135,11 @@
                                                 <th class="text-center">STATUS</th>
                                                 <th>DOWNLOAD</th>
                                                 <th class="text-center">PAY</th>
-                                                <th class="text-left">ACTIONS</th>
+                                                <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for obj in all_invoices %}
                                             <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
@@ -145,22 +147,38 @@
                                                         <label class="custom-control-label" for="defaultUnchecked"></label>
                                                     </div>
                                                 </td>
-                                                <td class="pb-t">33242</td>
-                                                <td class="text-left pb-t">24 May,2020</td>
-                                                <td class="pb-t-c">$58</td>
+                                                <td class="pb-t">{{obj.number}}</td>
+                                                <td class="text-left pb-t">
+                                                    <script>
+                                                        var stripe_date = {{obj.created}} * 1000;
+                                                        var dateTimeString = moment(stripe_date).format("ll");
+                                                        document.write(dateTimeString);
+                                                    </script>
+                                                </td>
+                                                <td class="pb-t-c">${% widthratio obj.amount_paid 100 1 %}</td>
+                                                {% if obj.status == 'paid' %}
                                                 <td class="pb-t-c text-center">
                                                     <button class="btn btn-success btn-sm-1 ml-2">Paid</button>
                                                 </td>
-                                                <td class="pb-t pdf-d"><i class="feather icon-file-text"></i></td>
-                                                <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td>
-                                                <td class="text-left pb-t">
+                                                {% else %}
+                                                <td class="pb-t-c text-center">
+                                                    <button class="btn btn-success btn-sm-2 ml-2">Unpaid</button>
+                                                </td>
+                                                {% endif %}
+                                                <td class="pb-t pdf-d"><a href="{{obj.invoice_pdf}}"><i class="feather icon-file-text"></i></a></td>
+                                                <!-- <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td> -->
+                                                {% for ob in obj.lines.data %}
+                                                <td class="pb-t">{{ob.metadata.payment_method}}</td>
+                                                {% endfor %}
+                                                <td class="text-center pb-t">
                                                     <span class="ml-2 action-i">
-                                                        <i class="feather icon-eye"></i>
-                                                        <i class="feather icon-trash-2 ml-1"></i>
+                                                        <a href="{% url 'viewInvoice' obj.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href=""><i class="feather icon-trash-2 ml-1"></i></a> -->
                                                     </span>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            {% endfor %}
+                                            <!-- <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
@@ -247,7 +265,7 @@
                                                         <i class="feather icon-trash-2 ml-1"></i>
                                                     </span>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             
                                         </tbody>
                                     </table>

@@ -100,12 +100,14 @@
                                         <form action="{% url 'createPlan' %}" method="post">
                                             {% csrf_token %}
                                             <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
-                                            <input type="hidden" name="name" value="private">
+                                            <!-- <input type="hidden" name="name" value="private">
                                             <input type="hidden" name="price" value="1">
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month">
+                                            <input type="hidden" name="planid" value="price_1HyhdOCEigeyfTXepWPmWItH">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="privatePlan">
                                             <h5>Private</h5>
                                             <h1>$1</h1>
                                             <p>Per Month</p>
@@ -124,12 +126,14 @@
                                         <form action="{% url 'createPlan' %}" method="post">
                                             {% csrf_token %}
                                             <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
-                                            <input type="hidden" name="name" value="business">
+                                            <input type="hidden" name="planName" value="businessPlan">
+                                            <!-- <input type="hidden" name="name" value="business">
                                             <input type="hidden" name="price" value="4">
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="5000">
                                             <input type="hidden" name="apps" value="3">
-                                            <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month">
+                                            <input type="hidden" name="planid" value="price_1HyhcrCEigeyfTXe4nMbbrAI">
+                                            <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month"> -->
                                             <h5>Business</h5>
                                             <h1>$4</h1>
                                             <p>Per Month</p>
@@ -144,12 +148,14 @@
                                     <div class="part33">
                                         <form action="{% url 'createPlan' %}" method="post">
                                             {% csrf_token %}
-                                            <input type="hidden" name="name" value="unlimited">
+                                            <!-- <input type="hidden" name="name" value="unlimited">
                                             <input type="hidden" name="price" value="7">
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month">
+                                            <input type="hidden" name="planid" value="price_1HyhbxCEigeyfTXeiPwwMEQc">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="unlimitedPlan">
                                             <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
                                             <h5>Unlimited</h5>
                                             <h1>$7</h1>
@@ -261,11 +267,7 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<script>
-    $(document).ready(function() {
-        $('#my-table').DataTable();
-    } );
-</script>
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -410,5 +412,9 @@
        document.getElementById('demoInput2').stepDown();
     }
 </script>
+<!-- <script>
+    $('#btn-payment').click(function(){
+    });
+</script> -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 {% endblock javascripts %}
