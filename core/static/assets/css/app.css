@@ -12,6 +12,14 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
 table#my-table {
     border-radius: 8px;
 }
+<<<<<<< HEAD
+=======
+.page-item.active .page-link {
+    color: #fff!important;
+    background-color: #274a5d!important;
+    border-color: #274a5d!important;
+}
+>>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 table#my-table td {
     padding: 7px 8px;
     /* padding-bottom: 0px; */
@@ -540,4 +548,45 @@ span.part-span {
 #app-v-c img{
     object-fit: contain;
     height: 100px;
+<<<<<<< HEAD
+=======
+}
+.sub-pay {
+    font-size: 28px;
+    color: #212121;
+    font-weight: 600!important;
+}
+
+.green {
+    border-color: #01a499!important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(1, 164, 153, .555)!important;
+    outline: 0 none!important;
+}
+
+.error {
+    border: 1px solid rgb(167, 6, 6)!important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(167, 6, 6)!important;
+    outline: 0 none!important;
+}
+
+div#card-errors {
+    /* background-color: #bee5eb;
+    padding: 9px 30px; */
+    display: none;
+}
+
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: none;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+>>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 }

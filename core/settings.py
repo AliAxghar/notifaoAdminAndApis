@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rest_auth.registration',
     'rest_framework.authtoken',
+    'fcm_django',
     
     # LOCAL APPS
     'customers',
     'plans',
     'users',
     'notifications',
+    'invoices',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +121,10 @@ DATABASES = {
 #     }
 # }
 
-api_base_url = "http://127.0.0.1:8000"
+# api_base_url = "http://127.0.0.1:8000"
+api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -175,6 +180,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 OLD_PASSWORD_FIELD_ENABLED = False
+FCM_DEVICE_MODEL = 'notifications.models.MyDevice'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -204,4 +210,9 @@ REST_FRAMEWORK = {
     #],
 
     # 'EXCEPTION_HANDLER': 'users.exceptions.custom_exception_handler'
+}
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY": "AAAAq1GD_lc:APA91bGmvtsJcp1OtvkGi5YdWvVVA9BrhNoP_p_y5feZrylZjQek0osXoj2Uom8o1EjyVR6IphuKdjsfgRt1UeuFVyeExXRivS73ymFu5skauDhwHeI3yjlrc7ycFJd4Zlw8XJz4GXok",
+    "DELETE_INACTIVE_DEVICES": False,
+    "ONE_DEVICE_PER_USER": False,
 }

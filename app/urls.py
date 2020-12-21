@@ -22,6 +22,11 @@ urlpatterns = [
     path('deleteApp/<str:pk>/', views.deleteApp, name="deleteApp"),
     path('create_apps/', views.create_apps, name="create_apps"),
     path('view_apps/<str:pk>/', views.view_apps, name="view_apps"),
+    path('singleNotification/<str:pk>/', views.singleNotification, name="singleNotification"),
+    path('deleteNotification/<str:pk>/', views.deleteNotification, name="deleteNotification"),
+    path('createPlan/', views.createPlan, name="createPlan"),
+    path('updatePlan/', views.updatePlan, name="updatePlan"),
+
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

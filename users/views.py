@@ -24,13 +24,13 @@ def customUserRegister(request):
         user_phone = request.data['phone']
         profile_pic = request.data['profile_pic']
         try:
-            get_custmer = Customer.objects.get(email = user_email)
-        except Customer.DoesNotExist:
+            get_custmer = User.objects.get(email = user_email)
+        except User.DoesNotExist:
             get_custmer = None
         if get_custmer is None:
             try:
-                get_custmer = Customer.objects.get(phone = user_phone)
-            except Customer.DoesNotExist:
+                get_custmer = User.objects.get(phone = user_phone)
+            except User.DoesNotExist:
                 get_custmer = None
                 if get_custmer is None:
                     app_obj = User.objects.create(name =user_name, email = user_email ,profile_pic  = profile_pic , password = user_password, phone = user_phone)

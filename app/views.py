@@ -9,7 +9,9 @@ from django.http import HttpResponse
 from django import template
 from customers.models import Customer
 from app.forms import *
+from invoices.models import *
 import time
+import json
 from app.models import *
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -28,20 +30,56 @@ from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from core.settings import api_base_url
 import requests
+from notifications.models import Notification
+import stripe
+stripe.api_key = "sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0" 
 
 @login_required(login_url="/login/")
 def index(request):
     user = request.user
     customer = user.id
+    # total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
+    # lasUsers = UserApp.objects.all().order_by('-id')[:10]
+    # userapps = UserApp.objects.all().order_by('-id')[:9]
+    # data = []
+    # labels = []
+    # for obj in userapps:
+    #     data.append(obj.user_id.id)
+    #     userapp_dates = str(obj.created_at)
+    #     labels.append(userapp_dates)
+    apps = App.objects.filter(customer_id=customer)
+    total_noti_graph_list = []
+    if apps:
+        for app in apps:
+            total_noti_graph_data = Notification.objects.filter(app_id=app.id).order_by('-id')[:12]
+            for total_noti in total_noti_graph_data:
+                total_noti_graph_list.append([str(total_noti.created_at),int(total_noti.notification_count)])
+    if not total_noti_graph_list:        
+        total_noti_graph_list = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
+    notifications = []
+    a_notifications = Notification.objects.all().order_by('-id')[:7]
+    if apps:
+        for app in apps:
+            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:5]
+            for noti in all_notifications:
+                notifications.append(noti)
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
-    lasUsers = UserApp.objects.all().order_by('-id')[:10]
-    userapps = UserApp.objects.all().order_by('-id')[:9]
+    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')
+    userapps = UserApp.objects.filter(customer_id=customer).order_by('-id')[:12]
     data = []
     labels = []
-    for obj in userapps:
-        data.append(obj.user_id.id)
-        userapp_dates = str(obj.created_at)
-        labels.append(userapp_dates)
+    # users_graph_data = []
+    if userapps:
+        for obj in userapps:
+            data.append(obj.user_id.id)
+            userapp_dates = str(obj.created_at)
+            labels.append(userapp_dates)
+    lists = []
+    if userapps:
+        for p in userapps:
+            lists.append([str(p.created_at),int(p.user_id.id)])
+    if not lists:        
+        lists = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -50,7 +88,7 @@ def index(request):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "100"
+        total_used_notification = "99"
         remaining_notification = "0"
     
     if request.method == 'POST':
@@ -58,7 +96,7 @@ def index(request):
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
         total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
         
-    context = {"lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+    context = {"total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -68,6 +106,15 @@ def index(request):
 def pages(request):
     user = request.user
     all_app = App.objects.all()
+    lasUsers = UserApp.objects.all()
+    a_notifications = Notification.objects.all()
+    apps = App.objects.filter(customer_id=user.id)
+    notifications = []
+    for app in apps:
+        all_notifications = Notification.objects.filter(app_id=app.id)
+        for noti in all_notifications:
+            notifications.append(noti)
+    Users = UserApp.objects.filter(customer_id=user.id)
     userApps = App.objects.filter(customer_id_id=user.id)
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
@@ -77,12 +124,12 @@ def pages(request):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "100"
+        total_used_notification = "99"
         remaining_notification = "0"
 
 
 
-    context = {"all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification}
+    context = {"a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -189,7 +236,50 @@ def createApp(request):
         return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
 
 
+@login_required(login_url="/login/")
+def singleNotification(request, pk):
+    notifications = Notification.objects.filter(id=pk)
+    context = {"notifications":notifications,}
+    return render(request, 'single-notification.html', context)
 
+@login_required(login_url="/login/")
+def deleteNotification(request, pk):
+    notification = Notification.objects.get(id=pk)
+    if request.method == "POST":
+        notification_d = Notification.objects.filter(id=pk)
+        notification_d.delete()
+        return redirect("../../notification.html")
+    context = {'notification': notification}
+    return render(request, 'delete-notification.html', context)
+
+@login_required(login_url="/login/")
+def createPlan(request):
+    user_email = request.user.email
+    if request.method == "POST":
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        interval = request.POST.get('interval')
+        notifications = request.POST.get('notification')
+        apps = request.POST.get('apps')
+        description = request.POST.get('description')
+        user = Invoices.objects.create(name=name, price=price, email=user_email, interval=interval, notifications=notifications, apps=apps, description=description)
+        if user:
+            return redirect("/updatePlan/")
+    context = {}
+    return render(request, 'my-plan.html', context)
+
+@login_required(login_url="/login/")
+def updatePlan(request):
+    user_email = request.user.email
+    if request.method == "POST":
+        cardnumber = request.POST.get('cardnumber')
+        exp_date = request.POST.get('exp-date')
+        stripeToken = request.POST.get('stripeToken')
+        cvc = request.POST.get('cvc')
+        print(stripeToken)
+        # return redirect("../../my-plan.html")
+    context = {}
+    return render(request, 'payment.html', context)
 
 
 @login_required(login_url="/login/")
@@ -204,7 +294,7 @@ def updateProfile(request, pk):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "100"
+        total_used_notification = "99"
         remaining_notification = "0"
     msg = ""
     user = Customer.objects.get(id=pk)
@@ -217,7 +307,8 @@ def updateProfile(request, pk):
             if password:
                 user.set_password(password)
             user.save()
-            msg = "Profile updated successfully" 										
+            # msg = "Profile updated successfully" 
+            return redirect("/update_profile/{}/".format(user.id))										
     
     context = {'form': form, "msg":msg, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'profile.html', context)
@@ -234,7 +325,7 @@ def create_apps(request):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "100"
+        total_used_notification = "99"
         remaining_notification = "0"
     success = False
     if request.method == 'POST':
@@ -282,7 +373,7 @@ def updateApp(request, pk):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "100"
+        total_used_notification = "99"
         remaining_notification = "0"
     msg = ""
     app = App.objects.get(id=pk)

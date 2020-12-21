@@ -8,7 +8,7 @@ from users.models import User
 
 
 class App(models.Model):
-    name = models.CharField(max_length=200 , null=False)
+    name = models.CharField(max_length=200 , null = False )
     description = models.CharField(max_length=500 , null=False)
     notifications_used = models.IntegerField(default=0)
     customer_id  = models.ForeignKey(Customer, related_name="customer", on_delete=models.CASCADE)
@@ -16,7 +16,7 @@ class App(models.Model):
     created_at = models.DateField(auto_now_add=True)
     app_image = models.ImageField(upload_to='app_image/',blank=True)
     app_logo = models.ImageField(upload_to='app_logo/',blank= True)
-    app_url = models.ImageField(upload_to='app_logo/',blank= True)
+    app_url = models.CharField(max_length=500 , null=False)
 
     def __str__(self):
         return self.name
