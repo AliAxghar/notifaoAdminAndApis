@@ -11,6 +11,9 @@ from customers.models import Customer
 from app.forms import *
 from invoices.models import *
 import time
+from datetime import datetime
+from django.http import HttpResponse
+from django.http import JsonResponse
 import json
 from app.models import *
 from django.shortcuts import render
@@ -102,10 +105,12 @@ def index(request):
     html_template = loader.get_template( 'index.html' )
     return HttpResponse(html_template.render(context, request))
 
+
 @login_required(login_url="/login/")
 def pages(request):
     user = request.user
     all_app = App.objects.all()
+    all_invoices = stripe.Invoice.list(limit=50)
     lasUsers = UserApp.objects.all()
     a_notifications = Notification.objects.all()
     apps = App.objects.filter(customer_id=user.id)
@@ -129,7 +134,7 @@ def pages(request):
 
 
 
-    context = {"a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -252,34 +257,148 @@ def deleteNotification(request, pk):
     context = {'notification': notification}
     return render(request, 'delete-notification.html', context)
 
+
+@login_required(login_url="/login/")
+def viewInvoice(request, id):
+    invoice_obj = stripe.Invoice.retrieve(
+    id,
+    )
+    invoice_datetime = datetime.fromtimestamp(invoice_obj.created).strftime("%A, %B %d, %Y")
+    context = {'invoice_datetime':invoice_datetime, 'invoice_obj': invoice_obj}
+    return render(request, 'view-invoice.html', context)
+
 @login_required(login_url="/login/")
 def createPlan(request):
     user_email = request.user.email
     if request.method == "POST":
-        name = request.POST.get('name')
-        price = request.POST.get('price')
-        interval = request.POST.get('interval')
-        notifications = request.POST.get('notification')
-        apps = request.POST.get('apps')
-        description = request.POST.get('description')
-        user = Invoices.objects.create(name=name, price=price, email=user_email, interval=interval, notifications=notifications, apps=apps, description=description)
-        if user:
-            return redirect("/updatePlan/")
+        # name = request.POST.get('name')
+        # price = request.POST.get('price')
+        # interval = request.POST.get('interval')
+        # notifications = request.POST.get('notification')
+        # stripeToken = request.POST.get('stripeToken')
+        # apps = request.POST.get('apps')
+        # description = request.POST.get('description')
+        planName = request.POST.get('planName')
+        # plan_list = [name,price,interval,notifications,apps,planid]
+        # list1 = list1.split(',')
+        # print(url_list,plan_list,stripeToken)
+        if planName:
+            context = {"planName":planName}
+            return render(request, 'payment.html', context)
     context = {}
     return render(request, 'my-plan.html', context)
 
 @login_required(login_url="/login/")
-def updatePlan(request):
+def updatePlan(request,planName):
     user_email = request.user.email
-    if request.method == "POST":
-        cardnumber = request.POST.get('cardnumber')
-        exp_date = request.POST.get('exp-date')
+    if request.method == 'POST':
         stripeToken = request.POST.get('stripeToken')
-        cvc = request.POST.get('cvc')
-        print(stripeToken)
-        # return redirect("../../my-plan.html")
-    context = {}
-    return render(request, 'payment.html', context)
+        if stripeToken:
+            if planName == 'privatePlan':
+                name_p = 'private'
+                price_p = 1 * 100
+                interval_p = 1
+                notifications_p = 1000
+                apps_p = 1
+                planId_p = 'price_1HyhdOCEigeyfTXepWPmWItH'
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_p,apps_p,interval_p,price_p/100)
+                description_p = '$2 one-time every 1000 notifications additional app $10 per month'
+                customer = stripe.Customer.create(
+                    email=user_email,
+                    card = stripeToken,
+                    description = des,
+                )
+                if customer:
+                    charge = stripe.Charge.create(
+                        amount=price_p,
+                        currency="usd",
+                        customer=customer.id,
+                        description=des,
+                    )
+                    if charge:
+                        subscription = stripe.Subscription.create(
+                            customer=customer.id,
+                            items=[
+                                {"price": planId_p},
+                            ],
+                            metadata={"planName":name_p,"payment_method":charge.payment_method_details.card.brand},
+                        )
+                        if subscription:
+                            invoices = Invoices.objects.create(billing_id=charge.id, name=subscription.metadata['planName'], price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=description_p, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
+                            if invoices:
+                                return redirect('../../success_pay.html')
+            elif planName == 'businessPlan':
+                name_b = 'business'
+                price_b = 4 * 100
+                interval_b = 1
+                notifications_b = 5000
+                apps_b = 3
+                planId_b = 'price_1HyhcrCEigeyfTXe4nMbbrAI'
+                description_b = '$8 one-time every 5000 notifications additional app $10 per month'
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_b,apps_b,interval_b,price_b/100)
+                customer = stripe.Customer.create(
+                    email=user_email,
+                    card = stripeToken,
+                    description = des,
+                )
+                if customer:
+                    charge = stripe.Charge.create(
+                        amount=price_b,
+                        currency="usd",
+                        customer=customer.id,
+                        description=des,
+                    )
+                    if charge:
+                        subscription = stripe.Subscription.create(
+                            customer=customer.id,
+                            items=[
+                                {"price": planId_b },
+                            ],
+                            metadata={"planName":name_b, "payment_method":charge.payment_method_details.card.brand},
+                        )
+                        if subscription:
+                            invoices = Invoices.objects.create(billing_id=charge.id, name=subscription.metadata['planName'], price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=description_b, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
+                            if invoices:
+                                return redirect('../../success_pay.html')
+            elif planName == 'unlimitedPlan':
+                name_u = 'unlimited'
+                price_u = 7 * 100
+                interval_u = 1
+                notifications_u = 1000
+                apps_u = 1
+                planId_u = 'price_1HyhbxCEigeyfTXeiPwwMEQc'
+                description_u = '$2 one-time every 1000 notifications additional app $10 per month'
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_u,apps_u,interval_u,price_u/100)
+                customer = stripe.Customer.create(
+                    email=user_email,
+                    card = stripeToken,
+                    description = des,
+                )
+                if customer:
+                    charge = stripe.Charge.create(
+                        amount=price_u,
+                        currency="usd",
+                        customer=customer.id,
+                        description=des,
+                    )
+                    if charge:
+                        subscription = stripe.Subscription.create(
+                            customer=customer.id,
+                            items=[
+                                {"price": planId_u },
+                            ],
+                            metadata={"planName":name_u ,"payment_method":charge.payment_method_details.card.brand},
+                        )
+                        if subscription:
+                            status=subscription.status
+                            name=subscription.metadata['planName']
+                            payment_method=charge.payment_method_details.card.brand
+                            charge_receipt_url = charge.receipt_url
+                            invoices = Invoices.objects.create(billing_id=charge.id, name=name, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=description_u, email=user_email, status=status, payment_method=payment_method, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge_receipt_url)
+                            if invoices:
+                                return redirect('../../success_pay.html')
+    data = {'data': user_email}
+    return JsonResponse(data)
 
 
 @login_required(login_url="/login/")

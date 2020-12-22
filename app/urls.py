@@ -24,8 +24,9 @@ urlpatterns = [
     path('view_apps/<str:pk>/', views.view_apps, name="view_apps"),
     path('singleNotification/<str:pk>/', views.singleNotification, name="singleNotification"),
     path('deleteNotification/<str:pk>/', views.deleteNotification, name="deleteNotification"),
+    path('viewInvoice/<str:id>/', views.viewInvoice, name="viewInvoice"),
     path('createPlan/', views.createPlan, name="createPlan"),
-    path('updatePlan/', views.updatePlan, name="updatePlan"),
+    path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

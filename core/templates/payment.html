@@ -101,13 +101,10 @@
                         <div class="col-6">
                             <h4 class="title1">Payment Details</h4>
                         </div>
-                        <!-- <div class="col-6">
-                            <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
-                        </div> -->
                         <!-- {% url 'createPlan' %} -->
                         <div class="col-md-12 mt-3">
                             <div class="card card-l-a">
-                                <form action="" method="post" id="payment-form" role="form">
+                                <form action="{% url 'updatePlan' planName %}" method="post" id="payment-form" role="form">
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="col-12">
@@ -255,21 +252,19 @@
         });
     });
 </script>
-<script>
-    // $('#payment-form').submit(function() {
-    //     // get all the inputs into an array.
-    //     var $inputs = $('#payment-form :input');
-
-    //     // not sure if you wanted this, but I thought I'd add it.
-    //     // get an associative array of just the values.
-    //     var values = {};
-    //     $inputs.each(function() {
-    //         values[this.name] = $(this).val();
-    //     });
-    //     console.log(values);
-    //     // return false
-    // });
-</script>
+<!-- <script>
+    $('#btn-payment').click(function(){
+      var url_list = {{plan_list|safe}};
+      var list = url_list;
+    //   console.log(url_list);
+      $.ajax({
+          url: '{% url "createPlan" %}',
+          data: {'list[]': list},
+          dataType: 'json',
+      });
+      return false;
+    });
+  </script> -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>

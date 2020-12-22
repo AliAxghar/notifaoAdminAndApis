@@ -22,8 +22,9 @@ class NotificationViewSet(viewsets.ModelViewSet):
     serializer_class = NotificationSerializer
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def createNotification(request):
+    sent_count = 0
     if request.method == 'POST':
         user_email  = request.data['email']
         user_password = request.data['password']
@@ -40,16 +41,36 @@ def createNotification(request):
         else:
             pass_res = get_custmer.check_password(user_password)
             if pass_res:
-                get_app = App.objects.get( name = app_name , customer_id = get_custmer.pk)
-                if get_app:
-                    notification_obj = Notification.objects.create(title =notification_title, description  = notification_description , app_id = get_app.pk)
-                    return Response({
-                        "title": app_obj.name,
-                        "description": notification_obj.description,
-                        "notifications_used": app_obj.notifications_used,
-                        "created_at": notification_obj.created_at,
-                        
-                    })
+                try:
+                    get_app = App.objects.get( name = app_name , customer_id = get_custmer.pk)
+                except App.DoesNotExist:
+                    get_app = None
+                if get_app is not None:
+                    notification_obj = Notification.objects.create(title =notification_title, description  = notification_description , app_id = get_app)
+                    notification_obj.save()
+                    sent_count = UserApp.objects.filter(app_id = get_app.pk).count()
+                    app_users = UserApp.objects.filter(app_id = get_app.pk)
+                    if get_custmer.push_notifications >= sent_count:
+                        if app_users :
+                            for user in app_users:
+                                device = CustomFCMDevice.objects.get(user_id = user.pk)
+                                device.send_message(title=notification_title, body=notification_description)
+                            get_custmer.push_notifications = get_custmer.push_notifications - sent_count
+                            get_custmer.save()
+                            notification_obj.notification_count = sent_count
+                            notification_obj.save()
+                            get_app.notifications_used = get_app.notifications_used + sent_count
+                            get_app.save()
+                            return Response({
+                                "title": notification_obj.title,
+                                "description": notification_obj.description,
+                                "notifications_used": notification_obj.notification_count,
+                                "created_at": notification_obj.created_at,
+                                "message": "success",
+                                "status": status.HTTP_200_OK ,
+                                })
+                    else:
+                        return Response({"message": "You do not have enough notifications left" , "status": status.HTTP_404_NOT_FOUND})
                 else:
                     return Response({"detail": "you do not have an app with this name",  "status": status.HTTP_429_TOO_MANY_REQUESTS})
             else:

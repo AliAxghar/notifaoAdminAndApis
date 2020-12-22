@@ -15,7 +15,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def customUserRegister(request):
     if request.method == 'POST':
         user_email  = request.data['email']
@@ -24,18 +24,18 @@ def customUserRegister(request):
         user_phone = request.data['phone']
         profile_pic = request.data['profile_pic']
         try:
-            get_custmer = User.objects.get(email = user_email)
+            get_user = User.objects.get(email = user_email)
         except User.DoesNotExist:
-            get_custmer = None
-        if get_custmer is None:
+            get_user = None
+        if get_user is None:
             try:
-                get_custmer = User.objects.get(phone = user_phone)
+                get_user = User.objects.get(phone = user_phone)
             except User.DoesNotExist:
-                get_custmer = None
-                if get_custmer is None:
-                    app_obj = User.objects.create(name =user_name, email = user_email ,profile_pic  = profile_pic , password = user_password, phone = user_phone)
-                    app_obj.save()
-                    if app_obj is not None:
+                get_user = None
+                if get_user is None:
+                    user_obj = User.objects.create(name =user_name, email = user_email ,profile_pic  = profile_pic , password = user_password, phone = user_phone)
+                    user_obj.save()
+                    if user_obj is not None:
                         return Response({"message": "Successfully created" , "status": status.HTTP_201_CREATED})
                     else:
                         return Response({"message": "User not created" , "status": status.HTTP_406_NOT_ACCEPTABLE})
