@@ -6,7 +6,7 @@ from rest_framework .decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework import status
-
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,11 +18,12 @@ class UserViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 def customUserRegister(request):
     if request.method == 'POST':
-        user_email  = request.data['email']
-        user_password = request.data['password']
-        user_name = request.data['name']
-        user_phone = request.data['phone']
-        profile_pic = request.data['profile_pic']
+        try:
+            user_email  = request.data['email']
+            user_name = request.data['name']
+            user_phone = request.data['phone']
+        except MultiValueDictKeyError:
+            return Response({"detail": "Make sure all perameters (email,password,name,phone,profile_image) are provided",  "status": status.HTTP_400_BAD_REQUEST})        
         try:
             get_user = User.objects.get(email = user_email)
         except User.DoesNotExist:
@@ -32,15 +33,15 @@ def customUserRegister(request):
                 get_user = User.objects.get(phone = user_phone)
             except User.DoesNotExist:
                 get_user = None
-                if get_user is None:
-                    user_obj = User.objects.create(name =user_name, email = user_email ,profile_pic  = profile_pic , password = user_password, phone = user_phone)
-                    user_obj.save()
-                    if user_obj is not None:
-                        return Response({"message": "Successfully created" , "status": status.HTTP_201_CREATED})
-                    else:
-                        return Response({"message": "User not created" , "status": status.HTTP_406_NOT_ACCEPTABLE})
+            if get_user is None:
+                user_obj = User.objects.create(name =user_name, email = user_email , phone = user_phone)
+                user_obj.save()
+                if user_obj is not None:
+                    return Response({"message": "Successfully created" , "status": status.HTTP_201_CREATED})
                 else:
-                    return Response({"message": "Phone number already exists " , "status": status.HTTP_306_RESERVED})
+                    return Response({"message": "User not created" , "status": status.HTTP_406_NOT_ACCEPTABLE})
+            else:
+                return Response({"message": "Phone number already exists " , "status": status.HTTP_306_RESERVED})
         else:
             return Response({"message": "Email already exists " , "status": status.HTTP_306_RESERVED})
     else:
