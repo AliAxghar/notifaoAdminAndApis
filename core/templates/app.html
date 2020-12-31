@@ -86,7 +86,11 @@
                             <h4 class="title1">Applications</h4>
                         </div>
                         <div class="col-6">
-                            <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                            {% if request.user.is_superuser %}
+                            <div></div>
+                            {% else %}
+                                <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                            {% endif %}
                         </div>
                         <div class="col-md-12 mt-3">
                             <div class="card card-l-a">
