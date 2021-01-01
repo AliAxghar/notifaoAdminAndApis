@@ -160,6 +160,15 @@ class UserAppViewSet(viewsets.ModelViewSet):
     queryset = UserApp.objects.all()
     serializer_class = UserAppSerializer
 
+    def create(self, request, *args, **kwargs):
+        get_user_id  = request.data['user_id']
+        get_app_id = request.data['app_id']
+        get_existing_obj = UserApp.objects.filter(user_id = get_user_id).filter(app_id = get_app_id).last()
+        if get_existing_obj is not None:
+            return Response({"message": "Already added",  "status": status.HTTP_429_TOO_MANY_REQUESTS})
+        else:
+            response = super().create(request, *args, **kwargs)
+            return Response({"message": "Successfully added",  "status": status.HTTP_201_CREATED})
 
 
 class AppViewSet(viewsets.ModelViewSet):
