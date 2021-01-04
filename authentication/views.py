@@ -13,7 +13,9 @@ from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 from .forms import LoginForm, SignUpForm
-
+from customers.models import Customer
+from core.settings import api_base_url
+import requests
 def login_view(request):
     form = LoginForm(request.POST or None)
 
@@ -42,21 +44,48 @@ def register_user(request):
     success = False
 
     if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get("email")
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(email=email, password=raw_password)
-
-            msg     = 'User is created successfully'
-            success = True
-            
-            # return redirect("/login/")
-
+        phone = request.POST.get('phone_number')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        get_customer_email = Customer.objects.filter(email=email)
+        get_customer_phone = Customer.objects.filter(phone=phone)
+        if get_customer_email:
+            msg = "User is already exist with this email"
         else:
-            msg1 = 'Form is not valid'    
-    else:
-        form = SignUpForm()
+            if get_customer_phone:
+                msg = "This phone number is already exist"
+            else:
+                if password==password2:
+                    if len(password) < 8:
+                        msg = "Password is too short, must contain at least 8 characters."
+                    else:
+                        data = {"name":name, "phone":phone, "email":email, "password1":password, "password2":password, "business_name":"None"}
+                        createCustomer = requests.post('{}/customer/register/'.format(api_base_url), data=data)
+                        res = createCustomer.json()
+                        pass_validate = res
+                        if res:
+                            if len(res) > 1:
+                                return redirect('/login/')
+                            else:
+                                msg = "This password is too common."
+                        # customer = Customer.objects.create(name=name, phone=phone, email=email, password=password)                            
+                else:
+                    msg = "Passwords do not match"
+        # form = SignUpForm(request.POST)
+        # if form.is_valid():
+        #     form.save()
+        #     email = form.cleaned_data.get("email")
+        #     raw_password = form.cleaned_data.get("password1")
+        #     user = authenticate(email=email, password=raw_password)
 
-    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "msg1" : msg1, "success" : success })
+        #     msg     = 'User is created successfully'
+        #     success = True
+            
+        #     # return redirect("/login/")
+
+        # else:
+        #     msg1 = 'Form is not valid'
+
+    return render(request, "accounts/register.html", {"msg" : msg, "success" : success })

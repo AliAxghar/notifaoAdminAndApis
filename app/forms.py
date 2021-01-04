@@ -8,10 +8,11 @@ class UpdateProfileForm(forms.ModelForm):
     New_password = forms.CharField(required=False, widget=forms.PasswordInput)
     class Meta:
         model = Customer
-        fields = ('name','email','profile_pic')
+        fields = ('name','email' ,'business_name', 'profile_pic')
         labels = {
             'name': 'Name',
-            'email': 'Email', 
+            'email': 'Email',
+            'business_name':'Business Name',
             'New_password':'New Password',
             'profile_pic': 'Profile picture',
         }
