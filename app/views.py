@@ -34,6 +34,7 @@ from django.contrib.auth.decorators import login_required
 from core.settings import api_base_url
 import requests
 from notifications.models import Notification
+from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 stripe.api_key = "sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0" 
 
@@ -192,6 +193,61 @@ class AppViewSet(viewsets.ModelViewSet):
         # super().save(*args, **kwargs)
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
+
+
+
+@api_view(['POST'])
+def getUserApps(request):
+    if request.method == 'POST':
+        try:
+            user_id  = request.data['user_id']
+        except MultiValueDictKeyError:
+            return Response({"detail": "Make sure user_id is provided",  "status": status.HTTP_400_BAD_REQUEST})        
+        try:
+            get_user = User.objects.get(id = user_id)
+        except User.DoesNotExist:
+            get_user = None
+        if get_user is not None:
+            # user_app_list = UserApp.objects.filter(user_id = user_id).all()
+            # for app in user_app_list:
+            #     apps.
+            user_apps = App.objects.filter(app__in = UserApp.objects.filter(user_id = user_id))
+            serializer = AppSerializer(user_apps, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        else:
+            return Response({"message": "User does not exixts " , "status": status.HTTP_400_BAD_REQUEST})
+    else:
+        return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
+
+
+@api_view(['POST'])
+def deleteUserApps(request):
+    if request.method == 'POST':
+        try:
+            user_id  = request.data['user_id']
+            app_id  = request.data['app_id']
+        except MultiValueDictKeyError:
+            return Response({"detail": "Make sure user_id and app_id are provided",  "status": status.HTTP_400_BAD_REQUEST})        
+        try:
+            get_user = User.objects.get(id = user_id)
+        except User.DoesNotExist:
+            get_user = None
+        if get_user is not None:
+            print(get_user.id)
+            try:
+                get_user_app = UserApp.objects.filter(app_id = app_id).get(user_id = user_id)
+            except UserApp.DoesNotExist:
+                get_user_app = None
+            if get_user_app is not None :
+                get_user_app.delete()
+                return Response({"message": "Successfully removed", "status": status.HTTP_201_CREATED})
+            else:
+                return Response({"message": "App is not registered in your account" , "status": status.HTTP_400_BAD_REQUEST})
+        else:    
+            return Response({"message": "User does not exixts " , "status": status.HTT})
+    else:
+        return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
+
 
 
 

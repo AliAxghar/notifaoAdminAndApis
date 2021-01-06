@@ -15,6 +15,8 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('', include(router.urls)),
     path('createapp/', view = createApp, name='create_app'),
+    path('getUserApps/', view = getUserApps, name='get_user_apps'),
+    path('deleteUserApp/', view = deleteUserApps, name='delete_user_app'),
 
     re_path(r'^.*\.html', views.pages, name='pages'),
     path('update_profile/<str:pk>/', views.updateProfile, name="update_profile"),
