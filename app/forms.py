@@ -38,13 +38,13 @@ class AddAppForm(forms.ModelForm):
                 "placeholder" : "Enter App Description"
                 }
             ))
-    app_url = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "Enter URL get/post", 
-                "class": "form-control"
-            }
-        ))
+    # app_url = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "placeholder" : "Enter URL get/post", 
+    #             "class": "form-control"
+    #         }
+    #     ))
     app_logo = forms.ImageField(
         widget=forms.FileInput(
             attrs={             
@@ -64,7 +64,7 @@ class AddAppForm(forms.ModelForm):
         ))
     class Meta:
         model = App
-        fields = ('name', 'description', 'app_url', 'app_logo','app_image','customer_id_id')
+        fields = ('name', 'description', 'app_logo','app_image','customer_id_id')
 
 
 class UpdateAppForm(forms.ModelForm):
@@ -72,10 +72,10 @@ class UpdateAppForm(forms.ModelForm):
     app_image = forms.ImageField(required=False, widget=forms.FileInput)
     class Meta:
         model = App
-        fields = ('name','app_url','description','app_logo','app_image')
+        fields = ('name','description','app_logo','app_image')
         labels = {
             'name': 'APPLICATION NAME',
-            'app_url': 'URL', 
+            # 'app_url': 'URL', 
             'description':'DESCRIPTION',
             'app_logo':'APP LOGO',
             'app_image': 'APP BACKGROUND IMAGE',

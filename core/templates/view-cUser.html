@@ -1,18 +1,10 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Apps {% endblock %} 
+{% block title %} Connected User {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
-<style>
-    .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
-        position: absolute!important;
-        top: 8px!important;
-    }
-</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -81,40 +73,51 @@
                         </div>
                     </div>
                     <hr class="hr-top">
-                    <div class="row" id="app-page">
-                        <div class="col-6">
-                            <h4 class="title1">Notifications</h4>
-                            <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Notifications</p>
-                        </div>
-                        <!-- <div class="col-6">
-                            <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
-                        </div> -->
-                        <div class="col-md-12 mt-3">
-                            <div class="card card-l-a">
-                                {% for notification in notifications %}
-                                <div class="card mt-1 mb-0">
-                                    <div class="row">
-                                        <div class="col-md-3 n-b-r">
-                                            <div class="p-2 pl-3">
-                                                <span>From</span>
-                                                <h5 >{{notification.app_id.name|capfirst}}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-7 n-b-r">
-                                            <div class="p-1 pt-3">
-                                                <h6 >{{notification.title|capfirst}}</h6>
-                                                <p>{{notification.description|capfirst}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <p class="p-2 pr-3 pt-3 mb-0 text-right">{{notification.created_at}}</p>
-                                            <p class="pr-3 pt-0 text-right">Subscribed: {{notification.notification_count}}</p>
-                                        </div>
+                    <div class="row">
+                        <div class="col-md-12 view-app">
+                            <h4 class="title1">User Details</h4>
+                            <div class="row pt-3" id="app-v-c">
+                                <!-- <div class="col-md-2"></div> -->
+                                <div class="col-md-2">
+                                    <label for="">Profile Image</label>
+                                    <div class="" >
+                                        {% if user_det.profile_pic %}
+                                        <img src="{{user_det.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img src="/static/assets/images/black1.png" style="border: 1px solid silver;" alt="Profile image">
+                                        {% endif %}
                                     </div>
                                 </div>
-                                {% endfor %}
+
+                                <div class="col-md-3">
+                                    <!-- <label for="">APP background-image</label>
+                                    <div class="">
+                                        <img src="{{app_detail.app_image.url}}" alt="background-image">
+                                    </div> -->
+                                </div>
+                                <div class="col-md-7"></div>
                             </div>
-                        </div>        
+                            <div class="row pt-3">
+                                <div class="col-md-6">
+                                    <label for="">USER ID</label>
+                                    <input type="text" class="form-control" value="{{user_det.id}}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">USER NAME</label>
+                                    <input type="text" class="form-control" value="{{user_det.name}}" readonly>
+                                </div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col-md-6">
+                                    <label for="">USER EMAIL</label>
+                                    <input type="text" class="form-control" value="{{user_det.email}}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">USER PHONE</label>
+                                    <input type="text" class="form-control" value="{{user_det.phone}}" readonly>
+                                </div>
+                            </div>
+                        </div>                 
                     </div>
                 </div>
             </div>
@@ -124,13 +127,4 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<script>
-    $(document).ready(function() {
-        $('#my-table').DataTable();
-            responsive: true
-    } );
-</script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 {% endblock javascripts %}

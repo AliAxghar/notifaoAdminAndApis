@@ -32,7 +32,7 @@
                             <div class="top-right mt-1">
                                 <ul>
                                     <li class="mr-2">
-                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
@@ -74,6 +74,7 @@
                         </div>
                     </div>
                     <hr class="hr-top">
+                    {% if invoice_item %}
                     <div class="row">
                         <div class="col-md-9">
                             <h4 class="title1">Add Application</h4>
@@ -129,11 +130,11 @@
                                                     {{ form.name }}
                                                     <!-- <input type="text" class="form-control" id="app_name" name="app_name" aria-describedby="name" placeholder="Enter App Name" required> -->
                                                 </div>
-                                                <div class="form-group">
+                                                <!-- <div class="form-group">
                                                     <label for="">URL</label>
-                                                    <!-- <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required> -->
+                                                    <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required>
                                                     {{ form.app_url }}
-                                                </div>
+                                                </div> -->
                                                 <div class="form-group">
                                                     <label for="exampleFormControlTextarea1">DESCRIPTION</label>
                                                     <!-- <textarea class="form-control" type="text" name="app_description" id="app_description" placeholder="Enter App Description" rows="7" required></textarea> -->
@@ -175,14 +176,125 @@
                                 </div>
                                 <div class="right-c-d">
                                     <h6>Limits</h6>
-                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="#">Buy More</a></p>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
                                     <h6 class="pt-1">Total users connected</h6>
-                                    <h3 class="pt-1">415</h3>
-                                    <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
                                 </div>
                             </div>
                         </div>                 
                     </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="title1">Add Application</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Add Application</p>
+                            <div class="row pt-1 pl-1">
+                                <div class="col-md-6">
+                                   <form id="app-form" action="" method="post" role="form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-6">
+                                               <div class="app-add-image">
+                                                    <img id="up-img" >
+                                                    <div class="all-t">
+                                                        <label for="fusk">
+                                                            <i class="feather icon-plus-circle">
+                                                                <!-- <input id="fusk" type="file" name=""> -->
+                                                                {{ form.app_logo }}
+                                                            </i>
+                                                        </label>
+                                                        <p class="">Upload Logo</p>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <!-- <div class="app-add-image">
+                                                     <div class="all-t">
+                                                        <i class="feather icon-plus-circle"></i>
+                                                        <p class="pt-1">Add Background Image</p>
+                                                     </div>
+                                                </div> -->
+                                                <div class="app-add-image1">
+                                                    <img id="up-img1" >
+                                                    <div class="all-t1">
+                                                        <label for="fusk1">
+                                                            <i class="feather icon-plus-circle">
+                                                                <!-- <input id="fusk1" type="file" name="app_image"> -->
+                                                                {{ form.app_image }}
+                                                            </i>
+                                                        </label>
+                                                        <p class="">Add Background Image</p>
+                                                    </div>
+                                               </div>
+                                             </div>
+                                            
+                                            <div class="col-12 text-center pt-1">
+                                                <span id="app-error" style="color: red;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row app-n">
+                                            <div class="col-12 pt-1">
+                                                <div class="form-group">
+                                                    <label for="">APPLICATION NAME</label>
+                                                    {{ form.name }}
+                                                    <!-- <input type="text" class="form-control" id="app_name" name="app_name" aria-describedby="name" placeholder="Enter App Name" required> -->
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                    <label for="">URL</label>
+                                                    <input type="url" class="form-control" id="app_url" name="app_url" aria-describedby="url" placeholder="Enter URL get/post" required>
+                                                    {{ form.app_url }}
+                                                </div> -->
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">DESCRIPTION</label>
+                                                    <!-- <textarea class="form-control" type="text" name="app_description" id="app_description" placeholder="Enter App Description" rows="7" required></textarea> -->
+                                                    {{ form.description }}
+                                                </div>
+                                                {{ form.customer_id_id }}
+                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Add Application">
+                                            </div>
+                                        </div>
+                                   </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-a-p">
+                                        <div class="img-app-l-6 pt-3">
+                                            <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
+                                            <h5 class="pt-3">About Notifao Applications</h5>
+                                            <p class="pt-3">
+                                                lipsum as it is sometimes. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum a type specimen book.
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="donut_chart" style="height:200px"></div>
+                                    <div class="row text-center">
+                                        <div class="col-6 b-clr"><span class="Unused mr-1 dot"></span>Unused</div>
+                                        <div class="col-6 b-clr"><span class="planused mr-1 dot1"></span>Plan Used</div>
+                                    </div>
+                                    <p class="card-p pt-3">You have used <span style="color: black;">{{total_used_notification}}%</span> of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>                  -->
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

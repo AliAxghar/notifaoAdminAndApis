@@ -8,6 +8,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django import template
 from customers.models import Customer
+from django.contrib.admin.models import LogEntry
 from app.forms import *
 from invoices.models import *
 import time
@@ -42,6 +43,7 @@ def index(request):
     user = request.user
     customer = user.id
     apps = App.objects.filter(customer_id=customer)
+    invoice_item = Invoices.objects.filter(email=user.email)
     total_noti_graph_list = []
     if apps:
         for app in apps:
@@ -57,8 +59,8 @@ def index(request):
             all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:5]
             for noti in all_notifications:
                 notifications.append(noti)
-    total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
-    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')
+    total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').count()
+    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')[:10]
     userapps = UserApp.objects.filter(customer_id=customer).order_by('-id')[:12]
     data = []
     labels = []
@@ -88,11 +90,12 @@ def index(request):
     if request.method == 'POST':
         dates  = request.POST.get('dates')
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
-        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
+        notifications = Notification.objects.filter(created_at=dates).order_by('-id')[:10]
+        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').count()
     else:
         if request.user.is_superuser:
             lasUsers = UserApp.objects.filter().distinct('user_id')
-    context = {"total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+    context = {"invoice_item":invoice_item, "total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -103,7 +106,11 @@ def index(request):
 def pages(request):
     user = request.user
     all_app = App.objects.all()
+    invoice_item = Invoices.objects.filter(email=user.email)
+    logs = LogEntry.objects.all()
+    print(logs,"...........")
     # all_invoices = stripe.Invoice.list()
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []
     invoices_a = Invoices.objects.all()
     if invoices_a:
@@ -130,7 +137,10 @@ def pages(request):
         all_notifications = Notification.objects.filter(app_id=app.id)
         for noti in all_notifications:
             notifications.append(noti)
-    Users = UserApp.objects.filter(customer_id=user.id)
+    users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')
+    # print(users)
+    # us = UserApp.objects.all()
+    # print(us)
     userApps = App.objects.filter(customer_id_id=user.id)
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
@@ -145,7 +155,7 @@ def pages(request):
 
 
 
-    context = {"indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -279,6 +289,7 @@ def viewInvoice(request, id):
 @login_required(login_url="/login/")
 def createPlan(request):
     user_email = request.user.email
+    invoice_item = Invoices.objects.filter(email=user_email)
     if request.method == "POST":
         # name = request.POST.get('name')
         # price = request.POST.get('price')
@@ -294,7 +305,7 @@ def createPlan(request):
         if planName:
             context = {"planName":planName}
             return render(request, 'payment.html', context)
-    context = {}
+    context = {"invoice_item":invoice_item}
     return render(request, 'my-plan.html', context)
 
 @login_required(login_url="/login/")
@@ -469,6 +480,8 @@ def updateProfile(request, pk):
 def create_apps(request):
     user = request.user
     customer_id = user.id
+    invoice_item = Invoices.objects.filter(email=user.email)
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -484,7 +497,6 @@ def create_apps(request):
         form = AddAppForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             app_name = form.cleaned_data.get('name')
-            app_url = form.cleaned_data.get('app_url')
             description = form.cleaned_data.get('description')
             app_logo = form.cleaned_data.get('app_logo')
             app_image = form.cleaned_data.get('app_image')
@@ -495,7 +507,7 @@ def create_apps(request):
             if get_custmer is None:
                 return Response({"message": "Customer does not exists " , "status": status.HTTP_404_NOT_FOUND})
             else:
-                app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image,app_url  = app_url , customer_id_id = customer_id, app_logo=app_logo)
+                app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image, customer_id_id = customer_id, app_logo=app_logo)
                 allowed_app = get_custmer.apps_allowed
                 get_custmer.apps_allowed = allowed_app - 1
                 get_custmer.save() 
@@ -517,13 +529,15 @@ def create_apps(request):
                         return redirect("../../app.html")
     else:
         form = AddAppForm(request.POST or None, request.FILES or None)
-    context = {"form":form,"customer_id":customer_id, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
+    context = {"invoice_item":invoice_item ,"total_users":total_users, "form":form,"customer_id":customer_id, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'add-app.html', context)
 
 @login_required(login_url="/login/")
 def updateApp(request, pk):
     user = request.user
     customer_id = user.id
+    invoice_item = Invoices.objects.filter(email=user.email)
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -545,7 +559,7 @@ def updateApp(request, pk):
             msg = "App updated successfully"
             return redirect("../../app.html")								
     
-    context = {'form': form, "msg":msg,"app":app, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
+    context = {"invoice_item":invoice_item ,"total_users":total_users, 'form': form, "msg":msg,"app":app, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'edit-app.html', context)
 
 @login_required(login_url="/login/")
@@ -564,3 +578,21 @@ def view_apps(request,pk):
     app_detail = App.objects.get(id=pk)
     context = {"app_detail":app_detail}
     return render(request, 'view-app.html', context)
+
+
+@login_required(login_url="/login/")
+def delete_cUser(request, pk):
+    user = User.objects.get(id=pk)
+    if request.method == "POST":
+        user = User.objects.get(id=pk)
+        user.delete()
+        return redirect("../../connected-users.html")
+    context = {'user': user}
+    return render(request, 'delete-cUser.html', context)
+
+
+@login_required(login_url="/login/")
+def view_cUser(request,pk):
+    user_det = User.objects.get(id=pk)
+    context = {"user_det":user_det}
+    return render(request, 'view-cUser.html', context)

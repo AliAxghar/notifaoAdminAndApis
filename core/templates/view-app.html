@@ -31,7 +31,7 @@
                             <div class="top-right mt-1">
                                 <ul>
                                     <li class="mr-2">
-                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
@@ -79,6 +79,12 @@
                             <div class="row pt-3" id="app-v-c">
                                 <!-- <div class="col-md-2"></div> -->
                                 <div class="col-md-2">
+                                    <label for="">APP QR Code</label>
+                                    <div class="">
+                                        <img src="{{app_detail.app_qr.url}}" alt="QRCode">
+                                    </div>
+                                </div> 
+                                <div class="col-md-2">
                                     <label for="">APP LOGO</label>
                                     <div class="" >
                                         <img src="{{app_detail.app_logo.url}}" alt="image-logo">
@@ -91,7 +97,7 @@
                                         <img src="{{app_detail.app_image.url}}" alt="background-image">
                                     </div>
                                 </div>
-                                <div class="col-md-7"></div>
+                                <div class="col-md-5"></div>
                             </div>
                             <div class="row pt-3">
                                 <div class="col-md-4">
@@ -117,22 +123,8 @@
                                     <input type="text" class="form-control" value="{{app_detail.customer_id}}" readonly>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly>
-                                </div>
-                            </div>
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <label for="">APP QR</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_image.url}}" readonly>
-                                </div>
-                                <div class="col-md-4">
                                     <label for="">CREATED AT</label>
                                     <input type="text" class="form-control" value="{{app_detail.created_at}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly> -->
                                 </div>
                             </div>
                         </div>                 
