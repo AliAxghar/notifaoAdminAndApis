@@ -91,7 +91,9 @@ h6 {
     color: #111;
     font-weight: 400;
 }
-
+.logo-img{
+    height:26px!important;
+}
 h1 {
     font-size: 48px;
 }
@@ -13739,9 +13741,9 @@ table th {
 .app-n .form-group {
     margin-bottom: 0rem;
 }
-.logo-img{
+/* .logo-img{
     height: 26px;
-}
+} */
 .card-a-p{
     background-color: #f4f8f9;
     padding: 25px 20px;

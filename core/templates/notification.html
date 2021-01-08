@@ -39,7 +39,7 @@
                             <div class="top-right mt-1">
                                 <ul>
                                     <li class="mr-2">
-                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
@@ -84,6 +84,7 @@
                     <div class="row" id="app-page">
                         <div class="col-6">
                             <h4 class="title1">All Notifications</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Notifications</p>
                         </div>
                         <div class="col-6">
                             <!-- <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a> -->

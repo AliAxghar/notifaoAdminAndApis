@@ -12,6 +12,10 @@
         position: absolute!important;
         top: 8px!important;
     }
+    .c-u-img{
+        height: 20px;
+        width: 20px;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -39,7 +43,7 @@
                             <div class="top-right mt-1">
                                 <ul>
                                     <li class="mr-2">
-                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
@@ -99,8 +103,8 @@
                                                 <th class="text-left">NAME</th>
                                                 <th class="text-left">EMAIL</th>
                                                 <th class="text-left">PHONE</th>
-                                                <th class="text-left">IMAGE</th>
-                                                <th class="text-left">ACTIONS</th>
+                                                <th class="text-center">IMAGE</th>
+                                                <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -117,18 +121,23 @@
                                                 <td class="text-left pb-t">{{app.user_id.name}}</td>
                                                 <td class=" text-left pb-t-c">{{app.user_id.email}}</td>
                                                 <td class="text-left pb-t-c">{{app.user_id.phone}}</td>
-                                                <td class="text-left pb-t-c">{{app.user_id.profile_pic}}</td>
-                                                <td class="text-left pb-t">
+                                                <!-- <td class="text-left pb-t-c"><img class="c-u-img" src="media/{{app.user_id.profile_pic}}" alt="profile_pic"></td> -->
+                                                {% if app.user_id.profile_pic %}
+                                                <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.user_id.profile_pic}}" alt="profile_pic"></td>
+                                                {% else %}
+                                                <td class="text-center pb-t-c">None</td>
+                                                {% endif %}
+                                                <td class="text-center pb-t">
                                                     <span class="action-i">
-                                                        <a href="#"><i class="feather icon-eye"></i></a>
-                                                        <a href="#"><i class="feather icon-edit"></i></a>
-                                                        <a href="#"><i class="feather icon-trash-2"></i></a>
+                                                        <a href="{% url 'view_cUser' app.user_id.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href="#"><i class="feather icon-edit"></i></a> -->
+                                                        <a href="{% url 'delete_cUser' app.user_id.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>
                                             {% endfor %}
                                             {% else %}
-                                            {% for app in Users %}
+                                            {% for app in users %}
                                             <tr>
                                                 <td>
                                                     <div class="custom-control custom-checkbox">
@@ -140,12 +149,16 @@
                                                 <td class="text-left pb-t">{{app.user_id.name}}</td>
                                                 <td class=" text-left pb-t-c">{{app.user_id.email}}</td>
                                                 <td class="text-left pb-t-c">{{app.user_id.phone}}</td>
-                                                <td class="text-left pb-t-c">{{app.user_id.profile_pic}}</td>
-                                                <td class="text-left pb-t">
-                                                    <span class="action-i">
-                                                        <a href="#"><i class="feather icon-eye"></i></a>
-                                                        <a href="#"><i class="feather icon-edit"></i></a>
-                                                        <a href="#"><i class="feather icon-trash-2"></i></a>
+                                                {% if app.user_id.profile_pic %}
+                                                <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.user_id.profile_pic}}" alt="profile_pic"></td>
+                                                {% else %}
+                                                <td class="text-center pb-t-c">None</td>
+                                                {% endif %}
+                                                <td class="text-center pb-t">
+                                                    <span class="action-i text-center">
+                                                        <a href="{% url 'view_cUser' app.user_id.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href="#"><i class="feather icon-edit"></i></a> -->
+                                                        <a href="{% url 'delete_cUser' app.user_id.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
                                                 </td>
                                             </tr>

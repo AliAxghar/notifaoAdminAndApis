@@ -6,7 +6,8 @@ from rest_framework .decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework import status
-from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -8,6 +8,7 @@ from django.template import loader
 from django.http import HttpResponse
 from django import template
 from customers.models import Customer
+from django.contrib.admin.models import LogEntry
 from app.forms import *
 from invoices.models import *
 import time
@@ -52,6 +53,7 @@ def index(request):
     #     userapp_dates = str(obj.created_at)
     #     labels.append(userapp_dates)
     apps = App.objects.filter(customer_id=customer)
+    invoice_item = Invoices.objects.filter(email=user.email)
     total_noti_graph_list = []
     if apps:
         for app in apps:
@@ -67,8 +69,8 @@ def index(request):
             all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:5]
             for noti in all_notifications:
                 notifications.append(noti)
-    total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
-    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')
+    total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').count()
+    lasUsers = UserApp.objects.filter(customer_id=customer).distinct('user_id')[:10]
     userapps = UserApp.objects.filter(customer_id=customer).order_by('-id')[:12]
     data = []
     labels = []
@@ -98,9 +100,12 @@ def index(request):
     if request.method == 'POST':
         dates  = request.POST.get('dates')
         lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
-        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').distinct().count()
-        
-    context = {"total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+        notifications = Notification.objects.filter(created_at=dates).order_by('-id')[:10]
+        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').count()
+    else:
+        if request.user.is_superuser:
+            lasUsers = UserApp.objects.filter().distinct('user_id')
+    context = {"invoice_item":invoice_item, "total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -111,8 +116,30 @@ def index(request):
 def pages(request):
     user = request.user
     all_app = App.objects.all()
-    all_invoices = stripe.Invoice.list(limit=50)
-    lasUsers = UserApp.objects.all()
+    invoice_item = Invoices.objects.filter(email=user.email)
+    logs = LogEntry.objects.all()
+    print(logs,"...........")
+    # all_invoices = stripe.Invoice.list()
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
+    all_invoices = []
+    invoices_a = Invoices.objects.all()
+    if invoices_a:
+        for i in invoices_a:
+            indi_ina = stripe.Invoice.retrieve(
+                i.billing_id,
+            )
+            if indi_ina:
+                all_invoices.append(indi_ina)
+    invoices_all = Invoices.objects.filter(email=user.email)
+    indi_in_list = []
+    if invoices_all:
+        for i in invoices_all:
+            indi_in = stripe.Invoice.retrieve(
+                i.billing_id,
+            )
+            if indi_in:
+                indi_in_list.append(indi_in)
+    lasUsers = UserApp.objects.filter().distinct('user_id')
     a_notifications = Notification.objects.all()
     apps = App.objects.filter(customer_id=user.id)
     notifications = []
@@ -120,7 +147,10 @@ def pages(request):
         all_notifications = Notification.objects.filter(app_id=app.id)
         for noti in all_notifications:
             notifications.append(noti)
-    Users = UserApp.objects.filter(customer_id=user.id)
+    users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')
+    # print(users)
+    # us = UserApp.objects.all()
+    # print(us)
     userApps = App.objects.filter(customer_id_id=user.id)
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
@@ -135,9 +165,7 @@ def pages(request):
 
 
 
-    context = {"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
+    context = {"invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -335,6 +363,7 @@ def viewInvoice(request, id):
 @login_required(login_url="/login/")
 def createPlan(request):
     user_email = request.user.email
+    invoice_item = Invoices.objects.filter(email=user_email)
     if request.method == "POST":
         # name = request.POST.get('name')
         # price = request.POST.get('price')
@@ -350,7 +379,7 @@ def createPlan(request):
         if planName:
             context = {"planName":planName}
             return render(request, 'payment.html', context)
-    context = {}
+    context = {"invoice_item":invoice_item}
     return render(request, 'my-plan.html', context)
 
 @login_required(login_url="/login/")
@@ -388,8 +417,16 @@ def updatePlan(request,planName):
                             ],
                             metadata={"planName":name_p,"payment_method":charge.payment_method_details.card.brand},
                         )
+                        m = stripe.Charge.retrieve(
+                            charge.id,
+                            expand=['customer', 'invoice.subscription']
+                        )
+                        invoice_id = None
+                        if m:
+                            invoice_id = m.customer.subscriptions.data
+                            invoice_id = invoice_id[0].latest_invoice
                         if subscription:
-                            invoices = Invoices.objects.create(billing_id=charge.id, name=subscription.metadata['planName'], price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=description_p, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
+                            invoices = Invoices.objects.create(billing_id=invoice_id, name=subscription.metadata['planName'], price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=description_p, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
                             if invoices:
                                 return redirect('../../success_pay.html')
             elif planName == 'businessPlan':
@@ -421,8 +458,16 @@ def updatePlan(request,planName):
                             ],
                             metadata={"planName":name_b, "payment_method":charge.payment_method_details.card.brand},
                         )
+                        m = stripe.Charge.retrieve(
+                            charge.id,
+                            expand=['customer', 'invoice.subscription']
+                        )
+                        invoice_id = None
+                        if m:
+                            invoice_id = m.customer.subscriptions.data
+                            invoice_id = invoice_id[0].latest_invoice
                         if subscription:
-                            invoices = Invoices.objects.create(billing_id=charge.id, name=subscription.metadata['planName'], price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=description_b, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
+                            invoices = Invoices.objects.create(billing_id=invoice_id, name=subscription.metadata['planName'], price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=description_b, email=user_email, status=subscription.status, payment_method=charge.payment_method_details.card.brand, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge.receipt_url)
                             if invoices:
                                 return redirect('../../success_pay.html')
             elif planName == 'unlimitedPlan':
@@ -454,12 +499,20 @@ def updatePlan(request,planName):
                             ],
                             metadata={"planName":name_u ,"payment_method":charge.payment_method_details.card.brand},
                         )
+                        m = stripe.Charge.retrieve(
+                            charge.id,
+                            expand=['customer', 'invoice.subscription']
+                        )
+                        invoice_id = None
+                        if m:
+                            invoice_id = m.customer.subscriptions.data
+                            invoice_id = invoice_id[0].latest_invoice
                         if subscription:
                             status=subscription.status
                             name=subscription.metadata['planName']
                             payment_method=charge.payment_method_details.card.brand
                             charge_receipt_url = charge.receipt_url
-                            invoices = Invoices.objects.create(billing_id=charge.id, name=name, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=description_u, email=user_email, status=status, payment_method=payment_method, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge_receipt_url)
+                            invoices = Invoices.objects.create(billing_id=invoice_id, name=name, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=description_u, email=user_email, status=status, payment_method=payment_method, charge_id=charge.id, customer_id=customer.id, subscription_id=subscription.id, subscription_created_at=subscription.created, charge_receipt_url=charge_receipt_url)
                             if invoices:
                                 return redirect('../../success_pay.html')
     data = {'data': user_email}
@@ -501,6 +554,8 @@ def updateProfile(request, pk):
 def create_apps(request):
     user = request.user
     customer_id = user.id
+    invoice_item = Invoices.objects.filter(email=user.email)
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -516,39 +571,47 @@ def create_apps(request):
         form = AddAppForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             app_name = form.cleaned_data.get('name')
-            app_url = form.cleaned_data.get('app_url')
             description = form.cleaned_data.get('description')
             app_logo = form.cleaned_data.get('app_logo')
             app_image = form.cleaned_data.get('app_image')
-            app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image,app_url  = app_url , customer_id_id = customer_id, app_logo=app_logo)
-            allowed_app = get_custmer.apps_allowed
-            get_custmer.apps_allowed = allowed_app - 1
-            get_custmer.save() 
-            qr_image = qrcode.make(app_obj.id)
-            canvas = Image.new('RGB',(290,290), 'white')
-            draw = ImageDraw.Draw(canvas)
-            canvas.paste(qr_image)
-            fname = f'app_qr-{app_obj.name}.png'
-            buffer = BytesIO()
-            canvas.save(buffer,'PNG')
-            obj = App.objects.get(id = app_obj.id )
-            obj.app_qr.save(fname,File(buffer),save = True)
-            app_obj2 = App.objects.get(id = app_obj.id)
-            app_obj = app_obj2
-            canvas.close()
-            if app_obj:
-                success = True
-                if success:
-                    return redirect("../../app.html")
+            try:
+                get_custmer = Customer.objects.get(email = user.email)
+            except Customer.DoesNotExist:
+                get_custmer = None
+            if get_custmer is None:
+                return Response({"message": "Customer does not exists " , "status": status.HTTP_404_NOT_FOUND})
+            else:
+                app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image, customer_id_id = customer_id, app_logo=app_logo)
+                allowed_app = get_custmer.apps_allowed
+                get_custmer.apps_allowed = allowed_app - 1
+                get_custmer.save() 
+                qr_image = qrcode.make(app_obj.id)
+                canvas = Image.new('RGB',(290,290), 'white')
+                draw = ImageDraw.Draw(canvas)
+                canvas.paste(qr_image)
+                fname = f'app_qr-{app_obj.name}.png'
+                buffer = BytesIO()
+                canvas.save(buffer,'PNG')
+                obj = App.objects.get(id = app_obj.id )
+                obj.app_qr.save(fname,File(buffer),save = True)
+                app_obj2 = App.objects.get(id = app_obj.id)
+                app_obj = app_obj2
+                canvas.close()
+                if app_obj:
+                    success = True
+                    if success:
+                        return redirect("../../app.html")
     else:
         form = AddAppForm(request.POST or None, request.FILES or None)
-    context = {"form":form,"customer_id":customer_id, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
+    context = {"invoice_item":invoice_item ,"total_users":total_users, "form":form,"customer_id":customer_id, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'add-app.html', context)
 
 @login_required(login_url="/login/")
 def updateApp(request, pk):
     user = request.user
     customer_id = user.id
+    invoice_item = Invoices.objects.filter(email=user.email)
+    total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -570,7 +633,7 @@ def updateApp(request, pk):
             msg = "App updated successfully"
             return redirect("../../app.html")								
     
-    context = {'form': form, "msg":msg,"app":app, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
+    context = {"invoice_item":invoice_item ,"total_users":total_users, 'form': form, "msg":msg,"app":app, "total_used_notification":total_used_notification, "remaining_notification":remaining_notification}
     return render(request, 'edit-app.html', context)
 
 @login_required(login_url="/login/")
@@ -584,9 +647,26 @@ def deleteApp(request, pk):
     return render(request, 'delete-app.html', context)
 
 
-
 @login_required(login_url="/login/")
 def view_apps(request,pk):
     app_detail = App.objects.get(id=pk)
     context = {"app_detail":app_detail}
     return render(request, 'view-app.html', context)
+
+
+@login_required(login_url="/login/")
+def delete_cUser(request, pk):
+    user = User.objects.get(id=pk)
+    if request.method == "POST":
+        user = User.objects.get(id=pk)
+        user.delete()
+        return redirect("../../connected-users.html")
+    context = {'user': user}
+    return render(request, 'delete-cUser.html', context)
+
+
+@login_required(login_url="/login/")
+def view_cUser(request,pk):
+    user_det = User.objects.get(id=pk)
+    context = {"user_det":user_det}
+    return render(request, 'view-cUser.html', context)

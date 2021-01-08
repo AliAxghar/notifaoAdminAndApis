@@ -7,6 +7,8 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
+from users.models import User
+
 router = routers.DefaultRouter()
 router.register('apps', AppViewSet),
 router.register('userapp', UserAppViewSet)
@@ -29,6 +31,8 @@ urlpatterns = [
     path('viewInvoice/<str:id>/', views.viewInvoice, name="viewInvoice"),
     path('createPlan/', views.createPlan, name="createPlan"),
     path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
+    path('delete_cUser/<str:pk>/', views.delete_cUser, name="delete_cUser"),
+    path('view_cUser/<str:pk>/', views.view_cUser, name="view_cUser"),
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

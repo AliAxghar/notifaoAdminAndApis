@@ -21,9 +21,10 @@ table#my-table {
 }
 >>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 table#my-table td {
-    padding: 7px 8px;
+    padding: 9px 8px;
     /* padding-bottom: 0px; */
     text-align: center;
+    font-size: 13px!important;
 }
 table#my-table .pb-t {
     padding-bottom: 0px!important;
