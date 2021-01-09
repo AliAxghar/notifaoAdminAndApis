@@ -117,8 +117,6 @@ def pages(request):
     user = request.user
     all_app = App.objects.all()
     invoice_item = Invoices.objects.filter(email=user.email)
-    logs = LogEntry.objects.all()
-    print(logs,"...........")
     # all_invoices = stripe.Invoice.list()
     total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []

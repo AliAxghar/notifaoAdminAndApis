@@ -12,14 +12,11 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
 table#my-table {
     border-radius: 8px;
 }
-<<<<<<< HEAD
-=======
 .page-item.active .page-link {
     color: #fff!important;
     background-color: #274a5d!important;
     border-color: #274a5d!important;
 }
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 table#my-table td {
     padding: 9px 8px;
     /* padding-bottom: 0px; */
@@ -549,8 +546,6 @@ span.part-span {
 #app-v-c img{
     object-fit: contain;
     height: 100px;
-<<<<<<< HEAD
-=======
 }
 .sub-pay {
     font-size: 28px;
@@ -589,5 +584,4 @@ div#card-errors {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 }
