@@ -17,12 +17,12 @@
                         <img class="loginlogo" src="/static/assets/images/loginlogo.png" alt="logo">
                     </div>
                     <h5 class="pt-3 pb-1">Register to get Notified!</h5>
-
-                    <span class="mb-0 text-muted1" style="color: #840a0a!important;">
-                        {% if msg %}
+                    <!-- <div id=""></div> -->
+                    <div class="mb-0 text-muted1" id="alert" style="color: #840a0a!important;">
+                        <!-- {% if msg %}
                             {{ msg | safe }}
-                        {% endif %} 
-                    </span>
+                        {% endif %}  -->
+                        </div>
                     <!-- <span class="mb-0 text-muted">
                         {% if msg1 %}
                             {{ msg1 | safe }}
@@ -32,7 +32,7 @@
                     <span class="text-error">{{ form.email.errors }}</span>
                     <span class="text-error">{{ form.password1.errors }}</span>
                     <span class="text-error">{{ form.password2.errors }}</span> -->
-                    <form role="form"  class="pt-2" method="post" action="{% url 'register' %}">
+                    <form role="form"  class="pt-2" method="post" action="">
 
                         {% csrf_token %}                    
 
@@ -75,11 +75,6 @@
         </div>
     </div>
     <script>
-        document.ready(function(){
-            alert('jkfdshfjdsh');
-        });
-    </script>
-    <script>
         $.ajax({
             url: "http://ip-api.com/json",
             jsonpCallback: "callback",
@@ -92,12 +87,32 @@
                     utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
     
                 });
-                $("form").submit(function() {
+                $('#phone_number').on('change paste keyup', function(){
                     var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
                     // console.log(full_number);
                     $("input[name='phone_number'").val(full_number);
                 });
             }
         });
+    </script>
+    <script>
+    $('#login-btn').on('click', function(){
+        var phone = $("#phone_number").val();
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var password2 = $("#password2").val();
+        var userdata = [name, email, phone, password, password2];
+        var list = userdata;
+        $.ajax({
+            url: '{% url "register" %}',
+            data: {'list[]': list},
+            dataType: 'json',
+            success: function (data) {
+                $('#alert').text(data.msg)
+            },
+        });
+        return false;
+    }); 
     </script>
 {% endblock content %}
