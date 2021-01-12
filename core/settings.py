@@ -91,27 +91,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 
-# api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'db1',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin123',
-#         'HOST': 'localhost'
-#     }
-# }
-
+api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'notifaodb',
+        'NAME': 'db1',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost'
     }
 }
-api_base_url = "http://127.0.0.1:8000"
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'notifaodb',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#         'HOST': 'localhost'
+#     }
+# }
+# api_base_url = "http://127.0.0.1:8000"
 
 
 
