@@ -54,7 +54,7 @@ File: style.css
      Google Font
 ==========================  **/
 
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 @import url("../plugins/bootstrap/css/bootstrap.min.css");
 @import url("../fonts/feather/css/feather.css");
 @import url("../plugins/jquery-scrollbar/css/jquery.scrollbar.min.css");
@@ -65,13 +65,19 @@ File: style.css
 ==========================  **/
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif!important;
     font-size: 14px;
     color: #888;
     font-weight: 400;
     background: #fff;
     position: relative;
 }
+
+.pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext{
+    font-size: 14px!important;
+    font-weight: 400!important;
+}
+
 
 *:focus {
     outline: none;
@@ -13418,12 +13424,14 @@ a#UserDropdown:hover {
     top: -20px;
 }
 .title1{
-    font-weight: 700!important;
-    color: black;
+    font-weight: 600!important;
+    color: black!important;
+    font-size: 21px!important;
 }
 .title2{
     font-weight: 550!important;
-    color: black;
+    color: black!important;
+    font-size: 18px!important;
 }
 input.date-input {
     position: relative;
