@@ -19,10 +19,9 @@
                     <h5 class="pt-3 pb-1">Register to get Notified!</h5>
                     <!-- <div id=""></div> -->
                     <div class="mb-0 text-muted1" id="alert" style="color: #840a0a!important;">
-                        <!-- {% if msg %}
-                            {{ msg | safe }}
-                        {% endif %}  -->
-                        </div>
+                    </div>
+                    <div class="mb-0 text-muted1" id="alert1" style="color: #53d453!important;">
+                    </div>
                     <!-- <span class="mb-0 text-muted">
                         {% if msg1 %}
                             {{ msg1 | safe }}
@@ -109,7 +108,14 @@
             data: {'list[]': list},
             dataType: 'json',
             success: function (data) {
-                $('#alert').text(data.msg)
+                if (data.msg == "User created successfully"){
+                    $('#alert').css("display","none");
+                    $('#alert1').text(data.msg);
+                }else{
+                    $('#alert').text(data.msg);
+                }
+                // console.log(data.msg1);
+                // $('#alert').text(data.msg)
             },
         });
         return false;

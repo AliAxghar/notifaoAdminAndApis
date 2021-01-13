@@ -80,8 +80,8 @@ def login_view(request):
 
 def register_user(request):
 
-    msg     = None
-    msg1     = None
+    msg = None
+    msg1 = None
     success = False
     # if request.method == "POST":
     # phone = request.POST.get('phone_number')
@@ -115,13 +115,14 @@ def register_user(request):
                         pass_validate = res
                         if res:
                             if len(res) > 1:
-                                return redirect('/login/')
+                                msg = "User created successfully"
+                                success = True
                             else:
                                 msg = "This password is too common."
                         # customer = Customer.objects.create(name=name, phone=phone, email=email, password=password)                            
                 else:
                     msg = "Passwords do not match"
-        data = { 'msg': msg, 'data': userdatalist }
+        data = { 'msg': msg, "msg1":msg1, 'data': userdatalist }
         return JsonResponse(data)
 
     return render(request, "accounts/register.html", {"msg" : msg, "success" : success })

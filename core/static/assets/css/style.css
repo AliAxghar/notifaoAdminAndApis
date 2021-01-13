@@ -13609,6 +13609,7 @@ input.form-control-sm-1 {
     background-color: #fff!important;
     border-radius: 5px;
     margin-bottom: 0px;
+    /* padding: 0px 12px!important; */
 }
 .page-item.active .page-link {
     color: #fff!important;
