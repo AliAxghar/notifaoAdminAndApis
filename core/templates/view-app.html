@@ -4,7 +4,10 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -20,12 +23,12 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
@@ -80,13 +83,13 @@
                                 <!-- <div class="col-md-2"></div> -->
                                 <div class="col-md-2">
                                     <label for="">APP QR Code</label>
-                                    <div class="">
+                                    <div style="border: 1px solid silver;" class="text-center" >
                                         <img src="{{app_detail.app_qr.url}}" alt="QRCode">
                                     </div>
                                 </div> 
-                                <div class="col-md-2">
+                                <div class="col-md-2 ">
                                     <label for="">APP LOGO</label>
-                                    <div class="" >
+                                    <div style="border: 1px solid silver;" >
                                         <img src="{{app_detail.app_logo.url}}" alt="image-logo">
                                     </div>
                                 </div>

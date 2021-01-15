@@ -6,6 +6,10 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
 <style>
     #up-img1 {
         display: block;
@@ -14,6 +18,13 @@
     #up-img {
         display: block;
         object-fit: contain;
+    }
+    .app-n .form-control {
+        background: #f4f8f9;
+        padding: 4px 20px!important;
+        font-size: 13px;
+        border: none;
+        border-radius: 5px;
     }
 </style>
 {% endblock stylesheets %}
@@ -31,12 +42,12 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
@@ -90,28 +101,29 @@
                             <h4 class="title1">Edit Application</h4>
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Edit Application</p>
                             <div class="row pt-1 pl-1">
-                                <div class="col-md-6">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
                                    <form id="app-form" action="" method="post" role="form" enctype="multipart/form-data">
                                     {% csrf_token %}
                                         <div class="row">
                                             <div class="col-6">
                                                 {% if app.app_logo.url %}
-                                                <div class="app-add-image">
+                                                <div class="app-add-image c-p">
                                                         <img id="up-img" src="{{app.app_logo.url}}">
                                                 </div>
                                                 {% else %}
-                                                <div class="app-add-image">
+                                                <div class="app-add-image c-p">
                                                     <img id="up-img" src="" alt="">
                                                 </div>
                                                 {% endif %}
                                             </div>
                                             <div class="col-6">
                                                 {% if app.app_image.url %}
-                                                <div class="app-add-image">
+                                                <div class="app-add-image c-p">
                                                         <img id="up-img" src="{{app.app_image.url}}">
                                                 </div>
                                                 {% else %}
-                                                <div class="app-add-image">
+                                                <div class="app-add-image c-p">
                                                     <img id="up-img" src="" alt="">
                                                 </div>
                                                 {% endif %}
@@ -124,13 +136,13 @@
                                         <div class="row app-n">
                                             <div class="col-12 pt-1">
                                                 {{form}}
-                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Update Application">
+                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" aria-describedby="description" value="Update Application">
                                             </div>
                                         </div>
                                    </form>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card-a-p">
+                                <div class="col-md-2">
+                                    <!-- <div class="card-a-p">
                                         <div class="img-app-l-6 pt-3">
                                             <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
                                             <h5 class="pt-3">About Notifao Applications</h5>
@@ -142,7 +154,7 @@
                                                 lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

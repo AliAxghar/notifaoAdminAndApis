@@ -13494,23 +13494,35 @@ input::-webkit-calendar-picker-indicator {
     box-shadow: none!important;
     padding: 25px 13px
 }
+a.btn.btn-warning.d-btn {
+    padding: 2px 16px!important;
+}
+input.btn.btn-danger.d-btn {
+    padding: 2px 16px!important;
+}
+a{
+    text-decoration: none!important;
+}
+a:hover{
+    text-decoration: none!important;
+}
 .card-l{
-    background-color: #fcfdff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px 0 rgb(217 222 230);
-    padding: 10px
+    background-color: #fcfdff!important;
+    border-radius: 10px!important;
+    box-shadow: 0 2px 8px 0 rgb(217 222 230)!important;
+    padding: 10px!important;
 }
 .card-l-d{
-    background-color: #f4f8f9;
-    border-radius: 10px;
-    -webkit-box-shadow: none;
+    background-color: #f4f8f9!important;
+    border-radius: 10px!important;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    padding: 10px
+    padding: 10px!important;
 }
 .card-i{
     background-color: #fff!important;
     border-radius: 10px!important;
-    -webkit-box-shadow: none;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
     padding: 10px 7px!important;
 }
@@ -13525,12 +13537,12 @@ input::-webkit-calendar-picker-indicator {
     color: #859ba5!important;
 }
 .right-c-d{
-    text-align: left;
+    text-align: left!important;
 }
 .right-c-d p{
-    text-align: left;
-    font-size: 10px;
-    color: #859ba5;
+    text-align: left!important;
+    font-size: 10px!important;
+    color: #859ba5!important;
 }
 .right-c-d h6{
     text-align: left!important;
@@ -13544,11 +13556,11 @@ input::-webkit-calendar-picker-indicator {
     color: #274a5d!important;
 }
 .right-c a{
-    color: #67b869;
+    color: #67b869!important;
 }
 .card-l img{
-    height: 50px;
-    width: 50px;
+    height: 50px!important;
+    width: 50px!important;
 }
 .card-l-s h5{
     text-align: left;
@@ -13771,10 +13783,10 @@ table th {
 }
 .card-l-a {
     background-color: #f4f8f9!important;
-    border-radius: 10px;
-    -webkit-box-shadow: none;
+    border-radius: 10px!important;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    padding: 10px;
+    padding: 10px!important;
 }
 a.p-a{
     color: #2978a2!important;

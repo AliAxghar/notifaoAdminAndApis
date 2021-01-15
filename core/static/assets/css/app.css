@@ -34,20 +34,47 @@ table#my-table td {
     text-align: center;
     font-size: 13px!important;
 }
-table#my-table .pb-t {
+/* table#my-table .pb-t {
     padding-bottom: 0px!important;
     padding-top: 11px;
+} */
+/* #my-table .pb-t-l {
+    padding-bottom: 0px!important;
+    padding-top: 11px;
+} */
+a.btn.btn-warning.d-btn {
+    padding: 2px 16px!important;
 }
-#my-table .pb-t-l {
-    padding-bottom: 0px!important;
-    padding-top: 11px;
+input.btn.btn-danger.d-btn {
+    padding: 2px 16px!important;
+}
+a{
+    text-decoration: none!important;
+}
+a:hover{
+    text-decoration: none!important;
+}
+#my-table_length label{
+    font-size: 14px!important;
+}
+#my-table_filter label{
+    font-size: 14px!important;
+}
+.dataTables_info{
+    font-size: 14px!important;
+}
+div.dataTables_wrapper div.dataTables_paginate{
+    font-size: 13px!important;
 }
 #my-table .pb-t-c {
-    padding-bottom: 0px!important;
-    padding-top: 11px;
+    /* padding-bottom: 0px!important; */
+    /* padding-top: 11px; */
     color: #21748A!important;
     font-weight: 500;
     font-size: 12px;
+}
+.c-p{
+    cursor: pointer!important;
 }
 table#my-table th {
     padding: 7px 8px;
@@ -317,7 +344,7 @@ span.m-p-b {
     background-color: #489b71!important;
     color: #fff!important;
     padding: 0px 7px!important;
-    font-size: 17px!important;
+    font-size: 19px!important;
     position: absolute;
     border-bottom-right-radius: 4px!important;
     border-top-right-radius: 4px!important;
