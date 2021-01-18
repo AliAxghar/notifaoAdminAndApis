@@ -668,3 +668,4 @@ def view_cUser(request,pk):
     user_det = User.objects.get(id=pk)
     context = {"user_det":user_det}
     return render(request, 'view-cUser.html', context)
+

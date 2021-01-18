@@ -34,6 +34,9 @@ table#my-table td {
     text-align: center;
     font-size: 13px!important;
 }
+.text-white{
+    color: white!important;
+}
 /* table#my-table .pb-t {
     padding-bottom: 0px!important;
     padding-top: 11px;
