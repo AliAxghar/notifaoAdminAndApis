@@ -103,7 +103,7 @@
                                     <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th></th>
+                                                <!-- <th></th> -->
                                                 <th>APP ID</th>
                                                 <th class="text-left">APP NAME</th>
                                                 <th>NOTIFICATIONS USED</th>
@@ -118,12 +118,12 @@
                                             {% if request.user.is_superuser %}
                                             {% for app in all_app %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{app.id}}">
                                                         <label class="custom-control-label" for="{{app.id}}"></label>
-                                                    </div> -->
-                                                </td>
+                                                    </div>
+                                                </td> -->
                                                 <td class="pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.name}}</td>
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
@@ -147,12 +147,12 @@
                                             {% else %}
                                             {% for app in userApps %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{app.id}}">
                                                         <label class="custom-control-label" for="{{app.id}}"></label>
-                                                    </div> -->
-                                                </td>
+                                                    </div>
+                                                </td> -->
                                                 <td class="pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.name}}</td>
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>

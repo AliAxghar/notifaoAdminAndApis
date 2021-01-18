@@ -95,8 +95,8 @@
                                     <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th>ID</th>
+                                                <!-- <th></th> -->
+                                                <th class="text-center">ID</th>
                                                 <th class="text-left">APP NAME</th>
                                                 <th class="text-left">TITLE</th>
                                                 <th >DESCRIPTION</th>
@@ -109,13 +109,13 @@
                                             {% if request.user.is_superuser %}
                                             {% for notification in a_notifications %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{notification.id}}">
                                                         <label class="custom-control-label" for="{{notification.id}}"></label>
-                                                    </div> -->
-                                                </td>
-                                                <td class="pb-t">{{notification.id}}</td>
+                                                    </div>
+                                                </td> -->
+                                                <td class="pb-t text-center">{{notification.id}}</td>
                                                 <td class="text-left pb-t">{{notification.app_id.name|capfirst}}</td>
                                                 <td class="text-left pb-t">{{notification.title|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>
@@ -133,13 +133,13 @@
                                             {% else %}
                                             {% for notification in notifications %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="{{notification.id}}">
                                                         <label class="custom-control-label" for="{{notification.id}}"></label>
-                                                    </div> -->
-                                                </td>
-                                                <td class="pb-t">{{notification.id}}</td>
+                                                    </div>
+                                                </td> -->
+                                                <td class="pb-t text-center">{{notification.id}}</td>
                                                 <td class="text-left pb-t">{{notification.app_id.name|capfirst}}</td>
                                                 <td class="text-left pb-t">{{notification.title|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>

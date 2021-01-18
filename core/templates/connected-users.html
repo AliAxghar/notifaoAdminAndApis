@@ -98,8 +98,8 @@
                                     <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th class="text-left">ID</th>
+                                                <!-- <th></th> -->
+                                                <th class="text-center">ID</th>
                                                 <th class="text-left">NAME</th>
                                                 <th class="text-left">EMAIL</th>
                                                 <th class="text-left">PHONE</th>
@@ -111,13 +111,13 @@
                                             {% if request.user.is_superuser %}
                                             {% for app in lasUsers %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
                                                         <label class="custom-control-label" for="defaultUnchecked1"></label>
-                                                    </div> -->
-                                                </td>
-                                                <td class="text-left pb-t">{{app.id}}</td>
+                                                    </div>
+                                                </td> -->
+                                                <td class="text-center pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.user_id.name}}</td>
                                                 <td class=" text-left pb-t-c">{{app.user_id.email}}</td>
                                                 <td class="text-left pb-t-c">{{app.user_id.phone}}</td>
@@ -139,13 +139,13 @@
                                             {% else %}
                                             {% for app in users %}
                                             <tr>
-                                                <td>
-                                                    <!-- <div class="custom-control custom-checkbox">
+                                                <!-- <td>
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input" id="defaultUnchecked1">
                                                         <label class="custom-control-label" for="defaultUnchecked1"></label>
-                                                    </div> -->
-                                                </td>
-                                                <td class="text-left pb-t">{{app.id}}</td>
+                                                    </div>
+                                                </td> -->
+                                                <td class="text-center pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.user_id.name}}</td>
                                                 <td class=" text-left pb-t-c">{{app.user_id.email}}</td>
                                                 <td class="text-left pb-t-c">{{app.user_id.phone}}</td>
