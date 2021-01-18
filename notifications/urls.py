@@ -3,11 +3,12 @@ from .views import NotificationViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from .views import DeviceViewSet ,createNotification ,getUserNotifications
+from .views import DeviceViewSet ,createNotification ,getUserNotifications ,UserNotificationViewSet
 
 
 router = routers.DefaultRouter()
 router.register('notifications', NotificationViewSet)
+router.register('user_notifications', UserNotificationViewSet)
 
 urlpatterns = [
    

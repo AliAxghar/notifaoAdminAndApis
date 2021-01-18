@@ -146,7 +146,10 @@
                                                 </span>
                                             </div>
                                             <div class="col-5">
+                                                <!-- <canvas id="myChart" class="" style="height: 20px;width: 50px;"></canvas> -->
+
                                                 <div id="chart_div1" ></div>
+
                                             </div>
                                         </div>
                                         
@@ -165,7 +168,11 @@
                                                 </span>
                                             </div>
                                             <div class="col-5">
+
+                                                <!-- <canvas id="myChart1" style="height: 20px;width: 50px;"></canvas> -->
+
                                                 <div id="chart_div" ></div>
+
                                             </div>
                                         </div>
                                         
@@ -181,6 +188,7 @@
                                                 <h5>Notifications</h5>
                                             </div>
                                             <div class="col-6">
+
                                                 <a href="../../notification.html">See all notifications</a>
                                             </div>
                                         </div>
@@ -209,11 +217,13 @@
                                                 {% endif %}
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-l-d">
                                         <div class="row">
+
                                             <!-- <div class="col-5">
                                                 <h5>Users</h5>
                                             </div> -->
@@ -661,12 +671,14 @@
             </div>
         </div>
     </div>
+
     <!-- {{total_noti_graph_list}} -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+
 <script type="text/javascript">
     array_data = {{lists|safe}};
     array_data1 = {{total_noti_graph_list|safe}};
@@ -755,6 +767,7 @@
         
     }
   </script> -->
+
     <script>
         $("input").on("change", function() {
             this.setAttribute(
@@ -846,6 +859,7 @@
             }
         }
     </script>
+
     <!-- <script>
         var ctx = document.getElementById("myChart");
         // var numDataPoints = 20;
@@ -886,6 +900,7 @@
             }
         }
         });
+
     </script> -->
     <!-- <script>
         var ctx = document.getElementById("myChart1");
@@ -929,6 +944,7 @@
         });
     </script> -->
     <script>
+
         $('#submit').on('click', function(){
             var date = new Date($('#date-input').val());
             var day = date.getDate();

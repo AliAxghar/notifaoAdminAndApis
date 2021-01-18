@@ -6,12 +6,18 @@ from rest_framework.decorators import api_view
 from app . models import App,UserApp
 from rest_framework.response import Response
 from rest_framework import status
-from notifications .models import Notification
+from notifications .models import Notification, UserNotification
 from .models import CustomFCMDevice
 from users .models import User
 from django.http import JsonResponse
 import json
-from notifications.serializers import DeviceSerializer
+from notifications.serializers import DeviceSerializer ,UserNotificationSerializer
+
+
+class UserNotificationViewSet(viewsets.ModelViewSet):
+    queryset = UserNotification.objects.all()
+    serializer_class = UserNotificationSerializer
+
 
 
 class DeviceViewSet(viewsets.ModelViewSet):
@@ -42,8 +48,8 @@ def getUserNotifications(request):
             # for app in user_app_list:
             #     apps.
             user_apps = App.objects.filter(app__in = UserApp.objects.filter(user_id = user_id))
-            user_notification = Notification.objects.filter(app_id__in=user_apps)[:20]
-            serializer = NotificationSerializer(user_notification, many=True)
+            user_notification = UserNotification.objects.filter(user_id = user_id)[:20]
+            serializer = UserNotificationSerializer(user_notification, many=True)
             return JsonResponse(serializer.data, safe=False)
         else:
             return Response({"message": "User does not exixts " , "status": status.HTTP_400_BAD_REQUEST})
@@ -82,7 +88,9 @@ def createNotification(request):
                     if get_custmer.push_notifications >= sent_count:
                         if app_users :
                             for user in app_users:
-                                device = CustomFCMDevice.objects.get(user_id = user.pk)
+                                user_notification_obj = UserNotification.objects.create(user_id = user.user_id,title = notification_title,description = notification_description)
+                                user_notification_obj.save()
+                                device = CustomFCMDevice.objects.get(user_id = user.user_id)
                                 device.send_message(title=notification_title, body=notification_description)
                             get_custmer.push_notifications = get_custmer.push_notifications - sent_count
                             get_custmer.save()

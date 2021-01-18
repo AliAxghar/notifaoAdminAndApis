@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Notification
+from .models import Notification, UserNotification
 from .models import CustomFCMDevice
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -16,3 +16,10 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomFCMDevice
         fields = ['device_id','registration_id','type','name','active','user']
+
+
+class UserNotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserNotification
+        fields = ['id', 'user_id', 'title', 'description', ]
