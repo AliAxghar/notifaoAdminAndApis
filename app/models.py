@@ -11,6 +11,7 @@ class App(models.Model):
     name = models.CharField(max_length=200 , null = False )
     description = models.CharField(max_length=500 , null=False)
     notifications_used = models.IntegerField(default=0)
+    notifications_actual_used = models.IntegerField(default=0)
     customer_id  = models.ForeignKey(Customer, related_name="customer", on_delete=models.CASCADE)
     app_qr =  models.ImageField(upload_to='app_qr/', blank=True)
     created_at = models.DateField(auto_now_add=True)

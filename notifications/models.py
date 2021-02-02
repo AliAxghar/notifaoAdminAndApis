@@ -25,8 +25,8 @@ class Notification(models.Model):
 
 class UserNotification(models.Model):
     user_id  = models.ForeignKey(User,related_name="user_id_user_notification", on_delete = models.CASCADE)
-    title = models.CharField(max_length=200 , null=True)
-    description = models.CharField(max_length=500 , null=True)
+    title = models.CharField(max_length=200 , null=False)
+    description = models.CharField(max_length=500 , null=False)
 
 # class UserApp(models.Model):
 #     app_id = models.ForeignKey(App, related_name="app", on_delete=models.CASCADE)
