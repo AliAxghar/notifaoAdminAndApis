@@ -80,6 +80,9 @@
     a:hover .card-cl p{
         color: #686968!important;
     }
+    th, td{
+        text-align: center!important;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -106,14 +109,14 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
-                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
+                                    <!-- <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -270,17 +273,17 @@
                                                         <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Name</th>
-                                                                    <th>Phone</th>
-                                                                    <th>Email</th>
+                                                                    <th>ID</th>
+                                                                    <th>NAME</th>
+                                                                    <th>PHONE</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {% for userapp in lasUsers %}
                                                                 <tr>
+                                                                    <td>{{userapp.user_id.id}}</td>
                                                                     <td>{{userapp.user_id.name}}</td>
                                                                     <td>{{userapp.user_id.phone}}</td>
-                                                                    <td>{{userapp.user_id.email}}</td>
                                                                 </tr>
                                                                 {% endfor %}
                                                                 <!-- <tr>
@@ -452,17 +455,17 @@
                                                             <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Phone</th>
-                                                                        <th>Email</th>
+                                                                        <th>ID</th>
+                                                                        <th>NAME</th>
+                                                                        <th>PHONE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     {% for userapp in lasUsers %}
                                                                     <tr>
+                                                                        <td>{{userapp.user_id.id}}</td>
                                                                         <td>{{userapp.user_id.name}}</td>
                                                                         <td>{{userapp.user_id.phone}}</td>
-                                                                        <td>{{userapp.user_id.email}}</td>
                                                                     </tr>
                                                                     {% endfor %}
                                                                     <!-- <tr>
@@ -633,17 +636,17 @@
                                                             <table id="my-table" class="table table-striped table-bordered" style="width:100%">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Phone</th>
-                                                                        <th>Email</th>
+                                                                        <th>ID</th>
+                                                                        <th>NAME</th>
+                                                                        <th>PHONE</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     {% for userapp in lasUsers %}
                                                                     <tr>
+                                                                        <td>{{userapp.user_id.id}}</td>
                                                                         <td>{{userapp.user_id.name}}</td>
                                                                         <td>{{userapp.user_id.phone}}</td>
-                                                                        <td>{{userapp.user_id.email}}</td>
                                                                     </tr>
                                                                     {% endfor %}
                                                                     <!-- <tr>

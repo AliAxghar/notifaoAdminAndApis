@@ -22,7 +22,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     phone = serializers.CharField(
         max_length=100,
-        validators=[UniqueValidator(queryset=Customer.objects.all())],
+        # validators=[UniqueValidator(queryset=Customer.objects.all())],
         required=False
     )
     email = serializers.EmailField(
@@ -50,7 +50,7 @@ class MyRegisterSerializer(RegisterSerializer):
     # phone = serializers.CharField(required=True)
     phone = serializers.CharField(
         max_length=100,
-        validators=[UniqueValidator(queryset=Customer.objects.all())]
+        # validators=[UniqueValidator(queryset=Customer.objects.all())]
     )
 
     # def validate(self, data):

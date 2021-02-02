@@ -63,7 +63,7 @@ def login_view(request):
 #                         msg = "Password is too short, must contain at least 8 characters."
 #                     else:
 #                         data = {"name":name, "phone":phone, "email":email, "password1":password, "password2":password, "business_name":"None"}
-#                         createCustomer = requests.post('{}/customer/register/'.format(api_base_url), data=data)
+#                         createCustomer = requests.post('{}customer/register/'.format(api_base_url), data=data)
 #                         res = createCustomer.json()
 #                         pass_validate = res
 #                         if res:
@@ -96,27 +96,28 @@ def register_user(request):
         phone = userdatalist[2]
         password = userdatalist[3]
         password2 = userdatalist[4]
+        terms = userdatalist[5]
         # print(name,email,phone,password,password2)
         get_customer_email = Customer.objects.filter(email=email)
         get_customer_phone = Customer.objects.filter(phone=phone)
         if get_customer_email:
             msg = "User is already exist with this email"
         else:
-            if get_customer_phone:
-                msg = "This phone number is already exist"
+            if terms == "No":
+                msg = "Please agree to terms and conditions"
             else:
                 if password==password2:
                     if len(password) < 8:
                         msg = "Password is too short, must contain at least 8 characters."
                     else:
                         data = {"name":name, "phone":phone, "email":email, "password1":password, "password2":password, "business_name":"None"}
-                        createCustomer = requests.post('{}/customer/register/'.format(api_base_url), data=data)
+                        createCustomer = requests.post('{}customer/register/'.format(api_base_url), data=data)
                         res = createCustomer.json()
                         pass_validate = res
                         if res:
                             if len(res) > 1:
-                                msg = "User created successfully"
                                 success = True
+                                msg = "User created successfully"
                             else:
                                 msg = "This password is too common."
                         # customer = Customer.objects.create(name=name, phone=phone, email=email, password=password)                            

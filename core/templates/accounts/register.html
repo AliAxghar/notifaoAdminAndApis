@@ -59,7 +59,7 @@
                             <div class="col-12">
                                 <div class="form-group text-left pl-1">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" value="No" id="checkbox-fill-a1">
                                         <label class="custom-control-label" for="checkbox-fill-a1">Agree with terms</label>
                                     </div>
                                 </div>
@@ -95,13 +95,23 @@
         });
     </script>
     <script>
+    $('#checkbox-fill-a1').on('click', function(){
+        if($(this).is(':checked')){
+            $(this).prop('checked', true);
+            $(this).val('Yes');
+        }else{
+            $(this).prop('checked', false);
+            $(this).val('No');
+        }
+    });
     $('#login-btn').on('click', function(){
         var phone = $("#phone_number").val();
         var name = $("#name").val();
         var email = $("#email").val();
         var password = $("#password").val();
         var password2 = $("#password2").val();
-        var userdata = [name, email, phone, password, password2];
+        var terms = $("#checkbox-fill-a1").val();
+        var userdata = [name, email, phone, password, password2, terms];
         var list = userdata;
         $.ajax({
             url: '{% url "register" %}',
@@ -111,6 +121,8 @@
                 if (data.msg == "User created successfully"){
                     $('#alert').css("display","none");
                     $('#alert1').text(data.msg);
+                    var origin   = window.location.origin;
+                    window.location.replace(origin,"/login");
                 }else{
                     $('#alert').text(data.msg);
                 }
@@ -119,6 +131,7 @@
             },
         });
         return false;
+
     }); 
     </script>
 {% endblock content %}

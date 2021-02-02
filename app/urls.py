@@ -33,6 +33,12 @@ urlpatterns = [
     path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
     path('delete_cUser/<str:pk>/', views.delete_cUser, name="delete_cUser"),
     path('view_cUser/<str:pk>/', views.view_cUser, name="view_cUser"),
+    path('config/', views.stripe_config, name="config"),
+    path('create-checkout-session/', views.create_checkout_session, name="create-checkout-session"),
+    path('success/', views.SuccessView.as_view()),
+    path('cancelled/', views.CancelledView.as_view()),
+    path('webhook/', views.stripe_webhook, name="webhook"),
+
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -17,6 +17,7 @@ class App(models.Model):
     app_image = models.ImageField(upload_to='app_image/',blank=True)
     app_logo = models.ImageField(upload_to='app_logo/',blank= True)
     app_url = models.CharField(max_length=500 , null=False)
+    notifications_actual_used = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

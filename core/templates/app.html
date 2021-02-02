@@ -43,14 +43,14 @@
                         <div class="col-md-6">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
+                                    <!-- <li class="mr-2"> -->
                                         <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
-                                        {% if request.user.profile_pic %}
+                                        <!-- {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
-                                        {% endif %}
-                                    </li>
+                                        {% endif %} -->
+                                    <!-- </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -110,8 +110,8 @@
                                                 <th>ACTUAL USED</th>
                                                 <th>NO# OF USERS</th>
                                                 <th class="text-center">APP HASH PUBLIC</th>
-                                                <th>USER TYPE</th>
-                                                <th class="text-left">ACTIONS</th>
+                                                <!-- <th>USER TYPE</th> -->
+                                                <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -127,17 +127,17 @@
                                                 <td class="pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.name}}</td>
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
-                                                <td class="pb-t-c">786</td>
+                                                <td class="pb-t-c">{{app.notifications_actual_used}}</td>
                                                 <td class="pb-t-c">13</td>
                                                 {% if app.app_qr %}
                                                 <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode"></td>
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
-                                                <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td>
-                                                <td class="text-left pb-t">
+                                                <!-- <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td> -->
+                                                <td class="text-center pb-t">
                                                     <span class="action-i">
-                                                        <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a> -->
                                                         <a href="{% url 'updateApp' app.id %}"><i class="feather icon-edit"></i></a>
                                                         <a href="{% url 'deleteApp' app.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>
@@ -145,7 +145,7 @@
                                             </tr>
                                             {% endfor %}
                                             {% else %}
-                                            {% for app in userApps %}
+                                            {% for app in app_users_list %}
                                             <tr>
                                                 <!-- <td>
                                                     <div class="custom-control custom-checkbox">
@@ -156,18 +156,17 @@
                                                 <td class="pb-t">{{app.id}}</td>
                                                 <td class="text-left pb-t">{{app.name}}</td>
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
-                                                <td class="pb-t-c">786</td>
-                                                <td class="pb-t-c">13</td>
-                                                <!-- <td class="text-left pb-t">{{app.app_qr}}</td> -->
+                                                <td class="pb-t-c">{{app.notifications_actual_used}}</td>
+                                                <td class="pb-t-c">{{app.actual_used}}</td>
                                                 {% if app.app_qr %}
                                                 <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode"></td>
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
-                                                <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td>
-                                                <td class="text-left pb-t">
+                                                <!-- <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td> -->
+                                                <td class="text-center pb-t">
                                                     <span class="action-i">
-                                                        <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a>
+                                                        <!-- <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a> -->
                                                         <a href="{% url 'updateApp' app.id %}"><i class="feather icon-edit"></i></a>
                                                         <a href="{% url 'deleteApp' app.id %}"><i class="feather icon-trash-2"></i></a>
                                                     </span>

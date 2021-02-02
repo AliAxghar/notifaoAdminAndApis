@@ -33,7 +33,12 @@ from customers.models import Customer
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from core.settings import api_base_url
+from core import settings
 import requests
+# from django.conf import FCM_DJANGO_SETTINGS
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
 from notifications.models import Notification
 from django.utils.datastructures import MultiValueDictKeyError
 import stripe
@@ -148,8 +153,22 @@ def pages(request):
     users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')
     # print(users)
     # us = UserApp.objects.all()
-    # print(us)
-    userApps = App.objects.filter(customer_id_id=user.id)
+    # print(us)   
+    app_users_list = []
+    userApps = App.objects.filter(customer_id=user.id)
+    if userApps:
+        for ob in userApps:
+            us = UserApp.objects.filter(app_id=ob.id).count()
+            mydict = {
+                "id": ob.id,
+                "name": ob.name,
+                "notifications_used": ob.notifications_used,
+                "notifications_actual_used":ob.notifications_actual_used,
+                "app_qr":ob.app_qr,
+                "actual_used":us
+            }
+            app_users_list.append(mydict)
+
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -163,7 +182,7 @@ def pages(request):
 
 
 
-    context = {"invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -259,7 +278,7 @@ def deleteUserApps(request):
         except User.DoesNotExist:
             get_user = None
         if get_user is not None:
-            print(get_user.id)
+            # print(get_user.id)
             try:
                 get_user_app = UserApp.objects.filter(app_id = app_id).get(user_id = user_id)
             except UserApp.DoesNotExist:
@@ -374,9 +393,6 @@ def createPlan(request):
         # plan_list = [name,price,interval,notifications,apps,planid]
         # list1 = list1.split(',')
         # print(url_list,plan_list,stripeToken)
-        if planName:
-            context = {"planName":planName}
-            return render(request, 'payment.html', context)
     context = {"invoice_item":invoice_item}
     return render(request, 'my-plan.html', context)
 
@@ -668,4 +684,92 @@ def view_cUser(request,pk):
     user_det = User.objects.get(id=pk)
     context = {"user_det":user_det}
     return render(request, 'view-cUser.html', context)
+
+
+
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+
+
+class SuccessView(TemplateView):
+    template_name = 'success.html'
+
+
+class CancelledView(TemplateView):
+    template_name = 'cancelled.html'
+
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == 'GET':
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                # new
+                client_reference_id=request.user.id if request.user.is_authenticated else None,
+                success_url=api_base_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=api_base_url + 'cancelled/',
+                payment_method_types=['card'],
+                mode='payment',
+                line_items=[
+                    {
+                        'name': "myplan",
+                        'quantity': 1,
+                        'currency': 'usd',
+                        'amount': '2000',
+                    }
+                ]
+            )
+            return JsonResponse({'sessionId': checkout_session['id']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    print("webhook")
+
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # print(session)
+        # print(session.customer)
+        # print(session['data'].price.id)
+        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+        m = line_items["data"]
+        # for n in m:
+        inv = stripe.InvoiceItem.create(
+            price="price_1IDv45CEigeyfTXe7YAWSqH6",
+            customer=session.customer,
+        )
+        # print(inv)
+        if inv:
+            invvoi = stripe.Invoice.create(
+                customer=inv.customer,
+            )
+            # print(invvoi)
+
+    return HttpResponse(status=200)
+
+
+
 
