@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 select.custom-select.custom-select-sm.form-control.form-control-sm {
     height: 24px;
     font-size: 12px;
@@ -12,33 +13,71 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
 table#my-table {
     border-radius: 8px;
 }
-<<<<<<< HEAD
-=======
+.title1{
+    font-weight: 600!important;
+    color: black!important;
+    font-size: 21px!important;
+}
+.title2{
+    font-weight: 550!important;
+    color: black!important;
+    font-size: 18px!important;
+}
 .page-item.active .page-link {
     color: #fff!important;
     background-color: #274a5d!important;
     border-color: #274a5d!important;
 }
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 table#my-table td {
-    padding: 7px 8px;
+    padding: 9px 8px;
     /* padding-bottom: 0px; */
     text-align: center;
+    font-size: 13px!important;
 }
-table#my-table .pb-t {
+.text-white{
+    color: white!important;
+}
+/* table#my-table .pb-t {
     padding-bottom: 0px!important;
     padding-top: 11px;
-}
-#my-table .pb-t-l {
+} */
+/* #my-table .pb-t-l {
     padding-bottom: 0px!important;
     padding-top: 11px;
+} */
+a.btn.btn-warning.d-btn {
+    padding: 2px 16px!important;
+}
+input.btn.btn-danger.d-btn {
+    padding: 2px 16px!important;
+}
+a{
+    text-decoration: none!important;
+}
+a:hover{
+    text-decoration: none!important;
+}
+#my-table_length label{
+    font-size: 14px!important;
+}
+#my-table_filter label{
+    font-size: 14px!important;
+}
+.dataTables_info{
+    font-size: 14px!important;
+}
+div.dataTables_wrapper div.dataTables_paginate{
+    font-size: 13px!important;
 }
 #my-table .pb-t-c {
-    padding-bottom: 0px!important;
-    padding-top: 11px;
+    /* padding-bottom: 0px!important; */
+    /* padding-top: 11px; */
     color: #21748A!important;
     font-weight: 500;
     font-size: 12px;
+}
+.c-p{
+    cursor: pointer!important;
 }
 table#my-table th {
     padding: 7px 8px;
@@ -62,6 +101,12 @@ table#my-table th {
     content: "";
     background: no-repeat 50%/50% 50%;
 }
+
+.pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext{
+    font-size: 14px!important;
+    font-weight: 400!important;
+}
+
 .custom-checkbox .custom-control-input:checked~.custom-control-label::after {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e")
 }
@@ -302,7 +347,7 @@ span.m-p-b {
     background-color: #489b71!important;
     color: #fff!important;
     padding: 0px 7px!important;
-    font-size: 17px!important;
+    font-size: 19px!important;
     position: absolute;
     border-bottom-right-radius: 4px!important;
     border-top-right-radius: 4px!important;
@@ -528,10 +573,10 @@ span.part-span {
     background: linear-gradient(0deg, rgba(51,127,113,3.961222) 18%, rgb(84 158 80 / 117%) 57%)!important;
     cursor: pointer;
 }
-/* .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
+.pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
     position: absolute!important;
-    top: 8px!important;
-} */
+    top: 11px!important;
+}
 #app-page a{
     text-decoration: none;
 }
@@ -548,8 +593,6 @@ span.part-span {
 #app-v-c img{
     object-fit: contain;
     height: 100px;
-<<<<<<< HEAD
-=======
 }
 .sub-pay {
     font-size: 28px;
@@ -588,5 +631,4 @@ div#card-errors {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 }

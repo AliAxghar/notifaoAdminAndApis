@@ -1,0 +1,522 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Apps {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+<style>
+    .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
+        position: absolute!important;
+        /* top: 0px!important; */
+    }
+    .card-body , .btn-header-link{
+        color: #fff!important;
+    }
+    .c-u-img{
+        height: 20px;
+        width: 20px;
+    }
+    #main {
+        margin: 15px 0;
+    }
+
+    #main #faq .card {
+        margin-bottom: 10px;
+        border: 0;
+    }
+    #main #faq .card .card-header{
+        background-color: transparent;
+        border-bottom: 1px solid #f1f1f1;
+        padding: 9px 0px 5px 9px;
+        position: relative;
+    }
+    /* #main #faq .card .card-header {
+        border: 0;
+        -webkit-box-shadow: 0 0 20px 0 rgba(213, 213, 213, 0.5);
+        box-shadow: 0 0 20px 0 rgba(213, 213, 213, 0.5);
+        border-radius: 2px;
+        padding: 0;
+    } */
+    .json-r{
+        color: #c3c5c5;
+    }
+    #main #faq .card .card-header .btn-header-link {
+        color: #fff;
+        display: block;
+        text-align: left;
+        background: #274a5d;
+        color: #222;
+        padding: 5px 20px;
+    }
+
+    #main #faq .card .card-header .btn-header-link:after {
+        content: "\f107";
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        display: none;
+        float: right;
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed {
+        background: #274a5d;
+        color: #fff;
+    }
+
+    #main #faq .card .card-header .btn-header-link.collapsed:after {
+        content: "\f106";
+    }
+
+    #main #faq .card .collapsing {
+        background: #274a5d;
+        line-height: 30px;
+    }
+
+    #main #faq .card .collapse {
+        border: 0;
+    }
+
+    #main #faq .card .collapse.show {
+        background: #274a5d;
+        line-height: 30px;
+        color: #222;
+    }
+    .code-s{
+        line-height: 2rem;
+        color: #fff;
+        background: rgba(255,62,191,.5);
+        border: 1px solid #ff3ebf;
+        border-radius: 2px;
+        padding: 2px 8px;
+        max-height: 2rem;
+        margin: 0 1rem 0 0;
+    }
+    .body-param{
+        font-size: 1.3rem;
+        line-height: 2rem;
+        font-style: normal;
+        font-weight: 400;
+        color: #778589;
+    }
+    hr.hrd{
+        border: 1px solid #778589!important;;
+    }
+    .par{
+        line-height: 1.8rem;
+        color: #778589;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    .type{
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.8rem;
+        letter-spacing: 1px;
+        color: #778589;
+        text-transform: uppercase;
+        margin-right: .8rem;
+    }
+    /* .fa1:hover .exp1 {
+        color: #ff3ebf
+    }
+    .fa1:active .exp1 {
+        color: #ff3ebf
+    } */
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <!-- <form>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </form> -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-1">
+                                <ul>
+                                    <!-- <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        {% if request.user.profile_pic %}
+                                        <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
+                                        {% endif %}
+                                    </li> -->
+                                    
+                                    <li class="">
+                                        <span class="intr" >
+                                            <div class="intr11">Hi {{ request.user.name }}</div>
+                                            <div class="intr11">{{ request.user.email }}</div>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather icon-chevron-down"></i>
+                                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                                <!-- <div class="dropdown-header text-center">
+                                                    {% if request.user.profile_pic %}
+                                                    <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                                    {% else %}
+                                                    <img class="top-r-img1" src="/static/assets/images/black1.png" alt="Profile image">
+                                                    {% endif %}
+                                                    <p class="mb-1 mt-3 font-weight-semibold">
+                                                    {{ request.user.user }}
+                                                    </p>
+                                                    <p class="font-weight-light text-muted mb-0 p-b-e">
+                                                    {{ request.user.email }}
+                                                    </p>
+                                                </div> -->
+                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
+                                                <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    <div class="row" id="app-page">
+                        <div class="col-6">
+                            <h4 class="title1">Developers Api Reference</h4>
+                        </div>
+                        <!-- <div class="col-6">
+                            <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                        </div> -->
+                        <div class="col-md-12 mt-3">
+                            <div class="card card-l-a">
+                                <div id="main">
+                                    <div class="container">
+                                        <div class="accordion" id="faq">
+                                            <div class="card">
+                                                <div class="card-header" id="faqhead1">
+                                                    <a href="#" class="btn btn-header-link fa1" data-toggle="collapse" data-target="#faq1"
+                                                    aria-expanded="true" aria-controls="faq1">Create App <br><span class="mr-2" style="color: #ff3ebf; font-weight: 600;"> POST  </span><span style="color: #e7b75f; font-weight: 400;"> createapp/</span><span class="exp1" style="float: right;">Expand</span><br> <span style="font-weight: 300;"><p class="pb-0 mb-0">Create a new Notifao App.</p></span></a>
+                                                </div>
+                        
+                                                <div id="faq1" class="collapse" aria-labelledby="faqhead1" data-parent="#faq">
+                                                    <div class="card-body pl-4 pr-4">
+                                                        <h3 class="body-param mt-1">Body Parameters</h3>
+                                                        <hr class="hrd">
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1"></div> -->
+                                                            <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">email</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">password</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_name</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for your application name.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_discription</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for your application description.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_image</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> File</div>
+                                                                    <span class="pl-3">It is used for your application image.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_logo</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> File</div>
+                                                                    <span class="pl-3">It is used for your application logo.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="row">
+                                                                    <div class="col-1"></div>
+                                                                    <div class="col-11">
+                                                                        <h3 class="body-param pt-3">Json Response</h3>
+                                                                        <hr class="hrd">
+                                                                        <span class="json-r pt-5">
+                                                                            { <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp; "id": 61, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"name": "string", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"description": "string", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"notifications_used": 0, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"app_qr": QR_imge.png  &nbsp;&nbsp;<img src="/static/assets/images/qr.png" alt="">&nbsp;, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2021-01-09", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"app_image": "image.jpg", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"status": 200 <br>
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="faqhead2">
+                                                    <a href="#" class="btn btn-header-link collapsed fa2" data-toggle="collapse" data-target="#faq2"
+                                                    aria-expanded="true" aria-controls="faq2">Get Notifications <br><span class="mr-2" style="color: #ff3ebf; font-weight: 600;"> POST  </span><span style="color: #e7b75f; font-weight: 400;"> getnotifications/</span><span class="exp2" style="float: right;">Expand</span><br> <span style="font-weight: 300;"><p class="pb-0 mb-0">It will return all notifications generated againsta an app.</p></span></a>
+                                                </div>
+                        
+                                                <div id="faq2" class="collapse" aria-labelledby="faqhead2" data-parent="#faq">
+                                                    <div class="card-body pl-4 pr-4">
+                                                        <h3 class="body-param mt-1">Body Parameters</h3>
+                                                        <hr class="hrd">
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1"></div> -->
+                                                            <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">email</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to get your all notifications.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">password</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to get your all notifications.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_name</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for your application name to get your all notifications.</span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="row">
+                                                                    <div class="col-1"></div>
+                                                                    <div class="col-11">
+                                                                        <h3 class="body-param pt-3">Json Response</h3>
+                                                                        <hr class="hrd">
+                                                                        <span class="json-r pt-5">
+                                                                            { <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp; "id": 61, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"name": "string", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"all_notifications": 0, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"status": 200 <br>
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="faqhead3">
+                                                    <a href="#" class="btn btn-header-link collapsed fa3" data-toggle="collapse" data-target="#faq3"
+                                                    aria-expanded="true" aria-controls="faq3">Send Notifications <br><span class="mr-2" style="color: #ff3ebf; font-weight: 600;"> POST  </span><span style="color: #e7b75f; font-weight: 400;"> sendnotification/</span><span class="exp3" style="float: right;">Expand</span><br> <span style="font-weight: 300;"><p class="pb-0 mb-0">It will send notifications to the users registers against the app_name provided.</p></span></a>
+                                                </div>
+                        
+                                                <div id="faq3" class="collapse" aria-labelledby="faqhead3" data-parent="#faq">
+                                                    <div class="card-body pl-4 pr-4">
+                                                        <h3 class="body-param mt-1">Body Parameters</h3>
+                                                        <hr class="hrd">
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1"></div> -->
+                                                            <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">email</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to send notifications to registered users.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd" >
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">password</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to send notifications to registered users.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">app_name</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used to send notifications to registered users against app name provided.</span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="row">
+                                                                    <div class="col-1"></div>
+                                                                    <div class="col-11">
+                                                                        <h3 class="body-param pt-3">Json Response</h3>
+                                                                        <hr class="hrd">
+                                                                        <span class="json-r pt-5">
+                                                                            { <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp; "id": 61, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"name": "string", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"notifications_sent": 10, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"status": 200 <br>
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="faqhead4">
+                                                    <a href="#" class="btn btn-header-link collapsed fa4" data-toggle="collapse" data-target="#faq4"
+                                                    aria-expanded="true" aria-controls="faq4">Get All Apps <br><span class="mr-2" style="color: #ff3ebf; font-weight: 600;"> POST  </span><span style="color: #e7b75f; font-weight: 400;"> getmyapps/</span><span class="exp4" style="float: right;">Expand</span><br> <span style="font-weight: 300;"><p class="pb-0 mb-0">It will return the list of all apps against a customer.</p></span></a>
+                                                </div>
+                        
+                                                <div id="faq4" class="collapse" aria-labelledby="faqhead4" data-parent="#faq">
+                                                    <div class="card-body pl-4 pr-4">
+                                                        <h3 class="body-param mt-1">Body Parameters</h3>
+                                                        <hr class="hrd">
+                                                        <div class="row">
+                                                            <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">email</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to get all apps.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">password</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is used for login to get all apps.</span>
+                                                                </div>
+    
+                                                            </div>
+                                                            <div class="col-md-5">
+                                                                <div class="row">
+                                                                    <div class="col-1"></div>
+                                                                    <div class="col-11">
+                                                                        <h3 class="body-param pt-3">Json Response</h3>
+                                                                        <hr class="hrd">
+                                                                        <span class="json-r pt-5">
+                                                                            { <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp; "id": 61, <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"my_apps": "5", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"status": 200 <br>
+                                                                            }
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                            </div>
+                        </div>            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    // $(document).ready(function(){
+    //     var value = $(".fa1").attr("aria-expanded");
+    //     if (value=="true"){
+    //         $(".exp1").text("Collapse");
+    //     }else if(value=="false"){
+    //         $(".exp1").text("Expand");
+    //     }
+    // });
+    $(".fa1").click(function() {
+        var value = $(this).attr("aria-expanded");
+        if (value=="true"){
+            $(".exp1").text("Expand");
+        }else if(value=="false"){
+            $(".exp1").text("Collapse");
+        }
+    });
+    $(".fa2").click(function() {
+        var value = $(this).attr("aria-expanded");
+        if (value=="true"){
+            $(".exp2").text("Expand");
+        }else if(value=="false"){
+            $(".exp2").text("Collapse");
+        }
+    });
+    $(".fa3").click(function() {
+        var value = $(this).attr("aria-expanded");
+        if (value=="true"){
+            $(".exp3").text("Expand");
+        }else if(value=="false"){
+            $(".exp3").text("Collapse");
+        }
+    });
+    $(".fa4").click(function() {
+        var value = $(this).attr("aria-expanded");
+        if (value=="true"){
+            $(".exp4").text("Expand");
+        }else if(value=="false"){
+            $(".exp4").text("Collapse");
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+{% endblock javascripts %}

@@ -10,7 +10,7 @@
 <style>
     .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
         position: absolute!important;
-        top: 8px!important;
+        top: 11px!important;
     }
 </style>
 {% endblock stylesheets %}
@@ -28,24 +28,24 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
+                                    <!-- <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -84,6 +84,7 @@
                     <div class="row" id="app-page">
                         <div class="col-6">
                             <h4 class="title1">Notifications</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Notifications</p>
                         </div>
                         <!-- <div class="col-6">
                             <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>

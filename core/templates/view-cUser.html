@@ -1,0 +1,133 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Connected User {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <!-- <form>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </form> -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-1">
+                                <ul>
+                                    <!-- <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        {% if request.user.profile_pic %}
+                                        <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
+                                        {% endif %}
+                                    </li> -->
+                                    
+                                    <li class="">
+                                        <span class="intr" >
+                                            <div class="intr11">Hi {{ request.user.name }}</div>
+                                            <div class="intr11">{{ request.user.email }}</div>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather icon-chevron-down"></i>
+                                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                                <!-- <div class="dropdown-header text-center">
+                                                    {% if request.user.profile_pic %}
+                                                    <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                                    {% else %}
+                                                    <img class="top-r-img1" src="/static/assets/images/black1.png" alt="Profile image">
+                                                    {% endif %}
+                                                    <p class="mb-1 mt-3 font-weight-semibold">
+                                                    {{ request.user.user }}
+                                                    </p>
+                                                    <p class="font-weight-light text-muted mb-0 p-b-e">
+                                                    {{ request.user.email }}
+                                                    </p>
+                                                </div> -->
+                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
+                                                <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    <div class="row">
+                        <div class="col-md-12 view-app">
+                            <h4 class="title1">User Details</h4>
+                            <div class="row pt-3" id="app-v-c">
+                                <!-- <div class="col-md-2"></div> -->
+                                <div class="col-md-2">
+                                    <label for="">Profile Image</label>
+                                    <div class="" >
+                                        {% if user_det.profile_pic %}
+                                        <img src="{{user_det.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img src="/static/assets/images/black1.png" style="border: 1px solid silver;" alt="Profile image">
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <!-- <label for="">APP background-image</label>
+                                    <div class="">
+                                        <img src="{{app_detail.app_image.url}}" alt="background-image">
+                                    </div> -->
+                                </div>
+                                <div class="col-md-7"></div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col-md-6">
+                                    <label for="">USER ID</label>
+                                    <input type="text" class="form-control" value="{{user_det.id}}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">USER NAME</label>
+                                    <input type="text" class="form-control" value="{{user_det.name}}" readonly>
+                                </div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col-md-6">
+                                    <label for="">USER EMAIL</label>
+                                    <input type="text" class="form-control" value="{{user_det.email}}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">USER PHONE</label>
+                                    <input type="text" class="form-control" value="{{user_det.phone}}" readonly>
+                                </div>
+                            </div>
+                        </div>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

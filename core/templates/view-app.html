@@ -4,7 +4,10 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -20,24 +23,24 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
+                                    <!-- <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -49,11 +52,7 @@
                                         <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-chevron-down"></i>
                                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-<<<<<<< HEAD
-                                                <div class="dropdown-header text-center">
-=======
                                                 <!-- <div class="dropdown-header text-center">
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
                                                     {% if request.user.profile_pic %}
                                                     <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                                     {% else %}
@@ -65,17 +64,10 @@
                                                     <p class="font-weight-light text-muted mb-0 p-b-e">
                                                     {{ request.user.email }}
                                                     </p>
-<<<<<<< HEAD
-                                                </div>
-                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
-                                                <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
-=======
                                                 </div> -->
                                                 <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
                                                 <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
                                                 <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
                                             </div>
                                         </a>
                                     </li>
@@ -90,8 +82,14 @@
                             <div class="row pt-3" id="app-v-c">
                                 <!-- <div class="col-md-2"></div> -->
                                 <div class="col-md-2">
+                                    <label for="">APP QR Code</label>
+                                    <div style="border: 1px solid silver;" class="text-center" >
+                                        <img src="{{app_detail.app_qr.url}}" alt="QRCode">
+                                    </div>
+                                </div> 
+                                <div class="col-md-2 ">
                                     <label for="">APP LOGO</label>
-                                    <div class="" >
+                                    <div style="border: 1px solid silver;" >
                                         <img src="{{app_detail.app_logo.url}}" alt="image-logo">
                                     </div>
                                 </div>
@@ -102,7 +100,7 @@
                                         <img src="{{app_detail.app_image.url}}" alt="background-image">
                                     </div>
                                 </div>
-                                <div class="col-md-7"></div>
+                                <div class="col-md-5"></div>
                             </div>
                             <div class="row pt-3">
                                 <div class="col-md-4">
@@ -128,22 +126,8 @@
                                     <input type="text" class="form-control" value="{{app_detail.customer_id}}" readonly>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly>
-                                </div>
-                            </div>
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <label for="">APP QR</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_image.url}}" readonly>
-                                </div>
-                                <div class="col-md-4">
                                     <label for="">CREATED AT</label>
                                     <input type="text" class="form-control" value="{{app_detail.created_at}}" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- <label for="">APP URL</label>
-                                    <input type="text" class="form-control" value="{{app_detail.app_url}}" readonly> -->
                                 </div>
                             </div>
                         </div>                 

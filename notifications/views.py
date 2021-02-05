@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from notifications .models import Notification
 from .models import CustomFCMDevice
+from users .models import User
+from django.http import JsonResponse
+import json
 from notifications.serializers import DeviceSerializer
 
 
@@ -20,6 +23,32 @@ class NotificationViewSet(viewsets.ModelViewSet):
     
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+
+
+@api_view(['POST'])
+def getUserNotifications(request):
+    if request.method == 'POST':
+        try:
+            user_id  = request.data['user_id']
+        except MultiValueDictKeyError:
+            return Response({"detail": "Make sure user_id is provided",  "status": status.HTTP_400_BAD_REQUEST})        
+        try:
+            get_user = User.objects.get(id = user_id)
+        except User.DoesNotExist:
+            get_user = None
+        if get_user is not None:
+            # user_app_list = UserApp.objects.filter(user_id = user_id).all()
+            # for app in user_app_list:
+            #     apps.
+            user_apps = App.objects.filter(app__in = UserApp.objects.filter(user_id = user_id))
+            user_notification = Notification.objects.filter(app_id__in=user_apps)[:20]
+            serializer = NotificationSerializer(user_notification, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        else:
+            return Response({"message": "User does not exixts " , "status": status.HTTP_400_BAD_REQUEST})
+    else:
+        return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})    
 
 
 @api_view(['POST'])

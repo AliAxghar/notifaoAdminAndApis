@@ -54,7 +54,7 @@ File: style.css
      Google Font
 ==========================  **/
 
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 @import url("../plugins/bootstrap/css/bootstrap.min.css");
 @import url("../fonts/feather/css/feather.css");
 @import url("../plugins/jquery-scrollbar/css/jquery.scrollbar.min.css");
@@ -65,13 +65,19 @@ File: style.css
 ==========================  **/
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif!important;
     font-size: 14px;
     color: #888;
     font-weight: 400;
     background: #fff;
     position: relative;
 }
+
+.pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext{
+    font-size: 14px!important;
+    font-weight: 400!important;
+}
+
 
 *:focus {
     outline: none;
@@ -351,13 +357,8 @@ p.text-muted {
  ================================    Dropdown Start  ===================== */
 
 .dropdown-menu {
-<<<<<<< HEAD
-    padding: 20px 0;
-    margin-top: 15px;
-=======
     padding: 10px 0;
     margin-top: 8px;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
     -webkit-box-shadow: 0 1px 10px 0 rgba(69, 90, 100, 0.2);
     box-shadow: 0 1px 10px 0 rgba(69, 90, 100, 0.2);
     border: none;
@@ -13214,11 +13215,7 @@ button.add-app {
     background: linear-gradient(0deg, rgba(54,123,125,0.9612219887955182) 12%, rgba(102,176,113,0.9332107843137255) 50%);
 }
 .intr11 {
-<<<<<<< HEAD
-    font-size: 9px;
-=======
     font-size: 11px;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
     color: #888888!important;
 }
 .top-right{
@@ -13411,13 +13408,8 @@ a#UserDropdown:hover {
 }
 .nav-link1 {
     display: block;
-<<<<<<< HEAD
-    padding: 0px 0px;
-    font-size: 22px;
-=======
     padding: 4px 0px;
     font-size: 26px;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
     color: #274a5d;
 }
 .hr-top{
@@ -13432,12 +13424,14 @@ a#UserDropdown:hover {
     top: -20px;
 }
 .title1{
-    font-weight: 700!important;
-    color: black;
+    font-weight: 600!important;
+    color: black!important;
+    font-size: 21px!important;
 }
 .title2{
     font-weight: 550!important;
-    color: black;
+    color: black!important;
+    font-size: 18px!important;
 }
 input.date-input {
     position: relative;
@@ -13500,23 +13494,35 @@ input::-webkit-calendar-picker-indicator {
     box-shadow: none!important;
     padding: 25px 13px
 }
+a.btn.btn-warning.d-btn {
+    padding: 2px 16px!important;
+}
+input.btn.btn-danger.d-btn {
+    padding: 2px 16px!important;
+}
+a{
+    text-decoration: none!important;
+}
+a:hover{
+    text-decoration: none!important;
+}
 .card-l{
-    background-color: #fcfdff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px 0 rgb(217 222 230);
-    padding: 10px
+    background-color: #fcfdff!important;
+    border-radius: 10px!important;
+    box-shadow: 0 2px 8px 0 rgb(217 222 230)!important;
+    padding: 10px!important;
 }
 .card-l-d{
-    background-color: #f4f8f9;
-    border-radius: 10px;
-    -webkit-box-shadow: none;
+    background-color: #f4f8f9!important;
+    border-radius: 10px!important;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    padding: 10px
+    padding: 10px!important;
 }
 .card-i{
     background-color: #fff!important;
     border-radius: 10px!important;
-    -webkit-box-shadow: none;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
     padding: 10px 7px!important;
 }
@@ -13531,12 +13537,12 @@ input::-webkit-calendar-picker-indicator {
     color: #859ba5!important;
 }
 .right-c-d{
-    text-align: left;
+    text-align: left!important;
 }
 .right-c-d p{
-    text-align: left;
-    font-size: 10px;
-    color: #859ba5;
+    text-align: left!important;
+    font-size: 10px!important;
+    color: #859ba5!important;
 }
 .right-c-d h6{
     text-align: left!important;
@@ -13550,11 +13556,11 @@ input::-webkit-calendar-picker-indicator {
     color: #274a5d!important;
 }
 .right-c a{
-    color: #67b869;
+    color: #67b869!important;
 }
 .card-l img{
-    height: 50px;
-    width: 50px;
+    height: 50px!important;
+    width: 50px!important;
 }
 .card-l-s h5{
     text-align: left;
@@ -13615,13 +13621,8 @@ input.form-control-sm-1 {
     background-color: #fff!important;
     border-radius: 5px;
     margin-bottom: 0px;
+    /* padding: 0px 12px!important; */
 }
-<<<<<<< HEAD
-.card-cl p{
-    font-size: 9px;
-    margin-bottom: 0px;
-    margin-top: 3px;
-=======
 .page-item.active .page-link {
     color: #fff!important;
     background-color: #274a5d!important;
@@ -13643,7 +13644,6 @@ input.form-control-sm-1 {
     font-size: 10px;
     margin-bottom: 0px;
     margin-top: 2px;
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
 }
 .card-cl img{
     height: 40px;
@@ -13783,10 +13783,10 @@ table th {
 }
 .card-l-a {
     background-color: #f4f8f9!important;
-    border-radius: 10px;
-    -webkit-box-shadow: none;
+    border-radius: 10px!important;
+    -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    padding: 10px;
+    padding: 10px!important;
 }
 a.p-a{
     color: #2978a2!important;

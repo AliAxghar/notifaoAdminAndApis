@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework.authtoken',
     'fcm_django',
+    'boto3',
     
     # LOCAL APPS
     'customers',
@@ -89,18 +90,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'notifao_admin',
-#         'USER': 'postgres',
-#         'PASSWORD': '1234',
-#         'HOST': 'localhost'
-#     }
-# }
 
 
-
+api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -120,9 +112,13 @@ DATABASES = {
 #         'HOST': 'localhost'
 #     }
 # }
+# api_base_url = "http://127.0.0.1:8000/"
 
-# api_base_url = "http://127.0.0.1:8000"
-api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800"
+
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_jXFwvxnsfReUaJPu0VieogNn000MXaFPgU'
+STRIPE_SECRET_KEY = 'sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0'
+STRIPE_ENDPOINT_SECRET = 'whsec_j8WDNRQUdTfTeFTWF7AZPU0NxWBH2FZo'
 
 
 # Password validation

@@ -6,6 +6,23 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<!-- <link rel="stylesheet" href="/static/assets/css/app.css"> -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
+<style>
+    .pcoded-navbar .pcoded-inner-navbar li>a>.pcoded-micon+.pcoded-mtext {
+        position: absolute!important;
+        top: 11px!important;
+    }
+    .form-control.invoice-in {
+        padding: 5px 8px!important;
+    }
+    .invoice-la {
+        margin-bottom: .1rem!important;
+        font-size: small;
+    }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -21,24 +38,24 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
+                                    <!-- <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -75,7 +92,7 @@
                     </div>
                     <hr class="hr-top">
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <h4 class="title1">View Invoice </h4>
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="../../invoice.html">Invoices <i class="feather icon-chevron-right"></i></a> View Invoice</p>
                             <div class="row pt-1 pl-1">
@@ -144,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <div class="card right-c">
                                 <div class="card card-i">
                                     <h4 class="pt-1">Plan Usage</h4>
@@ -159,7 +176,7 @@
                                     <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
                                 </div>
                             </div>
-                        </div>                 
+                        </div>                  -->
                     </div>
                 </div>
             </div>

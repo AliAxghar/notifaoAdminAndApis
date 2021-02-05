@@ -6,7 +6,8 @@ from rest_framework .decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework import status
-from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -37,7 +38,7 @@ def customUserRegister(request):
                 user_obj = User.objects.create(name =user_name, email = user_email , phone = user_phone)
                 user_obj.save()
                 if user_obj is not None:
-                    return Response({"message": "Successfully created" , "status": status.HTTP_201_CREATED})
+                    return Response({"message": user_obj.id, "status": status.HTTP_201_CREATED})
                 else:
                     return Response({"message": "User not created" , "status": status.HTTP_406_NOT_ACCEPTABLE})
             else:

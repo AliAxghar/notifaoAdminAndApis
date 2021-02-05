@@ -7,6 +7,8 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
+from users.models import User
+
 router = routers.DefaultRouter()
 router.register('apps', AppViewSet),
 router.register('userapp', UserAppViewSet)
@@ -15,6 +17,8 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('', include(router.urls)),
     path('createapp/', view = createApp, name='create_app'),
+    path('getUserApps/', view = getUserApps, name='get_user_apps'),
+    path('deleteUserApp/', view = deleteUserApps, name='delete_user_app'),
 
     re_path(r'^.*\.html', views.pages, name='pages'),
     path('update_profile/<str:pk>/', views.updateProfile, name="update_profile"),
@@ -27,6 +31,14 @@ urlpatterns = [
     path('viewInvoice/<str:id>/', views.viewInvoice, name="viewInvoice"),
     path('createPlan/', views.createPlan, name="createPlan"),
     path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
+    path('delete_cUser/<str:pk>/', views.delete_cUser, name="delete_cUser"),
+    path('view_cUser/<str:pk>/', views.view_cUser, name="view_cUser"),
+    path('config/', views.stripe_config, name="config"),
+    path('create-checkout-session/', views.create_checkout_session, name="create-checkout-session"),
+    path('success/', views.SuccessView.as_view()),
+    path('cancelled/', views.CancelledView.as_view()),
+    path('webhook/', views.stripe_webhook, name="webhook"),
+
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

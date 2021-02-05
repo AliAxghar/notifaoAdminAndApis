@@ -6,6 +6,10 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
 <style>
     #up-img1 {
         display: block;
@@ -14,6 +18,13 @@
     #up-img {
         display: block;
         object-fit: contain;
+    }
+    .app-n .form-control {
+        background: #f4f8f9;
+        padding: 4px 20px!important;
+        font-size: 13px;
+        border: none;
+        border-radius: 5px;
     }
 </style>
 {% endblock stylesheets %}
@@ -31,24 +42,24 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
                                 <ul>
-                                    <li class="mr-2">
+                                    <!-- <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >
@@ -60,11 +71,7 @@
                                         <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-chevron-down"></i>
                                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
-<<<<<<< HEAD
-                                                <div class="dropdown-header text-center">
-=======
                                                 <!-- <div class="dropdown-header text-center">
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
                                                     {% if request.user.profile_pic %}
                                                     <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                                     {% else %}
@@ -76,17 +83,10 @@
                                                     <p class="font-weight-light text-muted mb-0 p-b-e">
                                                     {{ request.user.email }}
                                                     </p>
-<<<<<<< HEAD
-                                                </div>
-                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
-                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
-                                                <a href="{% url 'logout' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
-=======
                                                 </div> -->
                                                 <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
                                                 <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
                                                 <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
->>>>>>> 9c61d4a84bbfd7b7c5219e96257bb1c01a59504c
                                             </div>
                                         </a>
                                     </li>
@@ -95,8 +95,93 @@
                         </div>
                     </div>
                     <hr class="hr-top">
+                    {% if invoice_item %}
                     <div class="row">
                         <div class="col-md-9">
+                            <h4 class="title1">Edit Application</h4>
+                            <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Edit Application</p>
+                            <div class="row pt-1 pl-1">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                   <form id="app-form" action="" method="post" role="form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-6">
+                                                {% if app.app_logo.url %}
+                                                <div class="app-add-image c-p">
+                                                        <img id="up-img" src="{{app.app_logo.url}}">
+                                                </div>
+                                                {% else %}
+                                                <div class="app-add-image c-p">
+                                                    <img id="up-img" src="" alt="">
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-6">
+                                                {% if app.app_image.url %}
+                                                <div class="app-add-image c-p">
+                                                        <img id="up-img" src="{{app.app_image.url}}">
+                                                </div>
+                                                {% else %}
+                                                <div class="app-add-image c-p">
+                                                    <img id="up-img" src="" alt="">
+                                                </div>
+                                                {% endif %}
+                                             </div>
+                                            
+                                            <div class="col-12 text-center pt-1">
+                                                <span id="app-error" style="color: red;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row app-n">
+                                            <div class="col-12 pt-1">
+                                                {{form}}
+                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" aria-describedby="description" value="Update Application">
+                                            </div>
+                                        </div>
+                                   </form>
+                                </div>
+                                <div class="col-md-2">
+                                    <!-- <div class="card-a-p">
+                                        <div class="img-app-l-6 pt-3">
+                                            <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
+                                            <h5 class="pt-3">About Notifao Applications</h5>
+                                            <p class="pt-3">
+                                                lipsum as it is sometimes. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum a type specimen book.
+                                            </p>
+                                            <hr>
+                                            <p>
+                                                lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
+                                            </p>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="donut_chart" style="height:200px"></div>
+                                    <div class="row text-center">
+                                        <div class="col-6 b-clr"><span class="Unused mr-1 dot"></span>Unused</div>
+                                        <div class="col-6 b-clr"><span class="planused mr-1 dot1"></span>Plan Used</div>
+                                    </div>
+                                    <p class="card-p pt-3">You have used <span style="color: black;">{{total_used_notification}}%</span> of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>                 
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-md-12">
                             <h4 class="title1">Edit Application</h4>
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="">Apps <i class="feather icon-chevron-right"></i></a> Edit Application</p>
                             <div class="row pt-1 pl-1">
@@ -134,13 +219,13 @@
                                         <div class="row app-n">
                                             <div class="col-12 pt-1">
                                                 {{form}}
-                                                <input type="submit" class="form-control sbmt mt-4" aria-describedby="description" value="Update Application">
+                                                <input type="submit" class="form-control sbmt text-white mt-4" aria-describedby="description" value="Update Application">
                                             </div>
                                         </div>
                                    </form>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="card-a-p">
+                                    <!-- <div class="card-a-p">
                                         <div class="img-app-l-6 pt-3">
                                             <img class="" src="/static/assets/images/undraw_push_notifications_im0o.png" alt="">
                                             <h5 class="pt-3">About Notifao Applications</h5>
@@ -152,11 +237,11 @@
                                                 lipsum as it is sometimes known. The passage is attributed to an a specimen type specimen book.
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <div class="card right-c">
                                 <div class="card card-i">
                                     <h4 class="pt-1">Plan Usage</h4>
@@ -169,14 +254,16 @@
                                 </div>
                                 <div class="right-c-d">
                                     <h6>Limits</h6>
-                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="#">Buy More</a></p>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
                                     <h6 class="pt-1">Total users connected</h6>
-                                    <h3 class="pt-1">415</h3>
-                                    <p class="pt-1"> You've 15 users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
                                 </div>
                             </div>
-                        </div>                 
+                        </div>                  -->
                     </div>
+                    {% endif %}
+                    
                 </div>
             </div>
         </div>
