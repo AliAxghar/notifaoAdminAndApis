@@ -152,6 +152,7 @@
                         </div>
                     </div>
                     <hr class="hr-top">
+                    
                     {% if request.user.is_superuser %}
                     <div class="row">
                         <!-- <div class="col-md-1"></div> -->
@@ -587,22 +588,22 @@
                                                     <a href="../../notification.html">See all notifications</a>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                            <div class="row text-center">
+                                                <div class="col-md-12 ">
                                                     {% if notifications %}
                                                     {% for notification in notifications %}
-                                                    <a href="{% url 'singleNotification' notification.id %}">
-                                                        <div class="card card-cl mb-1">
+                                                    <a class="text-center" href="{% url 'singleNotification' notification.id %}">
+                                                        <div class="card card-cl mb-1 ">
                                                             <div class="row">
-                                                                <div class="col-2">
-                                                                    <img src="/static/assets/images/logo-thumb.png" alt="">
+                                                                <div class="col-12">
+                                                                    <span><img src="/static/assets/images/logo-thumb.png" alt=""><span class="noti-p">{{notification.description|slice:':57'}}.....</span><img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt=""></span>
                                                                 </div>
-                                                                <div class="col-8 pt-1">
+                                                                <!-- <div class="col-8 pt-1">
                                                                     <p class="noti-p">{{notification.description|slice:':80'}}</p>
                                                                 </div>
                                                                 <div class="col-2 cl">
                                                                     <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                         </div>
                                                     </a>
@@ -674,6 +675,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- <div class="col-md-3">
                                 <div class="card right-c">
                                     <div class="card card-i">

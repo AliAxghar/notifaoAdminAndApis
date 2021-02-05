@@ -13,10 +13,13 @@ from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 from .forms import LoginForm, SignUpForm
+from .forms import *
+from app.views import *
 from django.http import JsonResponse
 from customers.models import Customer
 from core.settings import api_base_url
 import requests
+
 def login_view(request):
     form = LoginForm(request.POST or None)
 
@@ -27,9 +30,12 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
+            remember = request.POST.get('remember_me')
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
+                if remember is None:
+                    request.session.set_expiry(0)
                 return redirect("/")
             else:    
                 msg = 'Email or password is incorrect'    
@@ -127,3 +133,50 @@ def register_user(request):
         return JsonResponse(data)
 
     return render(request, "accounts/register.html", {"msg" : msg, "success" : success })
+
+
+
+def reset_view(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+    else:
+        form = ResetPassForm(request.POST or None)
+        msg = None
+        msg1 = None
+        if request.method == "POST":
+            if form.is_valid():
+                email = form.cleaned_data.get("email")
+                single = Customer.objects.filter(email=email).first()
+                if single:
+                    usr_id = single.id
+                    forgotPasswordEmail(usr_id)
+                    msg = "Email is sent to reset password"
+                else:
+                    msg1 = "Enter your Notifao registered email"
+    return render(request, "accounts/sendmail.html", {"form": form, "msg" : msg, "msg1" : msg1})
+
+
+def reset_password(request, pk):
+    msg = None
+    customer = Customer.objects.get(id=pk)
+    form = UpdatePasswordForm(request.POST or None)
+    if request.method == 'POST':
+        form1 = UpdatePasswordForm(request.POST or None, request.FILES or None,instance=customer)
+        if form1.is_valid():
+            user = form1.save()
+            password1 = form1.cleaned_data.get('password1')
+            password2 = form1.cleaned_data.get('password2')
+            if password1 or password2:
+                if password1==password2:
+                    user.set_password(password1)
+                    user.save()
+                    return redirect('/login/')
+                else:
+                    msg = "Passwords do not match."
+            else:
+                msg = "Please enter password"
+            print(msg)
+        else:
+            print("not valid")
+    context = {'form': form, "msg":msg}
+    return render(request, "accounts/reset-password.html", context)

@@ -2,7 +2,7 @@
 from customers.models import Customer
 from django import forms
 from app.models import App
-
+from django.contrib.auth.forms import UserCreationForm
 
 class UpdateProfileForm(forms.ModelForm):
     New_password = forms.CharField(required=False, widget=forms.PasswordInput)
@@ -67,23 +67,25 @@ class AddAppForm(forms.ModelForm):
         fields = ('name', 'description', 'app_logo','app_image','customer_id_id')
 
 
-class UpdateAppForm(forms.ModelForm):
-    app_logo = forms.ImageField(required=False, widget=forms.FileInput)
-    app_image = forms.ImageField(required=False, widget=forms.FileInput)
-    class Meta:
-        model = App
-        fields = ('name','description','app_logo','app_image')
-        labels = {
-            'name': 'APPLICATION NAME',
-            # 'app_url': 'URL', 
-            'description':'DESCRIPTION',
-            'app_logo':'APP LOGO',
-            'app_image': 'APP BACKGROUND IMAGE',
-        }
-    def __init__(self, *args, **kwargs):
-        super(UpdateAppForm, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+# class UpdateAppForm(UserCreationForm):
+#     password1 = forms.CharField(
+#         widget=forms.PasswordInput(
+#             attrs={
+#                 "placeholder" : "Password",                
+#                 "class": "form-control"
+#             }
+#         ))
+#     password2 = forms.CharField(
+#         widget=forms.PasswordInput(
+#             attrs={
+#                 "placeholder" : "Confirm password",                
+#                 "class": "form-control"
+#             }
+#         ))
+
+#     class Meta:
+#         model = Customer
+#         fields = ('password1', 'password2')
 
 # class UpdateAppForm(forms.ModelForm):
 #     name = forms.CharField(
@@ -128,3 +130,4 @@ class UpdateAppForm(forms.ModelForm):
 #     class Meta:
 #         model = App
 #         fields = ('name', 'description', 'app_url', 'app_logo','app_image','customer_id_id')
+
