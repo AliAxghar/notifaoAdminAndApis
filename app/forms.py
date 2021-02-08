@@ -67,67 +67,51 @@ class AddAppForm(forms.ModelForm):
         fields = ('name', 'description', 'app_logo','app_image','customer_id_id')
 
 
-# class UpdateAppForm(UserCreationForm):
-#     password1 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 "placeholder" : "Password",                
-#                 "class": "form-control"
-#             }
-#         ))
-#     password2 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 "placeholder" : "Confirm password",                
-#                 "class": "form-control"
-#             }
-#         ))
-
-#     class Meta:
-#         model = Customer
-#         fields = ('password1', 'password2')
-
-# class UpdateAppForm(forms.ModelForm):
-#     name = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={
-#                 "placeholder" : "Enter App Name", 
-#                 "class": "form-control"
-#             }
-#         ))
-#     description = forms.CharField(
-#         widget=forms.Textarea(
-#             attrs={
-#                 "rows":7,
-#                 "class": "form-control",
-#                 "placeholder" : "Enter App Description"
-#                 }
-#             ))
-#     app_url = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={
-#                 "placeholder" : "Enter URL get/post", 
-#                 "class": "form-control"
-#             }
-#         ))
-#     app_logo = forms.ImageField(
-#         widget=forms.FileInput(
-#             attrs={             
-#                 "id": "fusk"
-#             }
-#         ))
-#     app_image = forms.ImageField(
-#         widget=forms.FileInput(
-#             attrs={             
-#                 "id": "fusk1"
-#             }
-#         ))
-#     customer_id_id = forms.CharField(
-#         widget=forms.HiddenInput(
-#             attrs={
-#             }
-#         ))
-#     class Meta:
-#         model = App
-#         fields = ('name', 'description', 'app_url', 'app_logo','app_image','customer_id_id')
+class UpdateAppForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder" : "Enter App Name", 
+                "class": "form-control"
+            }
+        ))
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "rows":7,
+                "class": "form-control",
+                "placeholder" : "Enter App Description"
+                }
+            ))
+    # app_url = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "placeholder" : "Enter URL get/post", 
+    #             "class": "form-control"
+    #         }
+    #     ))
+    app_logo = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(
+            attrs={             
+                "id": "fusk",
+                "class": "form-control"
+            }
+        ))
+    app_image = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(
+            attrs={             
+                "id": "fusk1",
+                "class": "form-control",
+            }
+        ))
+    # customer_id_id = forms.CharField(
+    #     widget=forms.HiddenInput(
+    #         attrs={
+    #         }
+    #     ))
+    class Meta:
+        model = App
+        fields = ('name', 'description', 'app_logo','app_image')
 
