@@ -18,6 +18,13 @@
     #my-table_length, #my-table_info{
         display: none;
     }
+    .noti-a{
+        float: none!important;
+        text-align: left;
+    }
+    .arrow{
+        float: right!important;
+    }
     #my-table_paginate ul{
         margin-bottom: 0rem;
     }
@@ -29,6 +36,9 @@
         background: #ffffff;
         padding: 3px 5px!important;
         font-size: 13px!important;
+    }
+    .card-l .col-5{
+        padding-left: 0px!important;
     }
     .form-control-sm:focus {
         color: #495057;
@@ -152,6 +162,7 @@
                         </div>
                     </div>
                     <hr class="hr-top">
+                    
                     {% if request.user.is_superuser %}
                     <div class="row">
                         <!-- <div class="col-md-1"></div> -->
@@ -228,7 +239,7 @@
                                             <div class="col-md-12">
                                                 {% if a_notifications %}
                                                 {% for notification in a_notifications %}
-                                                <a href="{% url 'singleNotification' notification.id %}">
+                                                <a class="noti-a" href="{% url 'singleNotification' notification.id %}">
                                                     <div class="card card-cl mb-1">
                                                         <div class="row">
                                                             <div class="col-2">
@@ -275,7 +286,7 @@
                                                                 <tr>
                                                                     <th>ID</th>
                                                                     <th>NAME</th>
-                                                                    <th>PHONE</th>
+                                                                    <!-- <th>PHONE</th> -->
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -283,7 +294,7 @@
                                                                 <tr>
                                                                     <td>{{userapp.user_id.id}}</td>
                                                                     <td>{{userapp.user_id.name}}</td>
-                                                                    <td>{{userapp.user_id.phone}}</td>
+                                                                    <!-- <td>{{userapp.user_id.phone}}</td> -->
                                                                 </tr>
                                                                 {% endfor %}
                                                                 <!-- <tr>
@@ -410,7 +421,7 @@
                                                 <div class="col-md-12">
                                                     {% if notifications %}
                                                     {% for notification in notifications %}
-                                                    <a href="{% url 'singleNotification' notification.id %}">
+                                                    <a class="noti-a" href="{% url 'singleNotification' notification.id %}">
                                                         <div class="card card-cl mb-1">
                                                             <div class="row">
                                                                 <div class="col-2">
@@ -457,7 +468,7 @@
                                                                     <tr>
                                                                         <th>ID</th>
                                                                         <th>NAME</th>
-                                                                        <th>PHONE</th>
+                                                                        <!-- <th>PHONE</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -465,7 +476,7 @@
                                                                     <tr>
                                                                         <td>{{userapp.user_id.id}}</td>
                                                                         <td>{{userapp.user_id.name}}</td>
-                                                                        <td>{{userapp.user_id.phone}}</td>
+                                                                        <!-- <td>{{userapp.user_id.phone}}</td> -->
                                                                     </tr>
                                                                     {% endfor %}
                                                                     <!-- <tr>
@@ -587,22 +598,22 @@
                                                     <a href="../../notification.html">See all notifications</a>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                            <div class="row text-center">
+                                                <div class="col-md-12 ">
                                                     {% if notifications %}
                                                     {% for notification in notifications %}
-                                                    <a href="{% url 'singleNotification' notification.id %}">
-                                                        <div class="card card-cl mb-1">
+                                                    <a class="noti-a" class="text-center" href="{% url 'singleNotification' notification.id %}">
+                                                        <div class="card card-cl mb-1 ">
                                                             <div class="row">
-                                                                <div class="col-2">
-                                                                    <img src="/static/assets/images/logo-thumb.png" alt="">
+                                                                <div class="col-12">
+                                                                    <span><img src="/static/assets/images/logo-thumb.png" alt=""><span class="noti-p">{{notification.description|slice:':57'}}.....</span><img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt=""></span>
                                                                 </div>
-                                                                <div class="col-8 pt-1">
+                                                                <!-- <div class="col-8 pt-1">
                                                                     <p class="noti-p">{{notification.description|slice:':80'}}</p>
                                                                 </div>
                                                                 <div class="col-2 cl">
                                                                     <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                         </div>
                                                     </a>
@@ -638,7 +649,7 @@
                                                                     <tr>
                                                                         <th>ID</th>
                                                                         <th>NAME</th>
-                                                                        <th>PHONE</th>
+                                                                        <!-- <th>PHONE</th> -->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -646,7 +657,7 @@
                                                                     <tr>
                                                                         <td>{{userapp.user_id.id}}</td>
                                                                         <td>{{userapp.user_id.name}}</td>
-                                                                        <td>{{userapp.user_id.phone}}</td>
+                                                                        <!-- <td>{{userapp.user_id.phone}}</td> -->
                                                                     </tr>
                                                                     {% endfor %}
                                                                     <!-- <tr>
@@ -674,6 +685,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- <div class="col-md-3">
                                 <div class="card right-c">
                                     <div class="card card-i">

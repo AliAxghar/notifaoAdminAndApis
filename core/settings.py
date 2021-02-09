@@ -106,7 +106,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'notifaodb',
+#         'NAME': 'mynotifaodb',
 #         'USER': 'postgres',
 #         'PASSWORD': '1234',
 #         'HOST': 'localhost'

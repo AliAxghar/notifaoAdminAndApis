@@ -1,0 +1,46 @@
+{% extends "layouts/base-fullscreen.html" %}
+{% block title %} Reset Password {% endblock %}
+
+{% block content %}   
+
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <!-- <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div> -->
+            <div class="card">
+                <div class="card-body text-center login-main-card">
+                    <div class="pt-4 pb-1">
+                        <img class="loginlogo" src="/static/assets/images/loginlogo.png" alt="logo">
+                    </div>
+                    <h5 class="pt-3 pb-1">Enter email to reset password!</h5>
+
+                    {% if msg %}
+                        <p style="color: #0dad0d;font-size: 15px; margin-bottom: 0px;">
+                            {{msg}}
+                        </p>
+                    {% endif %}
+                    {% if msg1 %}
+                        <p style="color: #a50c0c;font-size: 15px; margin-bottom: 0px;">
+                            {{msg1}}
+                        </p>
+                    {% endif %}
+                    <form role="form" class="pt-3" method="post" action="">
+
+                        {% csrf_token %}                   
+
+                        <div class="input-group mb-3">
+                            {{ form.email }}
+                        </div>
+                        <input type="submit"  name="login" id="login-btn" class="form-control mb-4" value="Submit">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

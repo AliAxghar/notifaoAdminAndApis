@@ -38,13 +38,13 @@
                             <div class="col-6">
                                 <div class="form-group text-left pl-1">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                                        <input type="checkbox" class="custom-control-input" name="remember_me" id="checkbox-fill-a1" value="remember-me">
                                         <label class="custom-control-label" for="checkbox-fill-a1">Remember me</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6 frgt">
-                                <a href="auth-reset-pass.html">Forgot password?</a>
+                                <a href="{% url 'reset' %}">Forgot password?</a>
                             </div>
                         </div>
                         <input type="submit"  name="login" id="login-btn" class="form-control mb-4" value="Login">
@@ -56,5 +56,57 @@
             </div>
         </div>
     </div>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script>
+        $(function() {
+            if (localStorage.chkbx && localStorage.chkbx != '') {
+                $('#checkbox-fill-a1').attr('checked', 'checked');
+                $('#id_email').val(localStorage.usrname);
+                $('#password').val(localStorage.pass);
+            } else {
+                $('#checkbox-fill-a1').removeAttr('checked');
+                $('#id_email').val('');
+                $('#id_password').val('');
+            }
 
+            $('#checkbox-fill-a1').click(function() {
+
+                if ($('#checkbox-fill-a1').is(':checked')) {
+                    // save username and password
+                    localStorage.usrname = $('#id_email').val();
+                    localStorage.pass = $('#id_password').val();
+                    localStorage.chkbx = $('#checkbox-fill-a1').val();
+                } else {
+                    localStorage.usrname = '';
+                    localStorage.pass = '';
+                    localStorage.chkbx = '';
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $('input:checkbox[name=remember_me]').click(function(){
+            if($(this).prop("checked") == true){
+                var email = $('#id_email').val();
+                var password = $('#id_password').val();
+                $.cookie('email', email, { expires: 14 });
+                $.cookie('password', password, { expires: 14 });
+                $.cookie('remember_me', true, { expires: 14 });
+            }
+            else if($(this).prop("checked") == false){
+                $.cookie('email', null);
+                $.cookie('password', null);
+                $.cookie('remember_me', null);
+            }
+        });
+        var remember_me = $.cookie('remember_me');
+        if ( remember_me == 'true' ) {
+            var email = $.cookie('email');
+            var password = $.cookie('password');
+            // autofill the fields
+            $('#id_email').val(email);
+            $('#id_password').val(password);
+        }
+    </script>
 {% endblock content %}

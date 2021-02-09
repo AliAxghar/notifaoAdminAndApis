@@ -13691,13 +13691,13 @@ table th {
     background-color: #f4f8f9;
     padding:10px 15px;
     border-radius: 12px;
-    height: 100px;
+    height: 120px!important;
 }
 .app-add-image1{
     background-color: #f4f8f9;
     padding:10px 15px;
     border-radius: 12px;
-    height: 100px;
+    height: 120px!important;
 }
 /* .app-add-image img{
     height: 100%!important;
