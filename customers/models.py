@@ -12,6 +12,7 @@ class Customer(AbstractUser):
     subscription_id = models.CharField(max_length=50,null=True)
     apps_allowed = models.IntegerField(default=0)
     used_notifications = models.IntegerField(default=0)
+    status = models.BooleanField(default=False)
     profile_pic = models.ImageField(upload_to='customer_image/',blank= True)
 
     def __str__(self):

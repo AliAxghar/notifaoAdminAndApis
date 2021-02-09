@@ -32,13 +32,28 @@ def login_view(request):
             password = form.cleaned_data.get("password")
             remember = request.POST.get('remember_me')
             user = authenticate(email=email, password=password)
-            if user is not None:
-                login(request, user)
-                if remember is None:
-                    request.session.set_expiry(0)
-                return redirect("/")
-            else:    
-                msg = 'Email or password is incorrect'    
+            user1 = Customer.objects.filter(email=email)
+            if user1:
+                user2 = Customer.objects.get(email=email)
+                if user2.is_superuser:
+                    Customer.objects.filter(email=email).update(status=True)
+                    if user is not None:
+                        login(request, user)
+                        return redirect("/")
+                    else:    
+                        msg = 'Email or password is incorrect'  
+                else:
+                    if user is not None:
+                        if user.status:
+                            login(request, user)
+                            return redirect("/")
+                        else:
+                            emailConfirmation(email)
+                            msg = "Please verify email to login."
+                    else:
+                        msg = 'Email or password is incorrect'  
+            else:
+                msg = "User does not exist"
         else:
             msg = 'Error validating the form'    
 
@@ -123,6 +138,7 @@ def register_user(request):
                         if res:
                             if len(res) > 1:
                                 success = True
+                                emailConfirmation(email)
                                 msg = "User created successfully"
                             else:
                                 msg = "This password is too common."
@@ -152,7 +168,7 @@ def reset_view(request):
                     forgotPasswordEmail(usr_id)
                     msg = "Email is sent to reset password"
                 else:
-                    msg1 = "Enter your Notifao registered email"
+                    msg1 = "Customer not found."
     return render(request, "accounts/sendmail.html", {"form": form, "msg" : msg, "msg1" : msg1})
 
 

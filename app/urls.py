@@ -32,6 +32,7 @@ urlpatterns = [
     path('createPlan/', views.createPlan, name="createPlan"),
     path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
     path('delete_cUser/<str:pk>/', views.delete_cUser, name="delete_cUser"),
+    path('email_verification/<str:pk>/', views.email_verification, name="email_verification"),
     path('view_cUser/<str:pk>/', views.view_cUser, name="view_cUser"),
     path('config/', views.stripe_config, name="config"),
     path('create-checkout-session/', views.create_checkout_session, name="create-checkout-session"),
