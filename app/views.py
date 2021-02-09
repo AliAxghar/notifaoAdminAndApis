@@ -888,108 +888,108 @@ def forgotPasswordEmail(pk):
 
 
 
-def registrationEmail(emiladdress):
-    SENDER = "Notifao <no-reply@notifao.com>"
-    RECIPIENT = emiladdress
-    # CONFIGURATION_SET = "ConfigSet"
-    AWS_REGION = "us-east-1"
-    SUBJECT = "Notifao Registration Email"
-    BODY_TEXT = ("Amazon SES Test (Python)\r\n"
-             "This email was sent with Amazon SES using the "
-             "AWS SDK for Python (Boto)."
-            )
-    BODY_HTML = """<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <style>
-        @media only screen and (max-width: 700px) {
-            .main {
-                padding: 30px 20px 40px 20px !important;
-                width: 90% !important;
-            }
-            img {
-                width: 150px;
-            }
-            h1 {
-                font-size: 30px !important;
-            }
-            .link {
-                font-size: 12px;
-                padding: 0px !important;
-                background-color: #fff !important;
-                color: #5db6c1 !important;
-                text-decoration: underline !important;
-            }
-            .header {
-                font-size: 12px !important;
-            }
-        }
-    </style>
-    <body style="background: #eee; font-family: sans-serif; margin: 20px;">
-        <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
-            <hr style="border: 1px solid rgb(224, 224, 224);">
+# def registrationEmail(emiladdress):
+#     SENDER = "Notifao <no-reply@notifao.com>"
+#     RECIPIENT = emiladdress
+#     # CONFIGURATION_SET = "ConfigSet"
+#     AWS_REGION = "us-east-1"
+#     SUBJECT = "Notifao Registration Email"
+#     BODY_TEXT = ("Amazon SES Test (Python)\r\n"
+#              "This email was sent with Amazon SES using the "
+#              "AWS SDK for Python (Boto)."
+#             )
+#     BODY_HTML = """<html>
+#     <head>
+#         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+#     </head>
+#     <style>
+#         @media only screen and (max-width: 700px) {
+#             .main {
+#                 padding: 30px 20px 40px 20px !important;
+#                 width: 90% !important;
+#             }
+#             img {
+#                 width: 150px;
+#             }
+#             h1 {
+#                 font-size: 30px !important;
+#             }
+#             .link {
+#                 font-size: 12px;
+#                 padding: 0px !important;
+#                 background-color: #fff !important;
+#                 color: #5db6c1 !important;
+#                 text-decoration: underline !important;
+#             }
+#             .header {
+#                 font-size: 12px !important;
+#             }
+#         }
+#     </style>
+#     <body style="background: #eee; font-family: sans-serif; margin: 20px;">
+#         <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
+#             <hr style="border: 1px solid rgb(224, 224, 224);">
             
-            <hr style="border: 1px solid rgb(224, 224, 224);">
-            <div class="header" style="font-size: 15px;">
-                <div style="display: inline-block; line-height: 22px;">
-                    <span><b>Notifao</b> no-reply@notifao.com</span><br>
-                    <span>Reply-To: no-reply@notifao.com</span><br>
-                    <span>To: """+emiladdress+"""</span><br>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
-                <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
-                <h2 style="color: #444;">User Created Successfully.</h2><br><br>
-                <p style="text-align:center;font-size:18px;font-weight:500;">If you did not request this """+emiladdress+""" be registered in Notifao, please ignore this email.</p>
-            </div>
-            <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
-        </div>
-    </body>
-    </html>
-            """ 
-    CHARSET = "UTF-8"
-    client = boto3.client(
-        "ses",
-        aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
-        aws_secret_access_key="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",
-        region_name="ca-central-1"
-    )
-    try:
-    #Provide the contents of the email.
-        response = client.send_email(
-            Destination={
-                'ToAddresses': [
-                    RECIPIENT,
-                ],
-            },
-            Message={
-                'Body': {
-                    'Html': {
-                        'Charset': CHARSET,
-                        'Data': BODY_HTML,
-                    },
-                    'Text': {
-                        'Charset': CHARSET,
-                        'Data': BODY_TEXT,
-                    },
-                },
-                'Subject': {
-                    'Charset': CHARSET,
-                    'Data': SUBJECT,
-                },
-            },
-            Source=SENDER,
-            # If you are not using a configuration set, comment or delete the
-            # following line
-            # ConfigurationSetName=CONFIGURATION_SET,
-        )
-# Display an error if something goes wrong.	
-    except ClientError as e:
-        print(e.response['Error']['Message'])
-    else:
-        print("Email sent! Message ID:"),
-        print(response['MessageId'])
+#             <hr style="border: 1px solid rgb(224, 224, 224);">
+#             <div class="header" style="font-size: 15px;">
+#                 <div style="display: inline-block; line-height: 22px;">
+#                     <span><b>Notifao</b> no-reply@notifao.com</span><br>
+#                     <span>Reply-To: no-reply@notifao.com</span><br>
+#                     <span>To: """+emiladdress+"""</span><br>
+#                 </div>
+#             </div>
+#             <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+#                 <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
+#                 <h2 style="color: #444;">User Created Successfully.</h2><br><br>
+#                 <p style="text-align:center;font-size:18px;font-weight:500;">If you did not request this """+emiladdress+""" be registered in Notifao, please ignore this email.</p>
+#             </div>
+#             <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
+#         </div>
+#     </body>
+#     </html>
+#             """ 
+#     CHARSET = "UTF-8"
+#     client = boto3.client(
+#         "ses",
+#         aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
+#         aws_secret_access_key="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",
+#         region_name="ca-central-1"
+#     )
+#     try:
+#     #Provide the contents of the email.
+#         response = client.send_email(
+#             Destination={
+#                 'ToAddresses': [
+#                     RECIPIENT,
+#                 ],
+#             },
+#             Message={
+#                 'Body': {
+#                     'Html': {
+#                         'Charset': CHARSET,
+#                         'Data': BODY_HTML,
+#                     },
+#                     'Text': {
+#                         'Charset': CHARSET,
+#                         'Data': BODY_TEXT,
+#                     },
+#                 },
+#                 'Subject': {
+#                     'Charset': CHARSET,
+#                     'Data': SUBJECT,
+#                 },
+#             },
+#             Source=SENDER,
+#             # If you are not using a configuration set, comment or delete the
+#             # following line
+#             # ConfigurationSetName=CONFIGURATION_SET,
+#         )
+# # Display an error if something goes wrong.	
+#     except ClientError as e:
+#         print(e.response['Error']['Message'])
+#     else:
+#         print("Email sent! Message ID:"),
+#         print(response['MessageId'])
 
 # registrationEmail("ali679asghar@gmail.com")
 
@@ -1102,7 +1102,6 @@ def emailConfirmation(emiladdress):
 
 def email_verification(request,pk):
     user = Customer.objects.get(id=pk)
-    # if request.method == 'GET':
     if user:
         Customer.objects.filter(id=pk).update(status=True)
         return redirect("/login/")
