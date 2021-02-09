@@ -189,4 +189,4 @@ def sendEmail(emiladdress,name):
     else:
         print("Email sent! Message ID:"),
         print(response['MessageId'])
-sendEmail("ali679asghar@gmail.com","Ali")
+# sendEmail("ali679asghar@gmail.com","Ali")
