@@ -8,6 +8,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 from users.models import User
+from notifications.views import *
 
 router = routers.DefaultRouter()
 router.register('apps', AppViewSet),
@@ -30,7 +31,7 @@ urlpatterns = [
     path('deleteNotification/<str:pk>/', views.deleteNotification, name="deleteNotification"),
     path('viewInvoice/<str:id>/', views.viewInvoice, name="viewInvoice"),
     path('createPlan/', views.createPlan, name="createPlan"),
-    path('createNotification/', views.createNotification, name="createNotification"),
+    path('createNotificationDashboard/', views.createNotificationDashboard, name="createNotificationDashboard"),
     path('updatePlan/<str:planName>/', views.updatePlan, name="updatePlan"),
     path('delete_cUser/<str:pk>/', views.delete_cUser, name="delete_cUser"),
     path('email_verification/<str:pk>/', views.email_verification, name="email_verification"),

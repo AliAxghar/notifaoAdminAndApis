@@ -364,32 +364,7 @@ def singleNotification(request, pk):
     return render(request, 'single-notification.html', context)
 
 
-@login_required(login_url="/login/")
-def createNotification(request):
-    user = request.user
-    user_id = user.id
-    all_apps = App.objects.filter(customer_id=user_id)
-    if request.method == "POST":
-        app_id = request.POST.get('app_name')
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        if app_id and title and description:
-            app = App.objects.get(id=app_id)
-            notification = Notification.objects.create(title=title, description=description, app_id=app)
-            if notification:
-                return redirect("../../notification.html")
-    context = {"all_apps":all_apps}
-    return render(request, 'add-notification.html', context)
 
-@login_required(login_url="/login/")
-def deleteNotification(request, pk):
-    notification = Notification.objects.get(id=pk)
-    if request.method == "POST":
-        notification_d = Notification.objects.filter(id=pk)
-        notification_d.delete()
-        return redirect("../../notification.html")
-    context = {'notification': notification}
-    return render(request, 'delete-notification.html', context)
 
 
 @login_required(login_url="/login/")

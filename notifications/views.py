@@ -10,6 +10,8 @@ from notifications .models import Notification
 from .models import CustomFCMDevice
 from users .models import User
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 import json
 from notifications.serializers import DeviceSerializer
 
@@ -108,3 +110,45 @@ def createNotification(request):
     else:
         return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
 
+
+
+@login_required(login_url="/login/")
+def createNotificationDashboard(request):
+    cUser = request.user
+    user_id = cUser.id
+    get_custmer = cUser
+    all_apps = App.objects.filter(customer_id=user_id)
+    if request.method == "POST":
+        app_name = request.POST.get('app_name')
+        notification_title = request.POST.get('title')
+        notification_description = request.POST.get('description')
+        get_app = App.objects.get( name = app_name , customer_id = user_id)
+        notification_obj = Notification.objects.create(title =notification_title, description  = notification_description , app_id = get_app)
+        notification_obj.save()
+        sent_count = UserApp.objects.filter(app_id = get_app.pk).count()
+        app_users = UserApp.objects.filter(app_id = get_app.pk)
+        if get_custmer.push_notifications >= sent_count:
+            if app_users :
+                for user in app_users:
+                    device = CustomFCMDevice.objects.get(user_id = user.pk)
+                    device.send_message(title=notification_title, body=notification_description)
+                get_custmer.push_notifications = get_custmer.push_notifications - sent_count
+                get_custmer.save()
+                notification_obj.notification_count = sent_count
+                notification_obj.save()
+                get_app.notifications_used = get_app.notifications_used + sent_count
+                get_app.save()
+
+        return redirect("../../notification.html")
+    context = {"all_apps":all_apps}
+    return render(request, 'add-notification.html', context)
+
+@login_required(login_url="/login/")
+def deleteNotification(request, pk):
+    notification = Notification.objects.get(id=pk)
+    if request.method == "POST":
+        notification_d = Notification.objects.filter(id=pk)
+        notification_d.delete()
+        return redirect("../../notification.html")
+    context = {'notification': notification}
+    return render(request, 'delete-notification.html', context)
