@@ -13263,6 +13263,7 @@ button.add-app {
     -webkit-appearance: button;
     -moz-appearance: button;
     appearance: button;
+    padding-top: 12px!important;
     line-height: 16px;
     padding: .2em .4em;
     margin: .2em;
@@ -13301,6 +13302,7 @@ button.add-app {
     -webkit-appearance: button;
     -moz-appearance: button;
     appearance: button;
+    padding-top: 12px!important;
     line-height: 16px;
     padding: .2em .4em;
     margin: .2em;
@@ -13725,7 +13727,7 @@ table th {
 }
 .app-n label{
     margin-bottom: 0px;
-    font-size: 10px;
+    font-size: 12px;
     color: #525151;
     font-weight: 550;
 }

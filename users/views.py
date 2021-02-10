@@ -125,7 +125,7 @@ def registrationEmail(emiladdress):
             </div>
             <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
                 <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
-                <h2 style="color: #444;">User Created Successfully.</h2><br><br>
+                <h2 style="color: #444;">Successfully Registered.</h2><br><br>
                 <p style="text-align:center;font-size:18px;font-weight:500;">If you did not request this """+emiladdress+""" be registered in Notifao, please ignore this email.</p>
             </div>
             <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">

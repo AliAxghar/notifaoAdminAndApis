@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Apps {% endblock %} 
+{% block title %} Notifications {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -87,9 +87,9 @@
                             <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Notifications</p>
                         </div>
                         <div class="col-6">
-                            <!-- <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a> -->
+                            <a href="/createNotification/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
                         </div>
-                        <div class="col-md-12 mt-3">
+                        <div class="col-md-12">
                             <div class="card card-l-a">
                                 <div class="table-responsive">
                                     <table id="my-table" class="table table-striped table-bordered" style="width:100%">
@@ -101,7 +101,7 @@
                                                 <th class="text-left">TITLE</th>
                                                 <th >DESCRIPTION</th>
                                                 <th>DATE</th>
-                                                <th class="text-left">SENT TO</th>
+                                                <th class="text-center">SENT TO</th>
                                                 <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -120,7 +120,7 @@
                                                 <td class="text-left pb-t">{{notification.title|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.created_at}}</td>
-                                                <td class="pb-t-c">{{notification.notification_count}}</td>
+                                                <td class="pb-t-c text-center">{{notification.notification_count}}</td>
                                                 <td class="text-center pb-t">
                                                     <span class="action-i">
                                                         <a href="{% url 'singleNotification' notification.id %}"><i class="feather icon-eye"></i></a>
@@ -144,7 +144,7 @@
                                                 <td class="text-left pb-t">{{notification.title|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.description|capfirst}}</td>
                                                 <td class="pb-t-c">{{notification.created_at}}</td>
-                                                <td class="pb-t-c">{{notification.notification_count}}</td>
+                                                <td class="pb-t-c text-center">{{notification.notification_count}}</td>
                                                 <td class="text-center pb-t">
                                                     <span class="action-i">
                                                         <a href="{% url 'singleNotification' notification.id %}"><i class="feather icon-eye"></i></a>

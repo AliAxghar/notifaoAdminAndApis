@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Apps {% endblock %} 
+{% block title %} Developer {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -388,6 +388,22 @@
                                                                     <div class="col-6 text-right "><span class="type">Type</span> String</div>
                                                                     <span class="pl-3">It is used to send notifications to registered users against app name provided.</span>
                                                                 </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">title</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is a title for notification that you are going to send.</span>
+                                                                </div>
+                                                                <hr class="mt-0 hrd">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-left">
+                                                                        <code class="mr-2 code-s">description</code> <span class="par">required</span>
+                                                                    </div>
+                                                                    <div class="col-6 text-right "><span class="type">Type</span> String</div>
+                                                                    <span class="pl-3">It is a description for notification that you are going to send.</span>
+                                                                </div>
 
                                                             </div>
                                                             <div class="col-md-5">
@@ -399,7 +415,10 @@
                                                                         <span class="json-r pt-5">
                                                                             { <br>
                                                                                 &nbsp;&nbsp;&nbsp;&nbsp; "id": 61, <br>
-                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"name": "string", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"title": "app title", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"description": "app description", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"app_id": "app id", <br>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;"created_at": "2021-02-08", <br>
                                                                                 &nbsp;&nbsp;&nbsp;&nbsp;"notifications_sent": 10, <br>
                                                                                 &nbsp;&nbsp;&nbsp;&nbsp;"status": 200 <br>
                                                                             }
