@@ -130,7 +130,11 @@
                                                 <td class="pb-t-c">{{app.notifications_actual_used}}</td>
                                                 <td class="pb-t-c">13</td>
                                                 {% if app.app_qr %}
-                                                <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode"></td>
+                                                <td class="text-center pb-t-c">
+                                                    <a href="#" class="qrcode" data-toggle="modal" data-target="#exampleModalCenter">
+                                                        <img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode">
+                                                    </a>
+                                                </td>
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
@@ -146,6 +150,7 @@
                                             {% endfor %}
                                             {% else %}
                                             {% for app in app_users_list %}
+                                            
                                             <tr>
                                                 <!-- <td>
                                                     <div class="custom-control custom-checkbox">
@@ -159,7 +164,11 @@
                                                 <td class="pb-t-c">{{app.notifications_actual_used}}</td>
                                                 <td class="pb-t-c">{{app.actual_used}}</td>
                                                 {% if app.app_qr %}
-                                                <td class="text-center pb-t-c"><img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode"></td>
+                                                <td class="text-center pb-t-c">
+                                                    <a href="#" class="qrcode" data-toggle="modal" data-target="#exampleModalCenter">
+                                                        <img class="c-u-img" src="media/{{app.app_qr}}" alt="qrcode">
+                                                    </a>
+                                                </td>
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
@@ -184,6 +193,26 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">QR Code</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <!-- <span aria-hidden="true">&times;</span> -->
+              </button>
+            </div>
+              <div class="modal-body text-center">
+                
+                <img style="height: 200px;width: 200px;" id="modelqrcode" src="" alt="qrcode">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" style="color: wheat;"><a download class="text-white" id="download" href="">Download</button></a>
+              </div>
+          </div>
+        </div>
+      </div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -192,7 +221,16 @@
     $(document).ready(function() {
         $('#my-table').DataTable();
             responsive: true
-    } );
+    });
+    $(".qrcode").on("click",function() {
+        var origin   = window.location.origin;
+        var appqrcode = $(this).children().attr("src");
+        var appqr = origin+"/"+appqrcode;
+        $("#modelqrcode").attr("src",appqr);
+        $("#download").attr("href",appqr);
+        
+        
+    });
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
