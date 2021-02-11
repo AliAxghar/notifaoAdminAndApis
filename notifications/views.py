@@ -122,6 +122,7 @@ def createNotification(request):
 
 @login_required(login_url="/login/")
 def createNotificationDashboard(request):
+    msg = None
     cUser = request.user
     user_id = cUser.id
     get_custmer = cUser
@@ -148,9 +149,11 @@ def createNotificationDashboard(request):
                 notification_obj.save()
                 get_app.notifications_used = get_app.notifications_used + sent_count
                 get_app.save()
+                return redirect("../../notification.html")
+        else:
+            msg = "Not enough notifications. Please update your plan"
 
-        return redirect("../../notification.html")
-    context = {"all_apps":all_apps}
+    context = {"all_apps":all_apps, "msg":msg}
     return render(request, 'add-notification.html', context)
 
 @login_required(login_url="/login/")
