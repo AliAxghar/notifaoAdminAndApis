@@ -1,0 +1,619 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} My Plans {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/assets/css/app.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script src="/static/assets/js/main.js"></script>
+<style>
+    .m-p-b:focus{
+        color: green;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row top-row">
+                        <div class="col-md-6">
+                            <!-- Search form -->
+                            <!-- <form>
+                                <div class="form-group has-search">
+                                    <span class="fa fa-search form-control-feedback"></span>
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </form> -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="top-right mt-1">
+                                <ul>
+                                    <!-- <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
+                                        {% if request.user.profile_pic %}
+                                        <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                        {% else %}
+                                        <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
+                                        {% endif %}
+                                    </li> -->
+                                    
+                                    <li class="">
+                                        <span class="intr" >
+                                            <div class="intr11">Hi {{ request.user.name }}</div>
+                                            <div class="intr11">{{ request.user.email }}</div>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link1 top-drop" href="#" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather icon-chevron-down"></i>
+                                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown ml-5" aria-labelledby="UserDropdown">
+                                                <!-- <div class="dropdown-header text-center">
+                                                    {% if request.user.profile_pic %}
+                                                    <img class="top-r-img1" src="{{request.user.profile_pic.url}}" alt="Profile image">
+                                                    {% else %}
+                                                    <img class="top-r-img1" src="/static/assets/images/black1.png" alt="Profile image">
+                                                    {% endif %}
+                                                    <p class="mb-1 mt-3 font-weight-semibold">
+                                                    {{ request.user.user }}
+                                                    </p>
+                                                    <p class="font-weight-light text-muted mb-0 p-b-e">
+                                                    {{ request.user.email }}
+                                                    </p>
+                                                </div> -->
+                                                <a href="{% url 'update_profile' request.user.id %}" class="dropdown-item item1">My Profile<i class="dropdown-item-icon ti-dashboard"></i></a>
+                                                <!-- <a href="#" class="dropdown-item item1">Messages <span class="badge badge-pill badge-danger">2</span><i class="dropdown-item-icon ti-comment-alt"></i></a> -->
+                                                <a href="{% url 'logout' %}" class="dropdown-item item1">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hr-top">
+                    {% if invoice_item %}
+                    <div class="row" id="app-page">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="title1">My Plan</h4>
+                                    <p class="breadcrumb-b"><span style="color: #888888;">Post-Paid/Pre-Paid -</span> <a class="p-a" href="#">How to change to post-paid?</a></p>
+                                </div>
+                                <div class="col-md-6 mt-1">
+                                    <!-- <input class="btn-c-a"  type="submit" value="Private"/> -->
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+                            <div id="myplan">
+                                <!-- <form action="" method="post"> -->
+                                <div id="part1" class="parts">
+                                    <div class="part11">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
+                                            <!-- <input type="hidden" name="name" value="private">
+                                            <input type="hidden" name="price" value="1">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="planid" value="price_1HyhdOCEigeyfTXepWPmWItH">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="privatePlan">
+                                            <h5>Free Plan</h5>
+                                            <h1>$1</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="privatePlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div id="part2" class="parts">
+                                    <div class="p-1 p2-p">Choose your plan</div>
+                                    <span class="part-span">Recommended</span>
+                                    <div class="part22 pt-3">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
+                                            <input type="hidden" name="planName" value="businessPlan">
+                                            <!-- <input type="hidden" name="name" value="business">
+                                            <input type="hidden" name="price" value="4">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="5000">
+                                            <input type="hidden" name="apps" value="3">
+                                            <input type="hidden" name="planid" value="price_1HyhcrCEigeyfTXe4nMbbrAI">
+                                            <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month"> -->
+                                            <h5>Business Plan</h5>
+                                            <h1>$4</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">5000 notifications</p>
+                                            <p class="p-p">3 apps allowed</p>
+                                            <p class="p-p">$8 one-time every 5000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="businessPlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="part3" class="parts">
+                                    <div class="part33">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <!-- <input type="hidden" name="name" value="unlimited">
+                                            <input type="hidden" name="price" value="7">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="planid" value="price_1HyhbxCEigeyfTXeiPwwMEQc">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="unlimitedPlan">
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
+                                            <h5>Unlimited Plan</h5>
+                                            <h1>$7</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="unlimitedPlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row pt-5">
+                                    <div class="col-md-12 ad">
+                                        <div class="row">
+                                            <div class="col-md-2 p-4 addonss">
+                                                <h5>Addons</h5>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="row">
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">5,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment()">+</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">10,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput1" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment1()">+</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">Extra 1 App</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput2" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment2()">+</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- <div class="center">
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                                                                <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[2]" class="form-control input-number" value="10" min="1" max="100">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="donut_chart" style="height:200px"></div>
+                                    <div class="row text-center">
+                                        <div class="col-6 b-clr"><span class="Unused mr-1 dot1"></span>Unused</div>
+                                        <div class="col-6 b-clr"><span class="planused mr-1 dot2"></span>Plan Used</div>
+                                    </div>
+                                    <p class="card-p pt-3">You have used <span style="color: black;">{{total_used_notification}}%</span> of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>     
+                    </div>
+                    {% else %}
+                    <div class="row" id="app-page">
+                        <!-- <div class="col-md-1"></div> -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="title1">My Plan</h4>
+                                    <p class="breadcrumb-b"><span style="color: #888888;">Post-Paid/Pre-Paid -</span> <a class="p-a" href="#">How to change to post-paid?</a></p>
+                                </div>
+                                <div class="col-md-6 mt-1">
+                                    <!-- <input class="btn-c-a"  type="submit" value="Private"/> -->
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+                            <div id="myplan">
+                                <!-- <form action="" method="post"> -->
+                                <div id="part1" class="parts">
+                                    <div class="part11">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/user-b.png" alt=""></span>
+                                            <!-- <input type="hidden" name="name" value="private">
+                                            <input type="hidden" name="price" value="1">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="planid" value="price_1HyhdOCEigeyfTXepWPmWItH">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="privatePlan">
+                                            <h5>Free Plan</h5>
+                                            <h1>$1</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="privatePlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div id="part2" class="parts">
+                                    <div class="p-1 p2-p">Choose your plan</div>
+                                    <span class="part-span" style="padding: 0 103px 2px 104px;">Recommended</span>
+                                    <div class="part22 pt-3">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/mail-box.png" alt=""></span>
+                                            <input type="hidden" name="planName" value="businessPlan">
+                                            <!-- <input type="hidden" name="name" value="business">
+                                            <input type="hidden" name="price" value="4">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="5000">
+                                            <input type="hidden" name="apps" value="3">
+                                            <input type="hidden" name="planid" value="price_1HyhcrCEigeyfTXe4nMbbrAI">
+                                            <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month"> -->
+                                            <h5>Business Plan</h5>
+                                            <h1>$4</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">5000 notifications</p>
+                                            <p class="p-p">3 apps allowed</p>
+                                            <p class="p-p">$8 one-time every 5000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="businessPlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="part3" class="parts">
+                                    <div class="part33">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <!-- <input type="hidden" name="name" value="unlimited">
+                                            <input type="hidden" name="price" value="7">
+                                            <input type="hidden" name="interval" value="1">
+                                            <input type="hidden" name="notification" value="1000">
+                                            <input type="hidden" name="apps" value="1">
+                                            <input type="hidden" name="planid" value="price_1HyhbxCEigeyfTXeiPwwMEQc">
+                                            <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
+                                            <input type="hidden" name="planName" value="unlimitedPlan">
+                                            <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
+                                            <h5>Unlimited Plan</h5>
+                                            <h1>$7</h1>
+                                            <p>Per Month</p>
+                                            <p class="p-p">1000 notifications</p>
+                                            <p class="p-p">1 app allowed</p>
+                                            <p class="p-p">$2 one-time every 1000 notifications additional app $10 per month</p>
+                                            <input class="btn-c-m-p mt-3 submitBtn" data="unlimitedPlan"  type="submit" value="Select Plan"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row pt-5">
+                                    <div class="col-md-12 ad">
+                                        <div class="row">
+                                            <div class="col-md-2 p-4 addonss">
+                                                <h5>Addons</h5>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="row">
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">5,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment()">+</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">10,000 Notifications</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput1" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment1()">+</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-4 cl3-a">
+                                                        <h6 class="text-center">Extra 1 App</h6>
+                                                        <span class="add-1">
+                                                            <input id="demoInput2" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <span class="m-p-b" onclick="increment2()">+</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="center">
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                    <p>
+                                                      </p><div class="input-group">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                                                                <span class="glyphicon glyphicon-minus"></span>
+                                                              </button>
+                                                          </span>
+                                                          <input type="text" name="quant[2]" class="form-control input-number" value="10" min="1" max="100">
+                                                          <span class="input-group-btn">
+                                                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                                                  <span class="glyphicon glyphicon-plus"></span>
+                                                              </button>
+                                                          </span>
+                                                      </div>
+                                                    <p></p>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-md-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-1"></div> -->
+                        <!-- <div class="col-md-3">
+                            <div class="card right-c">
+                                <div class="card card-i">
+                                    <h4 class="pt-1">Plan Usage</h4>
+                                    <div id="donut_chart" style="height:200px"></div>
+                                    <div class="row text-center">
+                                        <div class="col-6 b-clr"><span class="Unused mr-1 dot1"></span>Unused</div>
+                                        <div class="col-6 b-clr"><span class="planused mr-1 dot2"></span>Plan Used</div>
+                                    </div>
+                                    <p class="card-p pt-3">You have used <span style="color: black;">{{total_used_notification}}%</span> of your actual plan</p>
+                                </div>
+                                <div class="right-c-d">
+                                    <h6>Limits</h6>
+                                    <p >You have no limit on your account. New plan package will renew automatically. You have 3000 notification left <a href="../../my-plan.html">Buy More</a></p>
+                                    <h6 class="pt-1">Total users connected</h6>
+                                    <h3 class="pt-1">{{total_users}}</h3>
+                                    <p class="pt-1"> You've {{total_users}} users connected tou your app. How to <a href="#">Convince users</a> to install our app</p>
+                                </div>
+                            </div>
+                        </div>      -->
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script>
+    (function () {
+        var $, MyMorris;
+
+        MyMorris = window.MyMorris = {};
+        $ = jQuery;
+
+        MyMorris = Object.create(Morris);
+
+        MyMorris.Donut.prototype.select = function (idx) {
+            var row, s, segment, _i, _len, _ref, _fill_color; // ADDED _fill_color
+            _ref = this.segments;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                s = _ref[_i];
+                s.deselect();
+            }
+            segment = this.segments[idx];
+            segment.select();
+            row = this.data[idx];
+            _fill_color = row.labelColor || this.options.labelColor || '#000000'; // ADDED
+            return this.setLabels(row.label, this.options.formatter(row.value, row), _fill_color); // ADDED parameter _fill_color
+        };
+
+
+        MyMorris.Donut.prototype.setLabels = function (label1, label2, fill_color) {
+            var inner, maxHeightBottom, maxHeightTop, maxWidth, text1bbox, text1scale, text2bbox, text2scale;
+            _default_fill = fill_color || '#000000'; // ADDED
+            inner = (Math.min(this.el.width() / 2, this.el.height() / 2) - 10) * 2 / 3;
+            maxWidth = 1.8 * inner;
+            maxHeightTop = inner / 2;
+            maxHeightBottom = inner / 3;
+            this.text1.attr({
+                text: label1,
+                transform: '',
+                fill: fill_color // ADDED
+            });
+            text1bbox = this.text1.getBBox();
+            text1scale = Math.min(maxWidth / text1bbox.width, maxHeightTop / text1bbox.height);
+            this.text1.attr({
+                transform: "S" + text1scale + "," + text1scale + "," + (text1bbox.x + text1bbox.width / 2) + "," + (text1bbox.y + text1bbox.height)
+            });
+            this.text2.attr({
+                text: label2,
+                transform: '',
+                fill: fill_color // ADDED
+            });
+            text2bbox = this.text2.getBBox();
+            text2scale = Math.min(maxWidth / text2bbox.width, maxHeightBottom / text2bbox.height);
+            return this.text2.attr({
+                transform: "S" + text2scale + "," + text2scale + "," + (text2bbox.x + text2bbox.width / 2) + "," + text2bbox.y
+            });
+        };
+    }).call(this);
+
+    getMorris('donut', 'donut_chart');
+
+    function getMorris(type, element) {
+        if (type === 'donut') {
+            var morris = Morris.Donut({
+                element: element,
+                data: [
+                    {
+                        label: 'Used %',
+                        value: {{total_used_notification}},
+                        labelColor: '#257c86'
+                    }, {
+                    label: 'Unused %',
+                        value: {{remaining_notification}},
+                        labelColor: '#4c9f75'
+                    }, 
+                ],
+                labelColor: "#4c9f75",
+                colors: ['#257c86', '#4c9f75']
+            });
+        }
+    }
+</script>
+<script>
+    window.onload = function() {
+       document.querySelector('#part2').className += " page-load-hover";
+       $("#part2 input").addClass('btn-c-m-p-1');
+    }
+</script>
+<script>
+    $("#part1").hover(
+        function () {
+            $("#part2").removeClass("page-load-hover");
+            $("#part3").removeClass("page-load-hover");
+            $(this).addClass("page-load-hover");
+            $("#part2 input").removeClass("btn-c-m-p-1");
+            $("#part3 input").removeClass("btn-c-m-p-1");
+            $("#part1 input").addClass('btn-c-m-p-1');
+        },
+    );
+    $("#part3").hover(
+        function () {
+            $("#part2").removeClass("page-load-hover");
+            $("#part1").removeClass("page-load-hover");
+            $(this).addClass("page-load-hover");
+            // $(this).css('z-index', 99);
+            $("#part1 input").removeClass("btn-c-m-p-1");
+            $("#part2 input").removeClass("btn-c-m-p-1");
+            $("#part3 input").addClass('btn-c-m-p-1');
+        },
+    );
+    $("#part2").hover(
+        function () {
+            $("#part3").removeClass("page-load-hover");
+            $("#part1").removeClass("page-load-hover");
+            $(this).addClass("page-load-hover");
+            $("#part1 input").removeClass("btn-c-m-p-1");
+            $("#part3 input").removeClass("btn-c-m-p-1");
+            $("#part2 input").addClass('btn-c-m-p-1');
+        },
+    );
+    // $(document).ready(function(){
+    //     if ($("#part2").hasClass("page-load-hover")) {
+    //         $("#part2 input").addClass('btn-c-m-p-1');
+    //     }
+    // });
+</script>
+<script>
+    function increment() {
+       document.getElementById('demoInput').stepUp();
+    }
+    function decrement() {
+       document.getElementById('demoInput').stepDown();
+    }
+    function increment1() {
+       document.getElementById('demoInput1').stepUp();
+    }
+    function decrement1() {
+       document.getElementById('demoInput1').stepDown();
+    }
+    function increment2() {
+       document.getElementById('demoInput2').stepUp();
+    }
+    function decrement2() {
+       document.getElementById('demoInput2').stepDown();
+    }
+</script>
+<script>
+    $('.submitBtn').click(function(){
+      var plan = $(this).attr("data")
+      $.ajax({
+          url: '{% url "webhook" %}',
+          data: {'plan': plan},
+          dataType: 'json',
+      });
+      return false;
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{% endblock javascripts %}

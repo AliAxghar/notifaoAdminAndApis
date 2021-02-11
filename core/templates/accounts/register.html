@@ -1,0 +1,137 @@
+{% extends "layouts/base-fullscreen-account.html" %}
+
+{% block title %} Login {% endblock %}
+{% block content %}
+
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <!-- <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div> -->
+            <div class="card">
+                <div class="card-body text-center login-main-card">
+                    <div class="pt-1 pb-1">
+                        <img class="loginlogo" src="/static/assets/images/loginlogo.png" alt="logo">
+                    </div>
+                    <h5 class="pt-3 pb-1">Register to get Notified!</h5>
+                    <!-- <div id=""></div> -->
+                    <div class="mb-0 text-muted1" id="alert" style="color: #e65d5d!important;">
+                    </div>
+                    <div class="mb-0 text-muted1" id="alert1" style="color: #53d453!important;">
+                    </div>
+                    <!-- <span class="mb-0 text-muted">
+                        {% if msg1 %}
+                            {{ msg1 | safe }}
+                        {% endif %} 
+                    </span> -->
+                    <!-- <span class="text-error">{{ form.username.errors }}</span>
+                    <span class="text-error">{{ form.email.errors }}</span>
+                    <span class="text-error">{{ form.password1.errors }}</span>
+                    <span class="text-error">{{ form.password2.errors }}</span> -->
+                    <form role="form"  class="pt-2" method="post" action="">
+
+                        {% csrf_token %}                    
+
+                        <div class="input-group mb-3">
+                            <!-- {{ form.username }} -->
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
+                        </div>
+                        <div class="input-group mb-3" >
+                            <!-- {{ form.email }} -->
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <!-- {{ form.password1 }} -->
+                            <input type="tel" class="form-control getphone" name="phone_number" id="phone_number" required value="" style="width: 100%;" required/>
+                        </div>
+                        <div class="input-group mb-3">
+                            <!-- {{ form.password1 }} -->
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                        </div>
+                        <div class="input-group mb-2">
+                            <!-- {{ form.password2 }} -->
+                            <input type="password" class="form-control" name="password2" id="password2" placeholder="Confirm Password" required>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group text-left pl-1">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="checkbox-fill-1" value="No" id="checkbox-fill-a1">
+                                        <label class="custom-control-label" for="checkbox-fill-a1">Agree with terms</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit"  name="login" id="login-btn" class="form-control mb-2" value="Register">
+
+                    </form>
+                    <p class="mb-0 lo-p">Already have an account? <a href="{% url 'login' %}" >Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $.ajax({
+            url: "http://ip-api.com/json",
+            jsonpCallback: "callback",
+            dataType: "jsonp",
+            success: function( response ) {
+                var phone_number = window.intlTelInput(document.querySelector("#phone_number"), {
+                    separateDialCode: true,
+                    preferredCountries: [response.countryCode],
+                    hiddenInput: "full",
+                    utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+    
+                });
+                $('#phone_number').on('change paste keyup', function(){
+                    var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+                    // console.log(full_number);
+                    $("input[name='phone_number'").val(full_number);
+                });
+            }
+        });
+    </script>
+    <script>
+    $('#checkbox-fill-a1').on('click', function(){
+        if($(this).is(':checked')){
+            $(this).prop('checked', true);
+            $(this).val('Yes');
+        }else{
+            $(this).prop('checked', false);
+            $(this).val('No');
+        }
+    });
+    $('#login-btn').on('click', function(){
+        var phone = $("#phone_number").val();
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var password2 = $("#password2").val();
+        var terms = $("#checkbox-fill-a1").val();
+        var userdata = [name, email, phone, password, password2, terms];
+        var list = userdata;
+        $.ajax({
+            url: '{% url "register" %}',
+            data: {'list[]': list},
+            dataType: 'json',
+            success: function (data) {
+                if (data.msg == "User created successfully"){
+                    $('#alert').css("display","none");
+                    $('#alert1').text(data.msg);
+                    var origin   = window.location.origin;
+                    window.location.replace(origin,"/login");
+                }else{
+                    $('#alert').text(data.msg);
+                }
+                // console.log(data.msg1);
+                // $('#alert').text(data.msg)
+            },
+        });
+        return false;
+
+    }); 
+    </script>
+{% endblock content %}
