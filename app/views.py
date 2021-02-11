@@ -12,6 +12,10 @@ from django.contrib.admin.models import LogEntry
 from app.forms import *
 from invoices.models import *
 import time
+import boto3
+from notifications.views import *
+# from .forms import *
+# from app.forms import UpdateAppForm
 from datetime import datetime
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -32,8 +36,15 @@ from django.contrib.auth import authenticate
 from customers.models import Customer
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
+from botocore.exceptions import ClientError
 from core.settings import api_base_url
+from core import settings
+from .forms import *
 import requests
+# from django.conf import FCM_DJANGO_SETTINGS
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
 from notifications.models import Notification
 from django.utils.datastructures import MultiValueDictKeyError
 import stripe
@@ -66,7 +77,7 @@ def index(request):
     a_notifications = Notification.objects.all().order_by('-id')[:7]
     if apps:
         for app in apps:
-            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:5]
+            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:3]
             for noti in all_notifications:
                 notifications.append(noti)
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').count()
@@ -117,8 +128,6 @@ def pages(request):
     user = request.user
     all_app = App.objects.all()
     invoice_item = Invoices.objects.filter(email=user.email)
-    logs = LogEntry.objects.all()
-    print(logs,"...........")
     # all_invoices = stripe.Invoice.list()
     total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []
@@ -150,8 +159,22 @@ def pages(request):
     users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')
     # print(users)
     # us = UserApp.objects.all()
-    # print(us)
-    userApps = App.objects.filter(customer_id_id=user.id)
+    # print(us)   
+    app_users_list = []
+    userApps = App.objects.filter(customer_id=user.id)
+    if userApps:
+        for ob in userApps:
+            us = UserApp.objects.filter(app_id=ob.id).count()
+            mydict = {
+                "id": ob.id,
+                "name": ob.name,
+                "notifications_used": ob.notifications_used,
+                "notifications_actual_used":ob.notifications_actual_used,
+                "app_qr":ob.app_qr,
+                "actual_used":us
+            }
+            app_users_list.append(mydict)
+
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
@@ -165,7 +188,7 @@ def pages(request):
 
 
 
-    context = {"invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -261,7 +284,7 @@ def deleteUserApps(request):
         except User.DoesNotExist:
             get_user = None
         if get_user is not None:
-            print(get_user.id)
+            # print(get_user.id)
             try:
                 get_user_app = UserApp.objects.filter(app_id = app_id).get(user_id = user_id)
             except UserApp.DoesNotExist:
@@ -340,15 +363,8 @@ def singleNotification(request, pk):
     context = {"notifications":notifications,}
     return render(request, 'single-notification.html', context)
 
-@login_required(login_url="/login/")
-def deleteNotification(request, pk):
-    notification = Notification.objects.get(id=pk)
-    if request.method == "POST":
-        notification_d = Notification.objects.filter(id=pk)
-        notification_d.delete()
-        return redirect("../../notification.html")
-    context = {'notification': notification}
-    return render(request, 'delete-notification.html', context)
+
+
 
 
 @login_required(login_url="/login/")
@@ -376,9 +392,6 @@ def createPlan(request):
         # plan_list = [name,price,interval,notifications,apps,planid]
         # list1 = list1.split(',')
         # print(url_list,plan_list,stripeToken)
-        if planName:
-            context = {"planName":planName}
-            return render(request, 'payment.html', context)
     context = {"invoice_item":invoice_item}
     return render(request, 'my-plan.html', context)
 
@@ -670,3 +683,429 @@ def view_cUser(request,pk):
     user_det = User.objects.get(id=pk)
     context = {"user_det":user_det}
     return render(request, 'view-cUser.html', context)
+
+
+
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+
+
+class SuccessView(TemplateView):
+    template_name = 'success.html'
+
+
+class CancelledView(TemplateView):
+    template_name = 'cancelled.html'
+
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == 'GET':
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                # new
+                client_reference_id=request.user.id if request.user.is_authenticated else None,
+                success_url=api_base_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=api_base_url + 'cancelled/',
+                payment_method_types=['card'],
+                mode='payment',
+                line_items=[
+                    {
+                        'name': "Notifao Plan",
+                        'quantity': 1,
+                        'currency': 'usd',
+                        'amount': '1000',
+                    }
+                ]
+            )
+            return JsonResponse({'sessionId': checkout_session['id']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    print("webhook")
+
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # print(session)
+        # print(session.customer)
+        # print(session['data'].price.id)
+
+        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+        m = line_items["data"]
+        # for n in m:
+        inv = stripe.InvoiceItem.create(
+            price="price_1IDv45CEigeyfTXe7YAWSqH6",
+            customer=session.customer,
+        )
+        # print(inv)
+        if inv:
+            invvoi = stripe.Invoice.create(
+                customer=inv.customer,
+            )
+            # print(invvoi)
+
+    return HttpResponse(status=200)
+
+
+
+
+def forgotPasswordEmail(pk):
+    user = Customer.objects.get(id=pk)
+    emiladdress = user.email
+    path = "{}reset_password/{}/".format(api_base_url, pk)
+    SENDER = "Notifao <no-reply@notifao.com>"
+    RECIPIENT = emiladdress
+    # CONFIGURATION_SET = "ConfigSet"
+    AWS_REGION = "us-east-1"
+    SUBJECT = "Notifao Password Reset"
+    BODY_TEXT = ("Amazon SES Test (Python)\r\n"
+             "This email was sent with Amazon SES using the "
+             "AWS SDK for Python (Boto)."
+            )
+    BODY_HTML = """<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        @media only screen and (max-width: 700px) {
+            .main {
+                padding: 30px 20px 40px 20px !important;
+                width: 90% !important;
+            }
+            img {
+                width: 150px;
+            }
+            h1 {
+                font-size: 30px !important;
+            }
+            .link {
+                font-size: 12px;
+                padding: 0px !important;
+                background-color: #fff !important;
+                color: #5db6c1 !important;
+                text-decoration: underline !important;
+            }
+            .header {
+                font-size: 12px !important;
+            }
+        }
+    </style>
+    <body style="background: #eee; font-family: sans-serif; margin: 20px;">
+        <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
+            <hr style="border: 1px solid rgb(224, 224, 224);">
+            <h2 style="color: #444;">Notifao Password Reset</h2>
+            <hr style="border: 1px solid rgb(224, 224, 224);">
+            <div class="header" style="font-size: 15px;">
+                <div style="display: inline-block; line-height: 22px;">
+                    <span><b>Notifao</b> no-reply@notifao.com</span><br>
+                    <span>Reply-To: no-reply@notifao.com</span><br>
+                    <span>To: """+emiladdress+"""</span><br>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+                <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
+                <a class="link" href="""+path+"""
+                    style="padding: 20px 40px; background-color: #5db6c1; color: #fff; font-weight: bold; text-decoration: none; border-radius: 50px;">CONTINUE
+                    TO RESET</a>
+            </div>
+            <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
+        </div>
+    </body>
+    </html>
+            """ 
+    CHARSET = "UTF-8"
+    client = boto3.client(
+        "ses",
+        aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
+        aws_secret_access_key="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",
+        region_name="ca-central-1"
+    )
+    try:
+    #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            # ConfigurationSetName=CONFIGURATION_SET,
+        )
+# Display an error if something goes wrong.	
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+
+
+
+# def registrationEmail(emiladdress):
+#     SENDER = "Notifao <no-reply@notifao.com>"
+#     RECIPIENT = emiladdress
+#     # CONFIGURATION_SET = "ConfigSet"
+#     AWS_REGION = "us-east-1"
+#     SUBJECT = "Notifao Registration Email"
+#     BODY_TEXT = ("Amazon SES Test (Python)\r\n"
+#              "This email was sent with Amazon SES using the "
+#              "AWS SDK for Python (Boto)."
+#             )
+#     BODY_HTML = """<html>
+#     <head>
+#         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+#     </head>
+#     <style>
+#         @media only screen and (max-width: 700px) {
+#             .main {
+#                 padding: 30px 20px 40px 20px !important;
+#                 width: 90% !important;
+#             }
+#             img {
+#                 width: 150px;
+#             }
+#             h1 {
+#                 font-size: 30px !important;
+#             }
+#             .link {
+#                 font-size: 12px;
+#                 padding: 0px !important;
+#                 background-color: #fff !important;
+#                 color: #5db6c1 !important;
+#                 text-decoration: underline !important;
+#             }
+#             .header {
+#                 font-size: 12px !important;
+#             }
+#         }
+#     </style>
+#     <body style="background: #eee; font-family: sans-serif; margin: 20px;">
+#         <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
+#             <hr style="border: 1px solid rgb(224, 224, 224);">
+            
+#             <hr style="border: 1px solid rgb(224, 224, 224);">
+#             <div class="header" style="font-size: 15px;">
+#                 <div style="display: inline-block; line-height: 22px;">
+#                     <span><b>Notifao</b> no-reply@notifao.com</span><br>
+#                     <span>Reply-To: no-reply@notifao.com</span><br>
+#                     <span>To: """+emiladdress+"""</span><br>
+#                 </div>
+#             </div>
+#             <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+#                 <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
+#                 <h2 style="color: #444;">User Created Successfully.</h2><br><br>
+#                 <p style="text-align:center;font-size:18px;font-weight:500;">If you did not request this """+emiladdress+""" be registered in Notifao, please ignore this email.</p>
+#             </div>
+#             <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
+#         </div>
+#     </body>
+#     </html>
+#             """ 
+#     CHARSET = "UTF-8"
+#     client = boto3.client(
+#         "ses",
+#         aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
+#         aws_secret_access_key="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",
+#         region_name="ca-central-1"
+#     )
+#     try:
+#     #Provide the contents of the email.
+#         response = client.send_email(
+#             Destination={
+#                 'ToAddresses': [
+#                     RECIPIENT,
+#                 ],
+#             },
+#             Message={
+#                 'Body': {
+#                     'Html': {
+#                         'Charset': CHARSET,
+#                         'Data': BODY_HTML,
+#                     },
+#                     'Text': {
+#                         'Charset': CHARSET,
+#                         'Data': BODY_TEXT,
+#                     },
+#                 },
+#                 'Subject': {
+#                     'Charset': CHARSET,
+#                     'Data': SUBJECT,
+#                 },
+#             },
+#             Source=SENDER,
+#             # If you are not using a configuration set, comment or delete the
+#             # following line
+#             # ConfigurationSetName=CONFIGURATION_SET,
+#         )
+# # Display an error if something goes wrong.	
+#     except ClientError as e:
+#         print(e.response['Error']['Message'])
+#     else:
+#         print("Email sent! Message ID:"),
+#         print(response['MessageId'])
+
+# registrationEmail("ali679asghar@gmail.com")
+
+
+def emailConfirmation(emiladdress):
+    user = Customer.objects.get(email=emiladdress)
+    path = "{}email_verification/{}/".format(api_base_url,user.id)
+    SENDER = "Notifao <no-reply@notifao.com>"
+    RECIPIENT = emiladdress
+    # CONFIGURATION_SET = "ConfigSet"
+    AWS_REGION = "us-east-1"
+    SUBJECT = "Notifao Confirmation Email"
+    BODY_TEXT = ("Amazon SES Test (Python)\r\n"
+             "This email was sent with Amazon SES using the "
+             "AWS SDK for Python (Boto)."
+            )
+    BODY_HTML = """<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        @media only screen and (max-width: 700px) {
+            .main {
+                padding: 30px 20px 40px 20px !important;
+                width: 90% !important;
+            }
+            img {
+                width: 150px;
+            }
+            h1 {
+                font-size: 30px !important;
+            }
+            .link {
+                font-size: 12px;
+                padding: 0px !important;
+                background-color: #fff !important;
+                color: #5db6c1 !important;
+                text-decoration: underline !important;
+            }
+            .header {
+                font-size: 12px !important;
+            }
+        }
+    </style>
+    <body style="background: #eee; font-family: sans-serif; margin: 20px;">
+        <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
+            <hr style="border: 1px solid rgb(224, 224, 224);">
+            <h2 style="color: #444;">Confirm Your Email.</h2>
+            <hr style="border: 1px solid rgb(224, 224, 224);">
+            <div class="header" style="font-size: 15px;">
+                <div style="display: inline-block; line-height: 22px;">
+                    <span><b>Notifao</b> no-reply@notifao.com</span><br>
+                    <span>Reply-To: no-reply@notifao.com</span><br>
+                    <span>To: """+emiladdress+"""</span><br>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+                <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
+                <a class="link" href="""+path+"""
+                    style="padding: 20px 40px; background-color: #5db6c1; color: #fff; font-weight: bold; text-decoration: none; border-radius: 50px;">CONFIRM
+                    TO CONTINUE</a>
+            </div>
+            <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
+        </div>
+    </body>
+    </html>
+            """ 
+    CHARSET = "UTF-8"
+    client = boto3.client(
+        "ses",
+        aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
+        aws_secret_access_key="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",
+        region_name="ca-central-1"
+    )
+    try:
+    #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            # ConfigurationSetName=CONFIGURATION_SET,
+        )
+# Display an error if something goes wrong.	
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+
+def email_verification(request,pk):
+    user = Customer.objects.get(id=pk)
+    if user:
+        Customer.objects.filter(id=pk).update(status=True)
+        return redirect("/login/")
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_200_OK)
+
+
+
+
+
+
+
