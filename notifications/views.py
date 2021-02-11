@@ -136,22 +136,22 @@ def createNotificationDashboard(request):
         notification_obj.save()
         sent_count = UserApp.objects.filter(app_id = get_app.pk).count()
         app_users = UserApp.objects.filter(app_id = get_app.pk)
-        if get_custmer.push_notifications >= sent_count:
-            if app_users :
-                for user in app_users:
-                    user_notification_obj = UserNotification.objects.create(user_id = user.user_id,title = notification_title,description = notification_description)
-                    user_notification_obj.save()
-                    device = CustomFCMDevice.objects.get(user_id = user.user_id)
-                    device.send_message(title=notification_title, body=notification_description)
-                get_custmer.push_notifications = get_custmer.push_notifications - sent_count
-                get_custmer.save()
-                notification_obj.notification_count = sent_count
-                notification_obj.save()
-                get_app.notifications_used = get_app.notifications_used + sent_count
-                get_app.save()
-                return redirect("../../notification.html")
-        else:
-            msg = "Not enough notifications. Please update your plan"
+        # if get_custmer.push_notifications >= sent_count:
+        if app_users :
+            for user in app_users:
+                user_notification_obj = UserNotification.objects.create(user_id = user.user_id,title = notification_title,description = notification_description)
+                user_notification_obj.save()
+                device = CustomFCMDevice.objects.get(user_id = user.user_id)
+                device.send_message(title=notification_title, body=notification_description)
+            get_custmer.push_notifications = get_custmer.push_notifications - sent_count
+            get_custmer.save()
+            notification_obj.notification_count = sent_count
+            notification_obj.save()
+            get_app.notifications_used = get_app.notifications_used + sent_count
+            get_app.save()
+            return redirect("../../notification.html")
+        # else:
+        #     msg = "Not enough notifications. Please update your plan"
 
     context = {"all_apps":all_apps, "msg":msg}
     return render(request, 'add-notification.html', context)
