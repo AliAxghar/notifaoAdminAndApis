@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Connected User {% endblock %} 
+{% block title %} Recent {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
@@ -21,24 +21,25 @@
                     <div class="row top-row">
                         <div class="col-md-6">
                             <!-- Search form -->
-                            <form>
+                            <!-- <form>
                                 <div class="form-group has-search">
                                     <span class="fa fa-search form-control-feedback"></span>
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
-                            </form>
+                            </form> -->
+                            <h4 class="title1 text-left pb-0 pt-3">Recent</h4>
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
-                                <ul>
-                                    <li class="mr-2">
-                                        <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
+                                <ul class="mt-1">
+                                    <!-- <li class="mr-2">
+                                        <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
                                         <img class="top-r-img" src="{{request.user.profile_pic.url}}" alt="Profile image">
                                         {% else %}
                                         <img class="top-r-img" src="/static/assets/images/black1.png" alt="Profile image">
                                         {% endif %}
-                                    </li>
+                                    </li> -->
                                     
                                     <li class="">
                                         <span class="intr" >

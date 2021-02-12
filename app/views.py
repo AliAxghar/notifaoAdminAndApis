@@ -74,10 +74,10 @@ def index(request):
     if not total_noti_graph_list:        
         total_noti_graph_list = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
     notifications = []
-    a_notifications = Notification.objects.all().order_by('-id')[:7]
+    a_notifications = Notification.objects.all().order_by('-id')[:10]
     if apps:
         for app in apps:
-            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:3]
+            all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:10]
             for noti in all_notifications:
                 notifications.append(noti)
     total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').count()
@@ -153,7 +153,7 @@ def pages(request):
     apps = App.objects.filter(customer_id=user.id)
     notifications = []
     for app in apps:
-        all_notifications = Notification.objects.filter(app_id=app.id)
+        all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:10]
         for noti in all_notifications:
             notifications.append(noti)
     users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')

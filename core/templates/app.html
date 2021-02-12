@@ -39,10 +39,11 @@
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
                             </form> -->
+                            <h4 class="title1 text-left pb-0 pt-3">Applications</h4>
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
-                                <ul>
+                                <ul class="mt-1">
                                     <!-- <li class="mr-2"> -->
                                         <!-- <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span> -->
                                         <!-- {% if request.user.profile_pic %}
@@ -88,7 +89,7 @@
                     <hr class="hr-top">
                     <div class="row" id="app-page">
                         <div class="col-6">
-                            <h4 class="title1">Applications</h4>
+                            <!-- <h4 class="title1">Applications</h4> -->
                         </div>
                         <div class="col-6">
                             {% if request.user.is_superuser %}
@@ -208,7 +209,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" style="color: wheat;"><a download class="text-white" id="download" href="">Download</button></a>
+                <button type="button" class="btn btn-success" style="color: wheat;"><a download class="text-white" id="download" href="">Download</button></a>
               </div>
           </div>
         </div>

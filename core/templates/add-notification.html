@@ -39,10 +39,11 @@
                                     <input type="text" class="form-control" placeholder="Search">
                                 </div>
                             </form> -->
+                            <h4 class="title1 text-left pb-0 pt-3">Add Notification</h4>
                         </div>
                         <div class="col-md-6">
                             <div class="top-right mt-1">
-                                <ul>
+                                <ul class="mt-1">
                                     <!-- <li class="mr-2">
                                         <span class="bell-btn"><img class="bell-icon" src="/static/assets/images/bell.png" alt=""><span class="notif">5</span></span>
                                         {% if request.user.profile_pic %}
@@ -89,7 +90,7 @@
                     {% if invoice_item %}
                     <div class="row">
                         <div class="col-md-9">
-                            <h4 class="title1">Add Notification</h4>
+                            <!-- <h4 class="title1">Add Notification</h4> -->
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="../../notification.html">Notifications <i class="feather icon-chevron-right"></i></a> Add Notification</p>
                             <div class="row pt-1 pl-1">
                                 <div class="col-md-6">
@@ -105,7 +106,7 @@
                                             <div class="col-12 pt-1">
                                                 <div class="form-group">
                                                     <label for="">APPLICATION NAME</label>
-                                                    <select class="form-control" name="app_name" id="app_name">
+                                                    <select class="form-control f-c" name="app_name" id="app_name">
                                                         <option value="">Select</option>
                                                         {% for app in all_apps %}
                                                         <option value="{{app.name}}">{{app.name}}</option>
@@ -114,13 +115,13 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">TITLE</label>
-                                                    <input type="text" class="form-control" id="title" name="title" aria-describedby="title" placeholder="Enter title" required>
+                                                    <input type="text" class="form-control f-c" id="title" name="title" aria-describedby="title" placeholder="Enter title" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlTextarea1">DESCRIPTION</label>
                                                     <textarea class="form-control" type="text" name="description" id="description" placeholder="Enter description" rows="4" required></textarea>
                                                 </div>
-                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" style="color: #fff;" value="Create Notification">
+                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" style="color: #fff;" value="Send Notification">
                                             </div>
                                         </div>
                                    </form>
@@ -134,7 +135,7 @@
                     {% else %}
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="title1">Add Notification</h4>
+                            <!-- <h4 class="title1">Add Notification</h4> -->
                             <p class="breadcrumb-b"><a href="/">Home <i class="feather icon-chevron-right"></i></a> <a href="../../notification.html">Notifications <i class="feather icon-chevron-right"></i></a> Add Notification</p>
                             <div class="row pt-1 pl-1">
                                 <div class="col-md-6">
@@ -151,7 +152,7 @@
                                             <div class="col-12 pt-1">
                                                 <div class="form-group">
                                                     <label for="">APPLICATION NAME</label>
-                                                    <select class="form-control" name="app_name" id="app_name">
+                                                    <select class="form-control f-c" name="app_name" id="app_name">
                                                         <option value="">Select</option>
                                                         {% for app in all_apps %}
                                                         <option value="{{app.name}}">{{app.name}}</option>
@@ -160,13 +161,13 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">TITLE</label>
-                                                    <input type="text" class="form-control" id="title" name="title" aria-describedby="title" placeholder="Enter title" required>
+                                                    <input type="text" class="form-control f-c" id="title" name="title" aria-describedby="title" placeholder="Enter title" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleFormControlTextarea1">DESCRIPTION</label>
                                                     <textarea class="form-control" type="text" name="description" id="description" placeholder="Enter description" rows="4" required></textarea>
                                                 </div>
-                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" style="color: #fff;" value="Create Notification">
+                                                <input type="submit" class="form-control sbmt mt-4 text-white c-p" style="color: #fff;" value="Send Notification">
                                             </div>
                                         </div>
                                    </form>
