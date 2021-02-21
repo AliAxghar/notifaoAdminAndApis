@@ -16,6 +16,26 @@
     .m-p-b:focus{
         color: green;
     }
+    .overlay{
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        text-align: center;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background: rgba(255,255,255,0.8) url("/static/assets/images/loader.gif") center no-repeat;
+    }
+    /* Turn off scrollbar when body element has the loading class */
+    body.loading{
+        overflow: hidden;
+    }
+    /* Make spinner image visible when body element has the loading class */
+    body.loading .overlay{
+        display: block;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -113,7 +133,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="planid" value="price_1HyhdOCEigeyfTXepWPmWItH">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
                                             <input type="hidden" name="planName" value="privatePlan">
                                             <h5>Free Plan</h5>
@@ -140,7 +160,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="5000">
                                             <input type="hidden" name="apps" value="3">
-                                            <input type="hidden" name="planid" value="price_1HyhcrCEigeyfTXe4nMbbrAI">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month"> -->
                                             <h5>Business Plan</h5>
                                             <h1>$4</h1>
@@ -161,7 +181,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="planid" value="price_1HyhbxCEigeyfTXeiPwwMEQc">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
                                             <input type="hidden" name="planName" value="unlimitedPlan">
                                             <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
@@ -296,7 +316,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="planid" value="price_1HyhdOCEigeyfTXepWPmWItH">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
                                             <input type="hidden" name="planName" value="privatePlan">
                                             <h5>Free Plan</h5>
@@ -323,7 +343,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="5000">
                                             <input type="hidden" name="apps" value="3">
-                                            <input type="hidden" name="planid" value="price_1HyhcrCEigeyfTXe4nMbbrAI">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$8 one-time every 5000 notifications additional app $10 per month"> -->
                                             <h5>Business Plan</h5>
                                             <h1>$4</h1>
@@ -344,7 +364,7 @@
                                             <input type="hidden" name="interval" value="1">
                                             <input type="hidden" name="notification" value="1000">
                                             <input type="hidden" name="apps" value="1">
-                                            <input type="hidden" name="planid" value="price_1HyhbxCEigeyfTXeiPwwMEQc">
+                                            <input type="hidden" name="planid" value="">
                                             <input type="hidden" name="description" value="$2 one-time every 1000 notifications additional app $10 per month"> -->
                                             <input type="hidden" name="planName" value="unlimitedPlan">
                                             <span class="m-p-i-b"><img class="m-p-img" src="/static/assets/images/pro-box.png" alt=""></span>
@@ -456,6 +476,7 @@
             </div>
         </div>
     </div>
+    <div class="overlay"></div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -607,14 +628,30 @@
 </script>
 <script>
     $('.submitBtn').click(function(){
-      var plan = $(this).attr("data")
-      $.ajax({
-          url: '{% url "webhook" %}',
-          data: {'plan': plan},
-          dataType: 'json',
-      });
-      return false;
+        var plan = $(this).attr("data")
+        let stripe = '';
+        $.ajax({
+            url: '{% url "config" %}',
+            success: function (data) {
+                stripe = Stripe(data.publicKey);
+            },
+        });
+        
+        $.ajax({
+            url: '{% url "create-checkout-session" %}',
+            data: {'plan': plan},
+            dataType: 'json',
+            beforeSend: function() {
+                $("body").addClass("loading"); 
+            },
+            success: function (data) {
+                $("body").removeClass("loading"); 
+                console.log(data)
+                return stripe.redirectToCheckout({sessionId: data.sessionId})
+            },
+        });
+        return false;
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 {% endblock javascripts %}

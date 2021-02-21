@@ -108,7 +108,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'noti_db',
+#         'NAME': 'abc',
 #         'USER': 'postgres',
 #         'PASSWORD': '1234',
 #         'HOST': 'localhost'

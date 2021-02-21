@@ -685,8 +685,6 @@ def view_cUser(request,pk):
     return render(request, 'view-cUser.html', context)
 
 
-
-
 @csrf_exempt
 def stripe_config(request):
     if request.method == 'GET':
@@ -704,6 +702,16 @@ class CancelledView(TemplateView):
 
 @csrf_exempt
 def create_checkout_session(request):
+    priceId = None
+    plan = request.GET.get("plan")
+    if plan:
+        if plan == "privatePlan":
+            priceId = "price_1INHEjCEigeyfTXec2yGGVar"
+        elif plan == "businessPlan":
+            priceId = "price_1INHDlCEigeyfTXedNyNRcli"
+        elif plan == "unlimitedPlan":
+            priceId = "price_1INHKDCEigeyfTXefcniZXPW"
+    # print(amount)
     if request.method == 'GET':
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -712,13 +720,11 @@ def create_checkout_session(request):
                 success_url=api_base_url + 'success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=api_base_url + 'cancelled/',
                 payment_method_types=['card'],
-                mode='payment',
+                mode='subscription',
                 line_items=[
                     {
-                        'name': "Notifao Plan",
+                        'price': priceId,
                         'quantity': 1,
-                        'currency': 'usd',
-                        'amount': '1000',
                     }
                 ]
             )
@@ -756,22 +762,21 @@ def stripe_webhook(request):
 
         line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
         m = line_items["data"]
-        # for n in m:
+        # print(m)
+        in_price = m.price["id"]
+        print(in_price)
         inv = stripe.InvoiceItem.create(
-            price="price_1IDv45CEigeyfTXe7YAWSqH6",
+            price=in_price,
             customer=session.customer,
         )
-        # print(inv)
+        print(inv)
         if inv:
             invvoi = stripe.Invoice.create(
                 customer=inv.customer,
             )
-            # print(invvoi)
+            print(invvoi)
 
     return HttpResponse(status=200)
-
-
-
 
 def forgotPasswordEmail(pk):
     user = Customer.objects.get(id=pk)

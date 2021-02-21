@@ -38,7 +38,7 @@
                             <div class="col-6">
                                 <div class="form-group text-left pl-1">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="remember_me" id="checkbox-fill-a1" value="remember-me">
+                                        <input type="checkbox" class="custom-control-input" name="remember_me" id="checkbox-fill-a1">
                                         <label class="custom-control-label" for="checkbox-fill-a1">Remember me</label>
                                     </div>
                                 </div>
@@ -62,14 +62,14 @@
             if (localStorage.chkbx && localStorage.chkbx != '') {
                 $('#checkbox-fill-a1').attr('checked', 'checked');
                 $('#id_email').val(localStorage.usrname);
-                $('#password').val(localStorage.pass);
+                $('#id_password').val(localStorage.pass);
             } else {
                 $('#checkbox-fill-a1').removeAttr('checked');
                 $('#id_email').val('');
                 $('#id_password').val('');
             }
 
-            $('#checkbox-fill-a1').click(function() {
+            $('input:checkbox[name=remember_me]').click(function() {
 
                 if ($('#checkbox-fill-a1').is(':checked')) {
                     // save username and password
@@ -85,7 +85,7 @@
         });
 
     </script>
-    <script>
+    <!-- <script>
         $('input:checkbox[name=remember_me]').click(function(){
             if($(this).prop("checked") == true){
                 var email = $('#id_email').val();
@@ -108,5 +108,5 @@
             $('#id_email').val(email);
             $('#id_password').val(password);
         }
-    </script>
+    </script> -->
 {% endblock content %}

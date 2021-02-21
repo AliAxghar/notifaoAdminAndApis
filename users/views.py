@@ -72,7 +72,7 @@ def custom_user_login(request):
                         
     else:
         return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
-    
+   
 def registrationEmail(emiladdress):
     SENDER = "Notifao <no-reply@notifao.com>"
     RECIPIENT = emiladdress
