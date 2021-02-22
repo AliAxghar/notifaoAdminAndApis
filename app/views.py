@@ -132,22 +132,22 @@ def pages(request):
     total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []
     invoices_a = Invoices.objects.all()
-    if invoices_a:
-        for i in invoices_a:
-            indi_ina = stripe.Invoice.retrieve(
-                i.billing_id,
-            )
-            if indi_ina:
-                all_invoices.append(indi_ina)
+    # if invoices_a:
+    #     for i in invoices_a:
+    #         indi_ina = stripe.Invoice.retrieve(
+    #             i.billing_id,
+    #         )
+    #         if indi_ina:
+    #             all_invoices.append(indi_ina)
     invoices_all = Invoices.objects.filter(email=user.email)
     indi_in_list = []
-    if invoices_all:
-        for i in invoices_all:
-            indi_in = stripe.Invoice.retrieve(
-                i.billing_id,
-            )
-            if indi_in:
-                indi_in_list.append(indi_in)
+    # if invoices_all:
+    #     for i in invoices_all:
+    #         indi_in = stripe.Invoice.retrieve(
+    #             i.billing_id,
+    #         )
+    #         if indi_in:
+    #             indi_in_list.append(indi_in)
     lasUsers = UserApp.objects.filter().distinct('user_id')
     a_notifications = Notification.objects.all()
     apps = App.objects.filter(customer_id=user.id)
@@ -702,6 +702,7 @@ class CancelledView(TemplateView):
 
 @csrf_exempt
 def create_checkout_session(request):
+    user_email = request.user.email
     priceId = None
     plan = request.GET.get("plan")
     if plan:
@@ -713,6 +714,7 @@ def create_checkout_session(request):
             priceId = "price_1INHKDCEigeyfTXefcniZXPW"
     # print(amount)
     if request.method == 'GET':
+        Invoices.objects.filter(email=user_email).delete()
         try:
             checkout_session = stripe.checkout.Session.create(
                 # new
@@ -732,11 +734,15 @@ def create_checkout_session(request):
         except Exception as e:
             return JsonResponse({'error': str(e)})
 
+def addon(request):
+    addonlist = request.GET.getlist('list[]')
+    noti5k = addonlist[0]
+    return noti5k
+
 
 @csrf_exempt
 def stripe_webhook(request):
     print("webhook")
-
     endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -757,24 +763,68 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         # print(session)
+        client_reference_id = session.get('client_reference_id')
+        stripe_customer_id = session.get('customer')
+        stripe_subscription_id = session.get('subscription')
+        # print(client_reference_id)
+        # Get the user and create a new StripeCustomer
+        user = Customer.objects.get(id=client_reference_id)
+        # StripeCustomer.objects.create(
+        #     user=user,
+        #     stripeCustomerId=stripe_customer_id,
+        #     stripeSubscriptionId=stripe_subscription_id,
+        # )
+        # print(user.email + ' just subscribed.')
         # print(session.customer)
         # print(session['data'].price.id)
-
         line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
-        m = line_items["data"]
-        # print(m)
-        in_price = m.price["id"]
-        print(in_price)
-        inv = stripe.InvoiceItem.create(
-            price=in_price,
-            customer=session.customer,
-        )
-        print(inv)
-        if inv:
-            invvoi = stripe.Invoice.create(
-                customer=inv.customer,
-            )
-            print(invvoi)
+        pay_data = line_items["data"]
+        # print(pay_data)
+        for obj in pay_data:
+            user_email = user.email
+            amount = session.amount_total
+            priceId = obj.price["id"]
+            if priceId == 'price_1INHEjCEigeyfTXec2yGGVar':
+                name_p = 'Private Plan'
+                price_p = amount
+                interval_p = 1
+                notifications_p = 1000
+                apps_p = 1
+                planId_p = priceId
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_p,apps_p,interval_p,price_p/100)
+                description_p = '$2 one-time every 1000 notifications additional app $10 per month'
+                invoices = Invoices.objects.create( name=name_p, price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=obj.description, email=user_email, customer_id=session.customer)
+            elif priceId == 'price_1INHDlCEigeyfTXedNyNRcli':
+                name_b = 'Business Plan'
+                price_b = amount
+                interval_b = 1
+                notifications_b = 5000
+                apps_b = 3
+                planId_b = priceId
+                description_b = '$8 one-time every 5000 notifications additional app $10 per month'
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_b,apps_b,interval_b,price_b/100)
+                invoices = Invoices.objects.create( name=name_b, price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=obj.description, email=user_email, customer_id=session.customer)
+            elif priceId == 'price_1INHKDCEigeyfTXefcniZXPW':
+                name_u = 'Unlimited Plan'
+                price_u = amount
+                interval_u = 1
+                notifications_u = 1000
+                apps_u = 1
+                planId_u = priceId
+                description_u = '$2 one-time every 1000 notifications additional app $10 per month'
+                des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_u,apps_u,interval_u,price_u/100)
+                invoices = Invoices.objects.create( name=name_u, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=obj.description, email=user_email, customer_id=session.customer)
+
+            # inv = stripe.InvoiceItem.create(
+            #     price=priceId,
+            #     customer=session.customer,
+            # )
+            # print(inv)
+            # if inv:
+            #     invvoi = stripe.Invoice.create(
+            #         customer=inv.customer,
+            #     )
+            #     print(invvoi)
 
     return HttpResponse(status=200)
 

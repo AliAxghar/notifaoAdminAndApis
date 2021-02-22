@@ -208,21 +208,21 @@
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">5,000 Notifications</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput" class="imput-add" type="number" name="noti5k" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment()">+</span>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">10,000 Notifications</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput1" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput1" class="imput-add" type="number" name="noti10k" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment1()">+</span>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">Extra 1 App</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput2" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput2" class="imput-add" type="number" name="app1" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment2()">+</span>
                                                         </span>
                                                     </div>
@@ -391,21 +391,21 @@
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">5,000 Notifications</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput" class="imput-add" name="noti5k" type="number" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment()">+</span>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">10,000 Notifications</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput1" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput1" class="imput-add" type="number" name="noti10k" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment1()">+</span>
                                                         </span>
                                                     </div>
                                                     <div class="col-md-4 cl3-a">
                                                         <h6 class="text-center">Extra 1 App</h6>
                                                         <span class="add-1">
-                                                            <input id="demoInput2" class="imput-add" type="number" value="$1"  min="2" max="100" placeholder="$1">
+                                                            <input id="demoInput2" class="imput-add" type="number" name="app1" value="$1"  min="2" max="100" placeholder="$1">
                                                             <span class="m-p-b" onclick="increment2()">+</span>
                                                         </span>
                                                     </div>
@@ -628,12 +628,25 @@
 </script>
 <script>
     $('.submitBtn').click(function(){
+        var noti5k = $("#demoInput").val();
+        var noti10k = $("#demoInput1").val();
+        var app1 = $("#demoInput2").val();
+        var addon = [noti5k, noti10k, app1];
+        var list = addon;
         var plan = $(this).attr("data")
         let stripe = '';
         $.ajax({
             url: '{% url "config" %}',
             success: function (data) {
                 stripe = Stripe(data.publicKey);
+            },
+        });
+        $.ajax({
+            url: '{% url "addon" %}',
+            data: {'list[]': list},
+            dataType: 'json',
+            success: function (data) {
+                console.log(true);
             },
         });
         

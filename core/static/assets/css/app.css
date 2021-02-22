@@ -348,6 +348,9 @@ span.m-p-b {
 .part11, .part22, .part33{
     padding: 25px;
 }
+/* .part-span{
+    padding: 0 103px 2px 104px!important;
+} */
 /* .part11:hover, .part22:hover, .part33:hover{
     padding: 20px;
 } */
@@ -441,6 +444,11 @@ span.m-p-b {
         margin-bottom:40px;
     }
 }
+/* @media only screen and (max-width:768px) {
+    .part-span{
+        padding: 0 103px 2px 104px!important;
+    }
+} */
 @media only screen and (max-width:768px) {
     #part2 {
         display: inherit;
