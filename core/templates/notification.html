@@ -88,7 +88,9 @@
                             <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Notifications</p>
                         </div>
                         <div class="col-6">
+                            {% if request.user.push_notifications > 0 %}
                             <a href="/createNotificationDashboard/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                            {% endif %}
                         </div>
                         <div class="col-md-12">
                             <div class="card card-l-a">

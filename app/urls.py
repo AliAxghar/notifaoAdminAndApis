@@ -41,7 +41,6 @@ urlpatterns = [
     path('success/', views.SuccessView.as_view()),
     path('cancelled/', views.CancelledView.as_view()),
     path('webhook/', views.stripe_webhook, name="webhook"),
-    path('addon/', views.addon, name="addon"),
     
 
 

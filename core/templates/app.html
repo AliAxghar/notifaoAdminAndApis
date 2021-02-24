@@ -90,12 +90,15 @@
                     <div class="row" id="app-page">
                         <div class="col-6">
                             <!-- <h4 class="title1">Applications</h4> -->
+                            <p class="breadcrumb-b"><a href="/">Home <a href=""> <i class="feather icon-chevron-right"></i></a> Apps</p>
                         </div>
                         <div class="col-6">
                             {% if request.user.is_superuser %}
                             <div></div>
                             {% else %}
+                                {% if request.user.apps_allowed > 0 %}
                                 <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <div class="col-md-12 mt-3">

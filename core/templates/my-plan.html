@@ -641,14 +641,11 @@
                 stripe = Stripe(data.publicKey);
             },
         });
-        $.ajax({
-            url: '{% url "addon" %}',
-            data: {'list[]': list},
-            dataType: 'json',
-            success: function (data) {
-                console.log(true);
-            },
-        });
+        // $.ajax({
+        //     url: '{% url "webhook" %}',
+        //     data: {'list[]': list},
+        //     dataType: 'json',
+        // });
         
         $.ajax({
             url: '{% url "create-checkout-session" %}',

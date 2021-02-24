@@ -98,6 +98,8 @@ def index(request):
     if not lists:        
         lists = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
     user_obj = Customer.objects.get(email=user.email)
+    if user_obj.push_notifications <= user_obj.used_notifications:
+        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
     if total_notification != 0:
@@ -122,7 +124,6 @@ def index(request):
     html_template = loader.get_template( 'index.html' )
     return HttpResponse(html_template.render(context, request))
 
-
 @login_required(login_url="/login/")
 def pages(request):
     user = request.user
@@ -131,23 +132,30 @@ def pages(request):
     # all_invoices = stripe.Invoice.list()
     total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []
-    invoices_a = Invoices.objects.all()
-    # if invoices_a:
-    #     for i in invoices_a:
-    #         indi_ina = stripe.Invoice.retrieve(
-    #             i.billing_id,
-    #         )
-    #         if indi_ina:
-    #             all_invoices.append(indi_ina)
+    all_invoices_users = Invoices.objects.all()
+    if all_invoices_users:
+        for inv in all_invoices_users:
+            user_subs = stripe.Subscription.retrieve(
+                inv.subscription_id,
+            )
+            if user_subs:
+                user_inv = stripe.Invoice.retrieve(
+                    user_subs.latest_invoice,
+                )
+                all_invoices.append(user_inv)
     invoices_all = Invoices.objects.filter(email=user.email)
     indi_in_list = []
-    # if invoices_all:
-    #     for i in invoices_all:
-    #         indi_in = stripe.Invoice.retrieve(
-    #             i.billing_id,
-    #         )
-    #         if indi_in:
-    #             indi_in_list.append(indi_in)
+    invoices_a = Invoices.objects.filter(email=user.email)
+    if invoices_a:
+        for inv in invoices_a:
+            user_subs = stripe.Subscription.retrieve(
+                inv.subscription_id,
+            )
+            if user_subs:
+                user_inv = stripe.Invoice.retrieve(
+                    user_subs.latest_invoice,
+                )
+                indi_in_list.append(user_inv)
     lasUsers = UserApp.objects.filter().distinct('user_id')
     a_notifications = Notification.objects.all()
     apps = App.objects.filter(customer_id=user.id)
@@ -176,6 +184,8 @@ def pages(request):
             app_users_list.append(mydict)
 
     user_obj = Customer.objects.get(email=user.email)
+    if user_obj.push_notifications <= user_obj.used_notifications:
+        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
     if total_notification != 0:
@@ -537,6 +547,8 @@ def updateProfile(request, pk):
     notifications_used = 0
     user = request.user
     user_obj = Customer.objects.get(email=user.email)
+    if user_obj.push_notifications <= user_obj.used_notifications:
+        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
     if total_notification != 0:
@@ -707,14 +719,13 @@ def create_checkout_session(request):
     plan = request.GET.get("plan")
     if plan:
         if plan == "privatePlan":
-            priceId = "price_1INHEjCEigeyfTXec2yGGVar"
+            priceId = "price_1IO7CaCEigeyfTXeaAztqcsy"
         elif plan == "businessPlan":
-            priceId = "price_1INHDlCEigeyfTXedNyNRcli"
+            priceId = "price_1IO7CyCEigeyfTXeqqFq3FeN"
         elif plan == "unlimitedPlan":
-            priceId = "price_1INHKDCEigeyfTXefcniZXPW"
+            priceId = "price_1IO7BTCEigeyfTXec7MKzvDh"
     # print(amount)
     if request.method == 'GET':
-        Invoices.objects.filter(email=user_email).delete()
         try:
             checkout_session = stripe.checkout.Session.create(
                 # new
@@ -734,15 +745,14 @@ def create_checkout_session(request):
         except Exception as e:
             return JsonResponse({'error': str(e)})
 
-def addon(request):
-    addonlist = request.GET.getlist('list[]')
-    noti5k = addonlist[0]
-    return noti5k
 
 
 @csrf_exempt
 def stripe_webhook(request):
     print("webhook")
+    # addonlist = request.GET.getlist('list[]')
+    # noti5k = addonlist[0]
+    # print(noti5k)
     endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -762,11 +772,14 @@ def stripe_webhook(request):
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        # print(session)
+        print(session)
         client_reference_id = session.get('client_reference_id')
         stripe_customer_id = session.get('customer')
         stripe_subscription_id = session.get('subscription')
         # print(client_reference_id)
+        # print(stripe_customer_id)
+        # print(stripe_subscription_id)
+
         # Get the user and create a new StripeCustomer
         user = Customer.objects.get(id=client_reference_id)
         # StripeCustomer.objects.create(
@@ -782,9 +795,10 @@ def stripe_webhook(request):
         # print(pay_data)
         for obj in pay_data:
             user_email = user.email
-            amount = session.amount_total
+            amount = obj.amount_total
             priceId = obj.price["id"]
-            if priceId == 'price_1INHEjCEigeyfTXec2yGGVar':
+            # print(priceId)
+            if priceId == 'price_1IO7CaCEigeyfTXeaAztqcsy':
                 name_p = 'Private Plan'
                 price_p = amount
                 interval_p = 1
@@ -793,8 +807,23 @@ def stripe_webhook(request):
                 planId_p = priceId
                 des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_p,apps_p,interval_p,price_p/100)
                 description_p = '$2 one-time every 1000 notifications additional app $10 per month'
-                invoices = Invoices.objects.create( name=name_p, price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=obj.description, email=user_email, customer_id=session.customer)
-            elif priceId == 'price_1INHDlCEigeyfTXedNyNRcli':
+                invoices = Invoices.objects.create(billing_id=priceId, name=name_p, price=price_p, interval=interval_p, notifications=notifications_p, apps=apps_p, description=description_p, email=user_email, customer_id=session.customer, subscription_id=stripe_subscription_id)
+                if invoices:
+                    customer = Customer.objects.get(email=user_email)
+                    apps = customer.apps_allowed + apps_p
+                    push_noti = customer.push_notifications + notifications_p
+                    customer = Customer.objects.filter(email=user_email).update(apps_allowed=apps, push_notifications=push_noti)
+                    user_subs = stripe.Subscription.retrieve(
+                        stripe_subscription_id,
+                    )
+                    if user_subs:
+                        user_inv = stripe.Invoice.retrieve(
+                            user_subs.latest_invoice,
+                        )
+                        invoice_host = user_inv.hosted_invoice_url
+                        if invoice_host:
+                            invoiceEmail(user_email,invoice_host)
+            elif priceId == 'price_1IO7CyCEigeyfTXeqqFq3FeN':
                 name_b = 'Business Plan'
                 price_b = amount
                 interval_b = 1
@@ -803,8 +832,23 @@ def stripe_webhook(request):
                 planId_b = priceId
                 description_b = '$8 one-time every 5000 notifications additional app $10 per month'
                 des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_b,apps_b,interval_b,price_b/100)
-                invoices = Invoices.objects.create( name=name_b, price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=obj.description, email=user_email, customer_id=session.customer)
-            elif priceId == 'price_1INHKDCEigeyfTXefcniZXPW':
+                invoices = Invoices.objects.create(billing_id=priceId, name=name_b, price=price_b, interval=interval_b, notifications=notifications_b, apps=apps_b, description=description_b, email=user_email, customer_id=session.customer, subscription_id=stripe_subscription_id)
+                if invoices:
+                    customer = Customer.objects.get(email=user_email)
+                    apps = customer.apps_allowed + apps_b
+                    push_noti = customer.push_notifications + notifications_b
+                    customer = Customer.objects.filter(email=user_email).update(apps_allowed=apps, push_notifications=push_noti)
+                    user_subs = stripe.Subscription.retrieve(
+                        stripe_subscription_id,
+                    )
+                    if user_subs:
+                        user_inv = stripe.Invoice.retrieve(
+                            user_subs.latest_invoice,
+                        )
+                        invoice_host = user_inv.hosted_invoice_url
+                        if invoice_host:
+                            invoiceEmail(user_email,invoice_host)
+            elif priceId == 'price_1IO7BTCEigeyfTXec7MKzvDh':
                 name_u = 'Unlimited Plan'
                 price_u = amount
                 interval_u = 1
@@ -813,18 +857,22 @@ def stripe_webhook(request):
                 planId_u = priceId
                 description_u = '$2 one-time every 1000 notifications additional app $10 per month'
                 des = "You have got {} notifications and {} apps for {} month in ${}.".format(notifications_u,apps_u,interval_u,price_u/100)
-                invoices = Invoices.objects.create( name=name_u, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=obj.description, email=user_email, customer_id=session.customer)
-
-            # inv = stripe.InvoiceItem.create(
-            #     price=priceId,
-            #     customer=session.customer,
-            # )
-            # print(inv)
-            # if inv:
-            #     invvoi = stripe.Invoice.create(
-            #         customer=inv.customer,
-            #     )
-            #     print(invvoi)
+                invoices = Invoices.objects.create(billing_id=priceId, name=name_u, price=price_u, interval=interval_u, notifications=notifications_u, apps=apps_u, description=description_u, email=user_email, customer_id=session.customer, subscription_id=stripe_subscription_id)
+                if invoices:
+                    customer = Customer.objects.get(email=user_email)
+                    apps = customer.apps_allowed + apps_u
+                    push_noti = customer.push_notifications + notifications_u
+                    customer = Customer.objects.filter(email=user_email).update(apps_allowed=apps, push_notifications=push_noti)
+                    user_subs = stripe.Subscription.retrieve(
+                        stripe_subscription_id,
+                    )
+                    if user_subs:
+                        user_inv = stripe.Invoice.retrieve(
+                            user_subs.latest_invoice,
+                        )
+                        invoice_host = user_inv.hosted_invoice_url
+                        if invoice_host:
+                            invoiceEmail(user_email,invoice_host)
 
     return HttpResponse(status=200)
 
@@ -937,110 +985,111 @@ def forgotPasswordEmail(pk):
 
 
 
-# def registrationEmail(emiladdress):
-#     SENDER = "Notifao <no-reply@notifao.com>"
-#     RECIPIENT = emiladdress
-#     # CONFIGURATION_SET = "ConfigSet"
-#     AWS_REGION = "us-east-1"
-#     SUBJECT = "Notifao Registration Email"
-#     BODY_TEXT = ("Amazon SES Test (Python)\r\n"
-#              "This email was sent with Amazon SES using the "
-#              "AWS SDK for Python (Boto)."
-#             )
-#     BODY_HTML = """<html>
-#     <head>
-#         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-#     </head>
-#     <style>
-#         @media only screen and (max-width: 700px) {
-#             .main {
-#                 padding: 30px 20px 40px 20px !important;
-#                 width: 90% !important;
-#             }
-#             img {
-#                 width: 150px;
-#             }
-#             h1 {
-#                 font-size: 30px !important;
-#             }
-#             .link {
-#                 font-size: 12px;
-#                 padding: 0px !important;
-#                 background-color: #fff !important;
-#                 color: #5db6c1 !important;
-#                 text-decoration: underline !important;
-#             }
-#             .header {
-#                 font-size: 12px !important;
-#             }
-#         }
-#     </style>
-#     <body style="background: #eee; font-family: sans-serif; margin: 20px;">
-#         <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
-#             <hr style="border: 1px solid rgb(224, 224, 224);">
+def invoiceEmail(emiladdress,invoiceUrl):
+    SENDER = "Notifao <no-reply@notifao.com>"
+    RECIPIENT = emiladdress
+    # CONFIGURATION_SET = "ConfigSet"
+    AWS_REGION = "us-east-1"
+    SUBJECT = "Notifao Plan Subscription"
+    BODY_TEXT = ("Amazon SES Test (Python)\r\n"
+             "This email was sent with Amazon SES using the "
+             "AWS SDK for Python (Boto)."
+            )
+    BODY_HTML = """<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        @media only screen and (max-width: 700px) {
+            .main {
+                padding: 30px 20px 40px 20px !important;
+                width: 90% !important;
+            }
+            img {
+                width: 150px;
+            }
+            h1 {
+                font-size: 30px !important;
+            }
+            .link {
+                font-size: 12px;
+                padding: 0px !important;
+                background-color: #fff !important;
+                color: #5db6c1 !important;
+                text-decoration: underline !important;
+            }
+            .header {
+                font-size: 12px !important;
+            }
+        }
+    </style>
+    <body style="background: #eee; font-family: sans-serif; margin: 20px;">
+        <div class="main" style="min-width: 500px; width: 60%; background: #fff; padding: 50px 40px 80px 40px; margin: 0px auto;">
+            <hr style="border: 1px solid rgb(224, 224, 224);">
             
-#             <hr style="border: 1px solid rgb(224, 224, 224);">
-#             <div class="header" style="font-size: 15px;">
-#                 <div style="display: inline-block; line-height: 22px;">
-#                     <span><b>Notifao</b> no-reply@notifao.com</span><br>
-#                     <span>Reply-To: no-reply@notifao.com</span><br>
-#                     <span>To: """+emiladdress+"""</span><br>
-#                 </div>
-#             </div>
-#             <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
-#                 <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
-#                 <h2 style="color: #444;">User Created Successfully.</h2><br><br>
-#                 <p style="text-align:center;font-size:18px;font-weight:500;">If you did not request this """+emiladdress+""" be registered in Notifao, please ignore this email.</p>
-#             </div>
-#             <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
-#         </div>
-#     </body>
-#     </html>
-#             """ 
-#     CHARSET = "UTF-8"
-#     client = boto3.client(
-#         "ses",
-#         aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
-#         aws_secret_access_key="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",
-#         region_name="ca-central-1"
-#     )
-#     try:
-#     #Provide the contents of the email.
-#         response = client.send_email(
-#             Destination={
-#                 'ToAddresses': [
-#                     RECIPIENT,
-#                 ],
-#             },
-#             Message={
-#                 'Body': {
-#                     'Html': {
-#                         'Charset': CHARSET,
-#                         'Data': BODY_HTML,
-#                     },
-#                     'Text': {
-#                         'Charset': CHARSET,
-#                         'Data': BODY_TEXT,
-#                     },
-#                 },
-#                 'Subject': {
-#                     'Charset': CHARSET,
-#                     'Data': SUBJECT,
-#                 },
-#             },
-#             Source=SENDER,
-#             # If you are not using a configuration set, comment or delete the
-#             # following line
-#             # ConfigurationSetName=CONFIGURATION_SET,
-#         )
-# # Display an error if something goes wrong.	
-#     except ClientError as e:
-#         print(e.response['Error']['Message'])
-#     else:
-#         print("Email sent! Message ID:"),
-#         print(response['MessageId'])
+            <hr style="border: 1px solid rgb(224, 224, 224);">
+            <div class="header" style="font-size: 15px;">
+                <div style="display: inline-block; line-height: 22px;">
+                    <span><b>Notifao</b> no-reply@notifao.com</span><br>
+                    <span>Reply-To: no-reply@notifao.com</span><br>
+                    <span>To: """+emiladdress+"""</span><br>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+                <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
+                <h2 style="color: #444;">Plan Subscribed Successfully.</h2><br><br>
+                <a class="link" href="""+invoiceUrl+"""
+                    style="padding: 20px 40px; background-color: #5db6c1; color: #fff; font-weight: bold; text-decoration: none; border-radius: 50px;">CONFIRM
+                    TO INVOICE</a>
+            </div>
+            <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
+        </div>
+    </body>
+    </html>
+            """ 
+    CHARSET = "UTF-8"
+    client = boto3.client(
+        "ses",
+        aws_access_key_id="AKIAWRTNEJ5DYFCFSHOV",
+        aws_secret_access_key="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",
+        region_name="ca-central-1"
+    )
+    try:
+    #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            # ConfigurationSetName=CONFIGURATION_SET,
+        )
+# Display an error if something goes wrong.	
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
 
-# registrationEmail("ali679asghar@gmail.com")
 
 
 def emailConfirmation(emiladdress):

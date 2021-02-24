@@ -12,7 +12,9 @@
                     </div>
                 </a>
                 <br>
+                {% if request.user.apps_allowed > 0 %}
                 <a href="/create_apps/"><button class="add-app"><span class="pcoded-micon"><i class="feather icon-plus"></i></span>Add App</button></a>
+                {% endif %}
                 <!-- <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a> -->
             </div>
             <div class="navbar-content scroll-div pt-4">

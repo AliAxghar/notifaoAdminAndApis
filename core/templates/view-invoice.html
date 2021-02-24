@@ -123,12 +123,16 @@
                                                 <label for="" class="invoice-la">AMOUNT</label>
                                                 <input type="text" class="form-control invoice-in" value="${% widthratio invoice_obj.amount_paid 100 1 %}" readonly>
                                             </div>
-                                            <div class="col-md-4 pt-1">
+                                            <!-- <div class="col-md-4 pt-1">
                                                 <label for="" class="invoice-la">CURRENCY</label>
                                                 <input type="text" class="form-control invoice-in" value="{{invoice_obj.currency}}" readonly>
+                                            </div> -->
+                                            <div class="col-md-4 pt-1">
+                                                <label for="" class="invoice-la">STATUS</label>
+                                                <input type="text" class="form-control invoice-in" style="color: rgb(7, 190, 7);" value="{{invoice_obj.status}}" readonly>
                                             </div>
                                         </div>
-                                        <div class="row pt-2">
+                                        <!-- <div class="row pt-2">
                                             {% for ob in invoice_obj.lines.data %}
                                             <div class="col-md-4 pt-1">
                                                 <label for="" class="invoice-la">PAYMENT METHOD</label>
@@ -143,7 +147,7 @@
                                                 <label for="" class="invoice-la">STATUS</label>
                                                 <input type="text" class="form-control invoice-in" style="color: rgb(7, 190, 7);" value="{{invoice_obj.status}}" readonly>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row pt-2">
                                             <div class="col-md-4 pt-1">
                                                 <label for="" class="invoice-la">DATE</label>

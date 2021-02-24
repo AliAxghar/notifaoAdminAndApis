@@ -149,7 +149,7 @@
                                                 <th>AMOUNT</th>
                                                 <th class="text-center">STATUS</th>
                                                 <th>DOWNLOAD</th>
-                                                <th class="text-center">PAY</th>
+                                                <!-- <th class="text-center">PAY</th> -->
                                                 <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -182,9 +182,9 @@
                                                     {% endif %}
                                                     <td class="pb-t pdf-d"><a href="{{obj.invoice_pdf}}"><i class="feather icon-file-text"></i></a></td>
                                                     <!-- <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td> -->
-                                                    {% for ob in obj.lines.data %}
+                                                    <!-- {% for ob in obj.lines.data %}
                                                     <td class="pb-t">{{ob.metadata.payment_method}}</td>
-                                                    {% endfor %}
+                                                    {% endfor %} -->
                                                     <td class="text-center pb-t">
                                                         <span class="ml-2 action-i">
                                                             <a href="{% url 'viewInvoice' obj.id %}"><i class="feather icon-eye"></i></a>
@@ -239,7 +239,7 @@
                                                 <th>AMOUNT</th>
                                                 <th class="text-center">STATUS</th>
                                                 <th>DOWNLOAD</th>
-                                                <th class="text-center">PAY</th>
+                                                <!-- <th class="text-center">PAY</th> -->
                                                 <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -272,9 +272,9 @@
                                                     {% endif %}
                                                     <td class="pb-t pdf-d"><a href="{{obj.invoice_pdf}}"><i class="feather icon-file-text"></i></a></td>
                                                     <!-- <td class="pb-t"><img class="tb-img" src="/static/assets/images/paypal.png" alt=""></td> -->
-                                                    {% for ob in obj.lines.data %}
+                                                    <!-- {% for ob in obj.lines.data %}
                                                     <td class="pb-t">{{ob.metadata.payment_method}}</td>
-                                                    {% endfor %}
+                                                    {% endfor %} -->
                                                     <td class="text-center pb-t">
                                                         <span class="ml-2 action-i">
                                                             <a href="{% url 'viewInvoice' obj.id %}"><i class="feather icon-eye"></i></a>
