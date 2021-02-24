@@ -932,7 +932,7 @@ def forgotPasswordEmail(pk):
             <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
                 <img width="100px" margin-bottom: 60px; src="http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:1800/static/assets/images/loginlogo.png" alt="logo"><br><br><br>
                 <a class="link" href="""+path+"""
-                    style="padding: 20px 40px; background-color: #5db6c1; color: #fff; font-weight: bold; text-decoration: none; border-radius: 50px;">CONTINUE
+                    style="padding: 20px 40px; background-color: #5db6c1; color: #fff; font-weight: bold; text-decoration: none; border-radius: 50px;">CLICK
                     TO RESET</a>
             </div>
             <hr style="border: 1px solid rgb(224, 224, 224); width: 80%;">
