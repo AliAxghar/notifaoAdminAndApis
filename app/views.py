@@ -129,6 +129,7 @@ def pages(request):
     user = request.user
     all_app = App.objects.all()
     invoice_item = Invoices.objects.filter(email=user.email)
+    get_invoice_obj = Invoices.objects.filter(email=user.email).last()
     # all_invoices = stripe.Invoice.list()
     total_users =  UserApp.objects.filter(customer_id=user.id).values('user_id').count()
     all_invoices = []
@@ -198,7 +199,7 @@ def pages(request):
 
 
 
-    context = {"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"get_invoice_obj":get_invoice_obj,"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -711,6 +712,14 @@ class SuccessView(TemplateView):
 class CancelledView(TemplateView):
     template_name = 'cancelled.html'
 
+def cancelSubscription(request):
+    user = request.user
+    get_invoice_obj = Invoices.objects.filter(email=user.email).last()
+    cancel_sub = stripe.Subscription.delete(get_invoice_obj.subscription_id)
+    print(cancel_sub)
+    if cancel_sub:
+        get_invoice_obj.delete()
+        return HttpResponse(status=200)
 
 @csrf_exempt
 def create_checkout_session(request):
@@ -724,7 +733,6 @@ def create_checkout_session(request):
             priceId = "price_1IO7CyCEigeyfTXeqqFq3FeN"
         elif plan == "unlimitedPlan":
             priceId = "price_1IO7BTCEigeyfTXec7MKzvDh"
-    # print(amount)
     if request.method == 'GET':
         try:
             checkout_session = stripe.checkout.Session.create(

@@ -122,6 +122,7 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_jXFwvxnsfReUaJPu0VieogNn000MXaFPgU'
 STRIPE_SECRET_KEY = 'sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0'
 STRIPE_ENDPOINT_SECRET = 'whsec_j8WDNRQUdTfTeFTWF7AZPU0NxWBH2FZo'
 
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

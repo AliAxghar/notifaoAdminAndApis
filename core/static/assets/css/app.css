@@ -357,7 +357,15 @@ span.m-p-b {
 #part1 {
     background-color: #f4f8f9; 
 }
-
+.btn-c-m-p-c {
+    background-color: #f15431!important;
+    color: #fff!important;
+    border-radius: 6px!important;
+    font-size: 11px!important;
+    padding: 5px 20px!important;
+    text-align: center!important;
+    border: 1px solid #f15431!important;
+}
 #part2 {
     /* background-color: #f4f8f9; */
     height: 370px!important;
@@ -494,12 +502,12 @@ span.m-p-b {
     margin-bottom: 0.36rem;
 }
 .btn-c-m-p{
-    background-color: #c9ffc5;
-    color: #274a5d;
+    background-color: #489b71;
+    color: #fff;
     border-radius: 6px;
     font-size: 11px;
     padding: 5px 20px;
-    border: 1px solid #c9ffc5;
+    border: 1px solid #489b71;
 }
 /* #part2:hover, .page-load-hover {
     transform: scale(1.2, 1.2);
