@@ -345,7 +345,7 @@
                         </div>                  -->
                     </div>
                     {% else %}
-                        {% if request.user.push_notifications == 0 %}
+                        {% if request.user.push_notifications != 0 %}
                         <div class="row">
                             <div class="col-md-9">
                                 <!-- <h4 class="title1">Dashboard</h4> -->
