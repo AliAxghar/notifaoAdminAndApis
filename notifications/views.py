@@ -95,6 +95,7 @@ def createNotification(request):
                                 device = CustomFCMDevice.objects.get(user_id = user.user_id)
                                 device.send_message(title=notification_title, body=notification_description)
                             get_custmer.push_notifications = get_custmer.push_notifications - sent_count
+                            get_custmer.total_notifications_sent = get_custmer.total_notifications_sent + sent_count
                             get_custmer.save()
                             notification_obj.notification_count = sent_count
                             notification_obj.save()
@@ -135,6 +136,7 @@ def createNotificationDashboard(request):
         notification_obj = Notification.objects.create(title =notification_title, description  = notification_description , app_id = get_app)
         notification_obj.save()
         sent_count = UserApp.objects.filter(app_id = get_app.pk).count()
+
         app_users = UserApp.objects.filter(app_id = get_app.pk)
         # if get_custmer.push_notifications >= sent_count:
         if app_users :
@@ -144,6 +146,7 @@ def createNotificationDashboard(request):
                 device = CustomFCMDevice.objects.get(user_id = user.user_id)
                 device.send_message(title=notification_title, body=notification_description)
             get_custmer.push_notifications = get_custmer.push_notifications - sent_count
+            get_custmer.total_notifications_sent = get_custmer.total_notifications_sent + sent_count
             get_custmer.save()
             notification_obj.notification_count = sent_count
             notification_obj.save()

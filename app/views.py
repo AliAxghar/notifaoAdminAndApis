@@ -165,6 +165,13 @@ def pages(request):
         all_notifications = Notification.objects.filter(app_id=app.id).order_by('-id')[:10]
         for noti in all_notifications:
             notifications.append(noti)
+    cUser_noti_list = []
+    cUser_notifications = Notification.objects.all()
+    if apps:
+        for app in apps:
+            all_notifications = Notification.objects.filter(app_id=app.id)
+            for noti in all_notifications:
+                cUser_noti_list.append(noti)
     users = UserApp.objects.filter(customer_id=user.id).distinct('user_id')
     # print(users)
     # us = UserApp.objects.all()
@@ -199,7 +206,7 @@ def pages(request):
 
 
 
-    context = {"get_invoice_obj":get_invoice_obj,"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"cUser_noti_list":cUser_noti_list, "get_invoice_obj":get_invoice_obj,"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -554,6 +561,7 @@ def updateProfile(request, pk):
     notifications_used = user_obj.used_notifications
     if total_notification != 0:
         total_used_percent = notifications_used * 100/total_notification
+        print(total_used_percent)
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
@@ -719,6 +727,7 @@ def cancelSubscription(request):
     print(cancel_sub)
     if cancel_sub:
         get_invoice_obj.delete()
+        Customer.objects.filter(id=user.id).update(used_notifications=0)
         return HttpResponse(status=200)
 
 @csrf_exempt

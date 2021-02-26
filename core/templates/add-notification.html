@@ -152,7 +152,7 @@
                                             <div class="col-12 pt-1">
                                                 <div class="form-group">
                                                     <label for="">APPLICATION NAME</label>
-                                                    <select class="form-control f-c" name="app_name" id="app_name">
+                                                    <select class="form-control f-c" name="app_name" id="app_name" required>
                                                         <option value="">Select</option>
                                                         {% for app in all_apps %}
                                                         <option value="{{app.name}}">{{app.name}}</option>
