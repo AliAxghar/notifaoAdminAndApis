@@ -107,8 +107,8 @@ def index(request):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "99"
-        remaining_notification = "0"
+        total_used_notification = 99
+        remaining_notification = 0
     
     if request.method == 'POST':
         dates  = request.POST.get('dates')
@@ -196,10 +196,14 @@ def pages(request):
         Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
+    total_used_notification = 0
+    remaining_notification = 0
+    print(total_notification,notifications_used)
     if total_notification != 0:
         total_used_percent = notifications_used * 100/total_notification
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
+        print(total_used_notification,remaining_notification)
     else:
         total_used_notification = "99"
         remaining_notification = "0"
@@ -565,8 +569,8 @@ def updateProfile(request, pk):
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "99"
-        remaining_notification = "0"
+        total_used_notification = 99
+        remaining_notification = 0
     msg = ""
     user = Customer.objects.get(id=pk)
     form = UpdateProfileForm(request.POST or None, request.FILES or None,instance=user)
@@ -593,13 +597,15 @@ def create_apps(request):
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
+    total_used_notification = 0
+    remaining_notification = 0
     if total_notification != 0:
         total_used_percent = notifications_used * 100/total_notification
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
-        total_used_notification = "99"
-        remaining_notification = "0"
+        total_used_notification = 99
+        remaining_notification = 0
     success = False
     if request.method == 'POST':
         form = AddAppForm(request.POST or None, request.FILES or None)

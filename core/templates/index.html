@@ -885,11 +885,11 @@
                     data: [
                         {
                             label: 'Used %',
-                            value: {{total_used_notification}},
+                            value: {{total_used_notification | safe}},
                             labelColor: '#4c9f75'
                         }, {
                         label: 'Unused %',
-                            value: {{remaining_notification}},
+                            value: {{remaining_notification | safe}},
                             labelColor: '#4c9f75'
                         }, 
                     ],
