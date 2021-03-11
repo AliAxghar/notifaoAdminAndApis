@@ -115,8 +115,20 @@ table#my-table th {
     border: 2px solid #21748A;
     border-radius: 5px;
 }
+.link-disable{
+    opacity: 1;
+}
+.btn-c-abtn {
+    float: right;
+    background-color: #aed2bf;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    padding: 5px 20px;
+    border: 1px solid #aed2bf;
+}
 .a-t-b {
-    padding: 1px 7px;
+    padding: 0px 8px;
     background-color: #489b71;
     color: #fff;
     border-radius: 3px;
@@ -348,12 +360,13 @@ span.m-p-b {
 .part11, .part22, .part33{
     padding: 25px;
 }
-/* .part-span{
-    padding: 0 103px 2px 104px!important;
-} */
-/* .part11:hover, .part22:hover, .part33:hover{
-    padding: 20px;
-} */
+@media only screen and (min-width:1368px){
+    .part-span{
+        padding: 0 187px 2px 187px!important;
+    }
+}
+
+
 #part1 {
     background-color: #f4f8f9; 
 }

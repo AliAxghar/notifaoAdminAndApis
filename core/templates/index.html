@@ -247,7 +247,7 @@
                                                                 <img src="/static/assets/images/logo-thumb.png" alt="">
                                                             </div>
                                                             <div class="col-8 pt-1">
-                                                                <p class="noti-p">{{notification.description|slice:':80'}}</p>
+                                                                <p class="noti-p">{{notification.description|slice:':70'}}</p>
                                                             </div>
                                                             <div class="col-2 cl">
                                                                 <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
@@ -358,7 +358,7 @@
                                             {% csrf_token %}
                                             <span class="form-h-1">
                                                 <span class="date-label">Select Date:</span>
-                                                <input type="date" name="dates" class="date-input" id="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2020-05-20">
+                                                <input type="date" name="dates" class="date-input" id="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2021-01-01">
                                                 <input class="btn-c" id="submit"  type="submit" value="Show All"/>
                                             </span>
                                         </form>
@@ -374,7 +374,7 @@
                                                 <div class="col-5 pt-2">
                                                     <span class="card-l-s">
                                                         <h5 class="pt-1">Total Notifications</h5>
-                                                        <h4>{{request.user.total_notifications_sent}}</h4>
+                                                        <h4>{{total_notifications_sent}}</h4>
                                                     </span>
                                                 </div>
                                                 <div class="col-5">
@@ -429,7 +429,7 @@
                                                                     <img src="/static/assets/images/logo-thumb.png" alt="">
                                                                 </div>
                                                                 <div class="col-8 pt-1">
-                                                                    <p class="noti-p">{{notification.description|slice:':80'}}</p>
+                                                                    <p class="noti-p">{{notification.description|slice:':70'}}</p>
                                                                 </div>
                                                                 <div class="col-2 cl">
                                                                     <img class="arrow mt-1" src="/static/assets/images/right-arrow.png" alt="">
@@ -539,7 +539,7 @@
                                             {% csrf_token %}
                                             <span class="form-h-1">
                                                 <span class="date-label">Select Date:</span>
-                                                <input type="date" name="dates" class="date-input" id="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2020-05-20">
+                                                <input type="date" name="dates" class="date-input" id="date-input" data-date="" data-date-format="DD MMMM YYYY" value="2021-01-01">
                                                 <input class="btn-c" id="submit"  type="submit" value="Show All"/>
                                             </span>
                                         </form>
@@ -555,7 +555,7 @@
                                                 <div class="col-5 pt-2">
                                                     <span class="card-l-s">
                                                         <h5 class="pt-1">Total Notifications</h5>
-                                                        <h4>{{request.user.total_notifications_sent}}</h4>
+                                                        <h4>{{total_notifications_sent}}</h4>
                                                     </span>
                                                 </div>
                                                 <div class="col-5">

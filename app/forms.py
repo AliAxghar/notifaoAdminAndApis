@@ -33,18 +33,19 @@ class AddAppForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "rows":7,
+                "rows":5,
                 "class": "form-control",
                 "placeholder" : "Enter App Description"
                 }
             ))
-    # app_url = forms.CharField(
-    #     widget=forms.TextInput(
-    #         attrs={
-    #             "placeholder" : "Enter URL get/post", 
-    #             "class": "form-control"
-    #         }
-    #     ))
+    app_url = forms.CharField(
+        # required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder" : "Enter URL get/post", 
+                "class": "form-control"
+            }
+        ))
     app_logo = forms.ImageField(
         widget=forms.FileInput(
             attrs={             
@@ -78,18 +79,19 @@ class UpdateAppForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "rows":7,
+                "rows":5,
                 "class": "form-control",
                 "placeholder" : "Enter App Description"
                 }
             ))
-    # app_url = forms.CharField(
-    #     widget=forms.TextInput(
-    #         attrs={
-    #             "placeholder" : "Enter URL get/post", 
-    #             "class": "form-control"
-    #         }
-    #     ))
+    app_url = forms.CharField(
+        # required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder" : "Enter URL get/post", 
+                "class": "form-control"
+            }
+        ))
     app_logo = forms.ImageField(
         required=False,
         widget=forms.FileInput(
@@ -113,5 +115,5 @@ class UpdateAppForm(forms.ModelForm):
     #     ))
     class Meta:
         model = App
-        fields = ('name', 'description', 'app_logo','app_image')
+        fields = ('name', 'app_logo','app_image', 'app_url', 'description')
 

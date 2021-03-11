@@ -268,11 +268,22 @@ p.text-muted {
         display: none;
     }
 }
-
+button.add-appbtn {
+    padding: 5px 35px;
+    margin-top: 10px;
+    font-size: 12px;
+    border: none;
+    opacity: 0.6;
+    background-color: #81af97;
+    border-radius: 6px;
+    color: #fff;
+}
 .card .card-header .card-header-right .dropdown-menu {
     margin-top: 0;
 }
-
+p.noti-p {
+    margin-top: 8px!important;
+}
 .card .card-header .card-header-right .dropdown-menu li a {
     font-size: 14px;
     text-transform: capitalize;

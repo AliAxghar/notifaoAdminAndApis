@@ -98,6 +98,8 @@
                             {% else %}
                                 {% if request.user.apps_allowed > 0 %}
                                 <a href="/create_apps/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                                {% else %}
+                                <span class="" style="color: rgb(236 19 41 / 67%);font-size: 16px;float: right;">Update your plan to add more apps.<input class="btn-c-abtn ml-1"  type="submit" value="Add New"/></span>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -113,8 +115,9 @@
                                                 <th>NOTIFICATIONS USED</th>
                                                 <th>ACTUAL USED</th>
                                                 <th>NO# OF USERS</th>
+                                                <th class="text-left">APP URL</th>
                                                 <th class="text-center">APP HASH PUBLIC</th>
-                                                <!-- <th>USER TYPE</th> -->
+                                                <th>USER TYPE</th>
                                                 <th class="text-center">ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -132,7 +135,12 @@
                                                 <td class="text-left pb-t">{{app.name}}</td>
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
                                                 <td class="pb-t-c">{{app.notifications_actual_used}}</td>
-                                                <td class="pb-t-c">13</td>
+                                                <td class="pb-t-c">{{app.actual_used}}</td>
+                                                {% if app.app_url %}
+                                                <td class="text-left pb-t-c">{{app.app_url}}</td>
+                                                {% else %}
+                                                <td class="text-left pb-t-c">None</td>
+                                                {% endif %}
                                                 {% if app.app_qr %}
                                                 <td class="text-center pb-t-c">
                                                     <a href="#" class="qrcode" data-toggle="modal" data-target="#exampleModalCenter">
@@ -142,7 +150,7 @@
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
-                                                <!-- <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td> -->
+                                                <td class="pb-t-l"><span class="a-t-b">1</span></td>
                                                 <td class="text-center pb-t">
                                                     <span class="action-i">
                                                         <!-- <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a> -->
@@ -167,6 +175,11 @@
                                                 <td class="pb-t-c">{{app.notifications_used}}</td>
                                                 <td class="pb-t-c">{{app.notifications_actual_used}}</td>
                                                 <td class="pb-t-c">{{app.actual_used}}</td>
+                                                {% if app.app_url %}
+                                                <td class="text-left pb-t-c">{{app.app_url}}</td>
+                                                {% else %}
+                                                <td class="text-left pb-t-c">None</td>
+                                                {% endif %}
                                                 {% if app.app_qr %}
                                                 <td class="text-center pb-t-c">
                                                     <a href="#" class="qrcode" data-toggle="modal" data-target="#exampleModalCenter">
@@ -176,7 +189,7 @@
                                                 {% else %}
                                                 <td class="text-center pb-t-c">None</td>
                                                 {% endif %}
-                                                <!-- <td class="pb-t-l"><span class="a-t-b">{{app.customer_id.id}}</span></td> -->
+                                                <td class="pb-t-l"><span class="a-t-b">1</span></td>
                                                 <td class="text-center pb-t">
                                                     <span class="action-i">
                                                         <!-- <a href="{% url 'view_apps' app.id %}"><i class="feather icon-eye"></i></a> -->

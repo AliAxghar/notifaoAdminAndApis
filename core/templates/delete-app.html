@@ -90,14 +90,14 @@
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4 pb-5">
                                                 <div class="card card-body text-center del-card">
-                                                    <p style="font-size: medium;">Are you sure you want to delete this app?</p>
+                                                    <p style="font-size: medium;">Are you sure you want to delete your app?</p>
                                                     <br>
                                                     <form action="" method="POST">
                                     
                                                         {% csrf_token %}
-                                                        <a class="btn btn-warning d-btn" style="float: left;" href="../../app.html">Cancel</a>
+                                                        <a class="btn btn-warning d-btn" style="float: left;" href="../../app.html">No</a>
                                     
-                                                        <input class="btn btn-danger d-btn" style="float: right;" type="submit" name="Confirm" value="Confirm">
+                                                        <input class="btn btn-danger d-btn" style="float: right;" type="submit" name="Confirm" value="Yes">
                                                     </form>
                                                 </div>
                                             </div>

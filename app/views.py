@@ -54,15 +54,13 @@ stripe.api_key = "sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0"
 def index(request):
     user = request.user
     customer = user.id
-    # total_users =  UserApp.objects.filter(customer_id=customer).values('user_id').distinct().count()
-    # lasUsers = UserApp.objects.all().order_by('-id')[:10]
-    # userapps = UserApp.objects.all().order_by('-id')[:9]
-    # data = []
-    # labels = []
-    # for obj in userapps:
-    #     data.append(obj.user_id.id)
-    #     userapp_dates = str(obj.created_at)
-    #     labels.append(userapp_dates)
+    total_notifications_sent = 0
+    if user.push_notifications == 0:
+        get_invoice_obj = Invoices.objects.filter(email=user.email).last()
+        if get_invoice_obj:
+            cancel_sub = stripe.Subscription.delete(get_invoice_obj.subscription_id)
+            if cancel_sub:
+                get_invoice_obj.delete()
     apps = App.objects.filter(customer_id=customer)
     invoice_item = Invoices.objects.filter(email=user.email)
     total_noti_graph_list = []
@@ -97,28 +95,59 @@ def index(request):
             lists.append([str(p.created_at),int(p.user_id.id)])
     if not lists:        
         lists = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]
+
+    app_users_list = []
+    userApps = App.objects.filter(customer_id=user.id)
+    if userApps:
+        for ob in userApps:
+            us = UserApp.objects.filter(app_id=ob.id).count()
+            mydict = {
+                "id": ob.id,
+                "name": ob.name,
+                "notifications_used": ob.notifications_used,
+                "notifications_actual_used":ob.notifications_actual_used,
+                "app_qr":ob.app_qr,
+                "app_url":ob.app_url,
+                "actual_used":us
+            }
+            app_users_list.append(mydict)
     user_obj = Customer.objects.get(email=user.email)
-    if user_obj.push_notifications <= user_obj.used_notifications:
-        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
+    total_used_notification = 0
+    remaining_notification = 0
+    total__noti = notifications_used+total_notification
     if total_notification != 0:
-        total_used_percent = notifications_used * 100/total_notification
+        total_used_percent = notifications_used * 100/total__noti
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
+        # print(total_used_notification,remaining_notification)
     else:
         total_used_notification = 99
         remaining_notification = 0
     
     if request.method == 'POST':
         dates  = request.POST.get('dates')
-        lasUsers = UserApp.objects.filter(created_at=dates).order_by('-id')[:10]
-        notifications = Notification.objects.filter(created_at=dates).order_by('-id')[:10]
-        total_users =  UserApp.objects.filter(created_at=dates, customer_id=customer).values('user_id').count()
+        datefrom = "2021-01-05"
+        lasUsers = UserApp.objects.filter(created_at__range=(datefrom, dates)).order_by('-id')[:10]
+        notifications = Notification.objects.filter(created_at__range=(datefrom, dates)).order_by('-id')[:10]
+        total_users =  UserApp.objects.filter(customer_id=user.id, created_at__range=(datefrom, dates)).values('user_id').count()
+        notiApps = App.objects.filter(customer_id=user.id)
+        if notiApps:
+            for obj in notiApps:
+                us = Notification.objects.filter(app_id=obj.id, created_at__range=(datefrom, dates)).values('app_id').count()
+                total_notifications_sent = total_notifications_sent + us
     else:
         if request.user.is_superuser:
             lasUsers = UserApp.objects.filter().distinct('user_id')
-    context = {"invoice_item":invoice_item, "total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
+        else:
+            notiApps = App.objects.filter(customer_id=user.id)
+            if notiApps:
+                for obj in notiApps:
+                    us = Notification.objects.filter(app_id=obj.id).values('app_id').count()
+                    total_notifications_sent = total_notifications_sent + us
+
+    context = {"total_notifications_sent":total_notifications_sent,"invoice_item":invoice_item, "total_noti_graph_list":total_noti_graph_list, "a_notifications":a_notifications, "lists":json.dumps(lists), "notifications":notifications, "lasUsers":lasUsers, "total_used_notification":total_used_notification,"remaining_notification":remaining_notification, "userapps":userapps, "total_users":total_users,"data":data, "labels":labels}
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'index.html' )
@@ -128,6 +157,13 @@ def index(request):
 def pages(request):
     user = request.user
     all_app = App.objects.all()
+    total_notifications_sent = 0
+    if user.push_notifications == 0:
+        get_invoice_obj = Invoices.objects.filter(email=user.email).last()
+        if get_invoice_obj:
+            cancel_sub = stripe.Subscription.delete(get_invoice_obj.subscription_id)
+            if cancel_sub:
+                get_invoice_obj.delete()
     invoice_item = Invoices.objects.filter(email=user.email)
     get_invoice_obj = Invoices.objects.filter(email=user.email).last()
     # all_invoices = stripe.Invoice.list()
@@ -187,30 +223,51 @@ def pages(request):
                 "notifications_used": ob.notifications_used,
                 "notifications_actual_used":ob.notifications_actual_used,
                 "app_qr":ob.app_qr,
+                "app_url":ob.app_url,
                 "actual_used":us
             }
             app_users_list.append(mydict)
 
     user_obj = Customer.objects.get(email=user.email)
-    if user_obj.push_notifications <= user_obj.used_notifications:
-        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
+    # if user_obj.push_notifications <= user_obj.used_notifications:
+    #     Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
     total_used_notification = 0
     remaining_notification = 0
-    print(total_notification,notifications_used)
+    # print(total_notification,notifications_used)
+    total__noti = notifications_used+total_notification
     if total_notification != 0:
-        total_used_percent = notifications_used * 100/total_notification
+        total_used_percent = notifications_used * 100/total__noti
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
-        print(total_used_notification,remaining_notification)
+        # print(total_used_notification,remaining_notification)
     else:
-        total_used_notification = "99"
-        remaining_notification = "0"
+        total_used_notification = 99
+        remaining_notification = 0
+    if request.method == 'POST':
+        dates  = request.POST.get('dates')
+        datefrom = "2021-01-01"
+        lasUsers = UserApp.objects.filter(created_at__range=(datefrom, dates)).order_by('-id')[:10]
+        notifications = Notification.objects.filter(created_at__range=(datefrom, dates)).order_by('-id')[:10]
+        total_users =  UserApp.objects.filter(customer_id=user.id, created_at__range=(datefrom, dates)).values('user_id').count()
+        notiApps = App.objects.filter(customer_id=user.id)
+        if notiApps:
+            for obj in notiApps:
+                us = Notification.objects.filter(app_id=obj.id, created_at__range=(datefrom, dates)).values('app_id').count()
+                total_notifications_sent = total_notifications_sent + us
+    else:
+        if request.user.is_superuser:
+            lasUsers = UserApp.objects.filter().distinct('user_id')
+        else:
+            notiApps = App.objects.filter(customer_id=user.id)
+            if notiApps:
+                for obj in notiApps:
+                    us = Notification.objects.filter(app_id=obj.id).values('app_id').count()
+                    total_notifications_sent = total_notifications_sent + us
+    
 
-
-
-    context = {"cUser_noti_list":cUser_noti_list, "get_invoice_obj":get_invoice_obj,"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
+    context = {"total_notifications_sent":total_notifications_sent, "cUser_noti_list":cUser_noti_list, "get_invoice_obj":get_invoice_obj,"app_users_list":app_users_list, "invoice_item":invoice_item, "total_users":total_users, "users":users, "indi_in_list":indi_in_list ,"all_invoices":all_invoices, "a_notifications":a_notifications, "notifications":notifications, "lasUsers":lasUsers, "all_app":all_app,"userApps":userApps,"total_used_notification":total_used_notification,"remaining_notification":remaining_notification,}
     try:
         
         load_template      = request.path.split('/')[-1]
@@ -559,12 +616,13 @@ def updateProfile(request, pk):
     notifications_used = 0
     user = request.user
     user_obj = Customer.objects.get(email=user.email)
-    if user_obj.push_notifications <= user_obj.used_notifications:
-        Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
+    # if user_obj.push_notifications <= user_obj.used_notifications:
+    #     Customer.objects.filter(email=user.email).update(push_notifications=0,used_notifications=0)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
+    total__noti = notifications_used+total_notification
     if total_notification != 0:
-        total_used_percent = notifications_used * 100/total_notification
+        total_used_percent = notifications_used * 100/total__noti
         print(total_used_percent)
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
@@ -599,8 +657,9 @@ def create_apps(request):
     notifications_used = user_obj.used_notifications
     total_used_notification = 0
     remaining_notification = 0
+    total__noti = notifications_used+total_notification
     if total_notification != 0:
-        total_used_percent = notifications_used * 100/total_notification
+        total_used_percent = notifications_used * 100/total__noti
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
@@ -614,6 +673,7 @@ def create_apps(request):
             description = form.cleaned_data.get('description')
             app_logo = form.cleaned_data.get('app_logo')
             app_image = form.cleaned_data.get('app_image')
+            app_url  = request.POST.get('app_url')
             try:
                 get_custmer = Customer.objects.get(email = user.email)
             except Customer.DoesNotExist:
@@ -621,7 +681,7 @@ def create_apps(request):
             if get_custmer is None:
                 return Response({"message": "Customer does not exists " , "status": status.HTTP_404_NOT_FOUND})
             else:
-                app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image, customer_id_id = customer_id, app_logo=app_logo)
+                app_obj = App.objects.create(name =app_name, description  = description ,app_image  = app_image, customer_id_id = customer_id, app_logo=app_logo, app_url=app_url)
                 allowed_app = get_custmer.apps_allowed
                 get_custmer.apps_allowed = allowed_app - 1
                 get_custmer.save() 
@@ -655,8 +715,9 @@ def updateApp(request, pk):
     user_obj = Customer.objects.get(email=user.email)
     total_notification = user_obj.push_notifications
     notifications_used = user_obj.used_notifications
+    total__noti = notifications_used+total_notification
     if total_notification != 0:
-        total_used_percent = notifications_used * 100/total_notification
+        total_used_percent = notifications_used * 100/total__noti
         total_used_notification = round(total_used_percent)
         remaining_notification = 100 - total_used_notification
     else:
@@ -729,12 +790,12 @@ class CancelledView(TemplateView):
 def cancelSubscription(request):
     user = request.user
     get_invoice_obj = Invoices.objects.filter(email=user.email).last()
-    cancel_sub = stripe.Subscription.delete(get_invoice_obj.subscription_id)
-    print(cancel_sub)
-    if cancel_sub:
-        get_invoice_obj.delete()
-        Customer.objects.filter(id=user.id).update(used_notifications=0)
-        return HttpResponse(status=200)
+    if get_invoice_obj:
+        cancel_sub = stripe.Subscription.delete(get_invoice_obj.subscription_id)
+        if cancel_sub:
+            get_invoice_obj.delete()
+            Customer.objects.filter(id=user.id).update(used_notifications=0)
+            return HttpResponse(status=200)
 
 @csrf_exempt
 def create_checkout_session(request):
@@ -772,7 +833,7 @@ def create_checkout_session(request):
 
 @csrf_exempt
 def stripe_webhook(request):
-    print("webhook")
+    # print("webhook")
     # addonlist = request.GET.getlist('list[]')
     # noti5k = addonlist[0]
     # print(noti5k)
@@ -795,7 +856,7 @@ def stripe_webhook(request):
     # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        print(session)
+        # print(session)
         client_reference_id = session.get('client_reference_id')
         stripe_customer_id = session.get('customer')
         stripe_subscription_id = session.get('subscription')

@@ -90,6 +90,8 @@
                         <div class="col-6">
                             {% if request.user.push_notifications > 0 %}
                             <a href="/createNotificationDashboard/"><input class="btn-c-a"  type="submit" value="Add New"/></a>
+                            {% else %}
+                            <span class="" style="color: rgb(236 19 41 / 67%);font-size: 16px;float: right;">Update your plan to add more Notifications.<input class="btn-c-abtn ml-1"  type="submit" value="Add New"/></span>
                             {% endif %}
                         </div>
                         <div class="col-md-12">
