@@ -12,7 +12,8 @@ from notifications.views import *
 
 router = routers.DefaultRouter()
 router.register('apps', AppViewSet),
-router.register('userapp', UserAppViewSet)
+router.register('userapp', UserAppViewSet),
+router.register('private_apps', AppPrivateViewSet),
 
 urlpatterns = [
     path('', views.index, name='home'),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('createapp/', view = createApp, name='create_app'),
     path('getUserApps/', view = getUserApps, name='get_user_apps'),
     path('deleteUserApp/', view = deleteUserApps, name='delete_user_app'),
+    path('create_private_app/', view = createPrivateApp, name='create_private_app'),
 
     re_path(r'^.*\.html', views.pages, name='pages'),
     path('update_profile/<str:pk>/', views.updateProfile, name="update_profile"),

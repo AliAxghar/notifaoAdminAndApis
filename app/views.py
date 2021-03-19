@@ -24,7 +24,7 @@ from app.models import *
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import App ,UserApp
-from .serializers import AppSerializer ,UserAppSerializer
+from .serializers import AppSerializer ,UserAppSerializer ,AppPrivateSerializer,PrivateQrSerializer, PrivateUserAppSerializer
 import qrcode
 from io import BytesIO
 from django.core.files import File
@@ -49,6 +49,66 @@ from notifications.models import Notification
 from django.utils.datastructures import MultiValueDictKeyError
 import stripe
 stripe.api_key = "sk_test_UvbSbh6FV9UkIul1duI3oQDT00H3n6HQG0" 
+
+
+
+class AppPrivateViewSet(viewsets.ModelViewSet):
+    
+    queryset = AppPrivate.objects.all()
+    serializer_class = AppPrivateSerializer
+
+
+
+
+@api_view(['GET', 'POST'])
+def createPrivateApp(request):
+    if request.method == 'POST':
+        try:
+            user_email  = request.data['email']
+            user_password = request.data['password']
+            app_name = request.data['app_name']
+            app_description = request.data['app_discription']
+            image_app = request.data['app_image']
+            app_logo  = request.POST.get('app_logo')
+        except MultiValueDictKeyError:
+            return Response({"detail": "Make sure all required fields are provided",  "status": status.HTTP_400_BAD_REQUEST})
+        
+        try:
+            get_custmer = Customer.objects.get(email = user_email)
+        except Customer.DoesNotExist:
+            get_custmer = None
+        if get_custmer is None:
+            return Response({"message": "Customer does not exists " , "status": status.HTTP_404_NOT_FOUND})
+        else:
+            pass_res = get_custmer.check_password(user_password)
+            if pass_res:
+                if get_custmer.apps_allowed >= 1:
+                    app_obj = AppPrivate.objects.create(name =app_name, description  = app_description ,app_image  = image_app , customer_id = get_custmer, app_logo=app_logo)
+                    allowed_app = get_custmer.apps_allowed
+                    get_custmer.apps_allowed = allowed_app - 1
+                    get_custmer.save() 
+                    app_obj2 = AppPrivate.objects.get(id = app_obj.id)
+                    app_obj = app_obj2
+                    return Response({
+                        "id": app_obj.id,
+                        "name": app_obj.name,
+                        "description": app_obj.description,
+                        "notifications_used": app_obj.notifications_used,
+                        "created_at": app_obj.created_at,
+                        "app_image": app_obj.app_image.url ,
+                        "status": status.HTTP_200_OK,
+                    })
+                else:
+                    return Response({"detail": "Limit reached for allowed Apps",  "status": status.HTTP_429_TOO_MANY_REQUESTS})
+            else:
+                return Response({"detail": "Wrong Password!",  "status": status.HTTP_401_UNAUTHORIZED})
+
+    else:
+        return Response({"detail": "Invalid Request!",  "status": status.HTTP_400_BAD_REQUEST})
+
+
+
+
 
 @login_required(login_url="/login/")
 def index(request):

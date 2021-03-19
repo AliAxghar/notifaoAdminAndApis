@@ -98,7 +98,7 @@ api_base_url = "http://ec2-18-185-137-104.eu-central-1.compute.amazonaws.com:180
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'noti_db',
+        'NAME': 'notifaodb',
         'USER': 'postgres',
         'PASSWORD': 'admin123',
         'HOST': 'localhost'

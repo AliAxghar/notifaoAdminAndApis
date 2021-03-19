@@ -41,3 +41,30 @@ class UserApp(models.Model):
                 liscname = App.objects.get(id = self.app_id.pk)
                 self.customer_id = liscname.customer_id.pk
         return super(UserApp, self).save(*args, **kwargs)
+
+class AppPrivate(models.Model):
+    name = models.CharField(max_length=200 , null = False )
+    description = models.CharField(max_length=500 , null=False)
+    notifications_used = models.IntegerField(default=0)
+    notifications_actual_used = models.IntegerField(default=0)
+    customer_id  = models.ForeignKey(Customer, related_name="customer_private_app", on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True)
+    app_image = models.ImageField(upload_to='app_image/',blank=True)
+    app_logo = models.ImageField(upload_to='app_logo/',blank= True)
+    app_url = models.CharField(max_length=500 , null=False)
+
+
+
+class PrivateQr(models.Model):
+    app_id  = models.ForeignKey(App, related_name="private_app", on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True)
+    app_qr =  models.ImageField(upload_to='app_qr/', blank=True)
+    customer_hash_code = models.CharField(max_length=500 , null=False)
+    qr_used = models.BooleanField(default=False)
+
+
+class PrivateUserApp(models.Model):
+    Private_qr_id = models.ForeignKey(PrivateQr, related_name="private_qr", on_delete=models.CASCADE)
+    user_id  = models.ForeignKey(User,related_name="private_user", on_delete = models.CASCADE)
+    created_at = models.DateField(auto_now_add=True)
+    customer_id  = models.IntegerField(null = True )
