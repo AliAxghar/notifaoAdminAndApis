@@ -60,6 +60,15 @@ class AppPrivateViewSet(viewsets.ModelViewSet):
 
 
 
+class PrivateQrViewSet(viewsets.ModelViewSet):
+    
+    queryset = PrivateQr.objects.all()
+    serializer_class = PrivateQrSerializer
+
+
+
+
+
 @api_view(['GET', 'POST'])
 def createPrivateApp(request):
     if request.method == 'POST':

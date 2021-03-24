@@ -138,7 +138,7 @@ def register_user(request):
                         if res:
                             if len(res) > 1:
                                 success = True
-                                emailConfirmation(email)
+                                # emailConfirmation(email)
                                 msg = "User created successfully"
                             else:
                                 msg = "This password is too common."

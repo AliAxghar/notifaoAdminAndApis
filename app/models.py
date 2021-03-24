@@ -60,7 +60,9 @@ class PrivateQr(models.Model):
     created_at = models.DateField(auto_now_add=True)
     app_qr =  models.ImageField(upload_to='app_qr/', blank=True)
     customer_hash_code = models.CharField(max_length=500 , null=False)
+    qr_code = models.CharField(max_length=500 , null=False)
     qr_used = models.BooleanField(default=False)
+    user_id = models.IntegerField(default =0)
 
 
 class PrivateUserApp(models.Model):
